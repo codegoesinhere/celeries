@@ -404,7 +404,7 @@ section.payrates-multi, .extra-streams, .extra-class {
 
 /* === Pay chart === */
 #pay-chart { margin: 2rem 0 1.5rem; }
-#pay-chart .chart-controls { margin: .5rem 0 1rem; display: flex; gap: .5rem; align-items: center; }
+#pay-chart .chart-controls { margin: .5rem 0 1rem; display: flex; gap: .5rem; align-items: flex-end; flex-wrap: wrap; }
 .chart-container { min-height: 420px; }
 .highcharts-figure, .chart-container { width: 100%; }
 /* Make the chart background follow the page; Highcharts will be transparent. */
@@ -433,5 +433,77 @@ section.payrates-multi, .extra-streams, .extra-class {
     width: 9.5rem;
     font-weight: 600;
     color: var(--muted);
+  }
+}
+
+
+/* === Responsive: chart dropdowns === */
+/* Chart 1 controls: keep long dropdowns from blowing out layout */
+#chartPortfolioSel { max-width: 22rem; width: 100%; }
+
+/* Chart 2 controls: sensible max-width for agency selectors */
+#compareRows select[id^="compareAgency-"] { max-width: 32rem; width: 100%; }
+
+/* Mobile: stack each label + control, and collapse the 2-column compare grid */
+@media (max-width: 720px) {
+  #pay-chart .chart-controls { gap: .35rem; }
+  #pay-chart .chart-controls label { flex: 1 0 100%; margin: 0; }
+  #pay-chart .chart-controls select,
+  #pay-chart .chart-controls input { flex: 1 0 100%; }
+
+  /* Portfolio select should not force horizontal scrolling */
+  #chartPortfolioSel { max-width: 100%; }
+}
+
+/* Compare grid: 2-up on desktop, 1-up on smaller screens */
+@media (max-width: 900px) {
+  /* outer grid defined inline in HTML */
+  #compareRows { grid-template-columns: 1fr !important; }
+
+  /* inner per-row grid defined inline in JS (5fr 12fr) */
+  #compareRows .row > div { grid-template-columns: 1fr !important; }
+
+  /* make sure selects can shrink */
+  #compareRows .control { min-width: 0; }
+  #compareRows select { max-width: 100%; }
+}
+
+
+/* === Mobile: contain Table 1 & 2 (salariesTable) === */
+
+/* Wrap the generated salary tables so they scroll horizontally inside their own area (instead of blowing out the page) */
+#fortnightTableMount,
+#compareTableMount {
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  border: 1px solid var(--border);
+  border-radius: .6rem;
+  padding: .25rem;
+  background: rgba(0,0,0,0.08);
+}
+
+/* Keep the table itself wider than a phone so the wrapper gets a scroll bar */
+table.salariesTable {
+  width: max-content !important;
+  min-width: 760px;          /* enough to force horizontal scroll on mobile */
+  border-collapse: collapse;
+  font-size: 0.8em;          /* ~80% of current size */
+}
+
+/* Tighten spacing a touch so it stays readable */
+table.salariesTable th,
+table.salariesTable td {
+  padding: .35rem .45rem;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+
+/* Optional: keep the first columns readable when scrolling */
+@media (max-width: 880px) {
+  table.salariesTable th,
+  table.salariesTable td {
+    white-space: nowrap;
   }
 }
