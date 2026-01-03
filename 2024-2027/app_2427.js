@@ -98,7 +98,7 @@ function stepDisplayLabel(classification, point){
   if (point.kind === "max") return point.label || "Maximum guidepoint";
   return "";
 }
-// app.js — Clean salaries-focused renderer (4 columns)
+// app.js - Clean salaries-focused renderer (4 columns)
 
 (function(){
 
@@ -132,7 +132,7 @@ function populateAgencyOptions(selectEl){
   // top “blank” choice
   const blank = document.createElement('option');
   blank.value = '';
-  blank.textContent = '— Select agency —';
+  blank.textContent = '- Select agency -';
   selectEl.appendChild(blank);
 
   const groups = getAgencyGroupsForSelect();
@@ -140,7 +140,7 @@ function populateAgencyOptions(selectEl){
   function appendHeader(label){
     const hdr = document.createElement('option');
     hdr.value = '';
-    hdr.textContent = `— ${label} —`;
+    hdr.textContent = `- ${label} -`;
     hdr.disabled = true;
     hdr.style.fontStyle = 'italic';
     selectEl.appendChild(hdr);
@@ -694,8 +694,8 @@ function renderPayRatesTable(agencyId, classification){
 
   let rows = "";
   for (const [k, label] of keys.entries()){
-    const lv = lMap[k] != null ? AUD.format(lMap[k]) : "—";
-    const rv = rMap[k] != null ? AUD.format(rMap[k]) : "—";
+    const lv = lMap[k] != null ? AUD.format(lMap[k]) : "-";
+    const rv = rMap[k] != null ? AUD.format(rMap[k]) : "-";
     rows += `<tr><th scope="row">${label}</th><td>${lv}</td><td>${rv}</td></tr>`;
   }
 
@@ -1421,7 +1421,7 @@ if (typeof window !== 'undefined') {
 })();
 
 
-// ======== COMPARE CHART (role+agency) — embedded clean rebuild ========
+// ======== COMPARE CHART (role+agency) - embedded clean rebuild ========
 (function(){
 
   // --- Palette bridge ---
@@ -1455,7 +1455,7 @@ if (typeof window !== 'undefined') {
     selectEl.innerHTML = '';
     const blank = document.createElement('option');
     blank.value = '';
-    blank.textContent = '— Select agency —';
+    blank.textContent = '- Select agency -';
     selectEl.appendChild(blank);
 
     const groups = getAgencyGroupsForSelect();
@@ -1463,7 +1463,7 @@ if (typeof window !== 'undefined') {
     function appendHeader(label){
       const hdr = document.createElement('option');
       hdr.value = '';
-      hdr.textContent = '— ' + label + ' —';
+      hdr.textContent = '- ' + label + ' -';
       hdr.disabled = true;
       hdr.style.fontStyle = 'italic';
       selectEl.appendChild(hdr);
@@ -1570,7 +1570,7 @@ if (typeof window !== 'undefined') {
       const minVal = (minPoint && Number(minPoint.rate)) ?? Math.min(...steps.map(s => Number(s.rate)));
       const maxVal = (maxPoint && Number(maxPoint.rate)) ?? Math.max(...steps.map(s => Number(s.rate)));
       if (!isFinite(minVal) || !isFinite(maxVal)) continue;
-      const category = (a.agency || 'Agency') + ' — ' + prettyClassificationLabel(classification);
+      const category = (a.agency || 'Agency') + ' - ' + prettyClassificationLabel(classification);
       const pointColor = safeColorFor(a);
       rows.push({
         category,
@@ -1976,15 +1976,15 @@ window.__renderCompareChart = renderCompareChart;
 
 // Helpers
 function money(n) {
-  if (n === null || n === undefined || isNaN(n)) return '—';
+  if (n === null || n === undefined || isNaN(n)) return '-';
   return n.toLocaleString('en-AU', { style: 'currency', currency: 'AUD', maximumFractionDigits: 0 });
 }
 function money2(n) {
-  if (n === null || n === undefined || isNaN(n)) return '—';
+  if (n === null || n === undefined || isNaN(n)) return '-';
   return n.toLocaleString('en-AU', { style: 'currency', currency: 'AUD', minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
 function hourly4(n) {
-  if (n === null || n === undefined || isNaN(n)) return '—';
+  if (n === null || n === undefined || isNaN(n)) return '-';
   return Number(n).toFixed(4);
 }
 // Formula parts
@@ -2007,7 +2007,7 @@ function buildTableHTML(title, rows, columns) {
   const tbody = `<tbody>${rows.map(r => 
     `<tr>${columns.map(c=>{
       const v = r[c.key];
-      const cell = (c.format ? c.format(v) : (v ?? '—'));
+      const cell = (c.format ? c.format(v) : (v ?? '-'));
       return `<td${c.right? ' style="text-align:right"':''}>${cell}</td>`;
     }).join('')}</tr>`
   ).join('')}</tbody>`;
@@ -2323,7 +2323,7 @@ function recalcFromCompareChart() {
         shared: true,
         headerFormat: '<b>{point.key}</b><br/>',
         pointFormatter: function() {
-          return `<span style="font-weight:bold">${this.series.name}</span>: ${this.y != null ? this.y.toFixed(4) : '—'}`;
+          return `<span style="font-weight:bold">${this.series.name}</span>: ${this.y != null ? this.y.toFixed(4) : '-'}`;
         }
       },
       legend: { enabled: true },
