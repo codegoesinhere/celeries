@@ -589,21 +589,6 @@ window.agreements = [
   {
     portfolio: "Climate Change, Energy, the Environment and Water",
     entityType: "cce",
-    agency: "Australian Institute of Marine Science (AIMS)",
-    website: "https://www.aims.gov.au/",
-    eaUrl: "https://www.aims.gov.au/sites/default/files/2024-05/AIMS%20Enterprise%20Agreement%202024-2027.pdf",
-    name: "AIMS Enterprise Agreement 2024-2027",
-    eaHeading: "Public Holidays",
-    clauses: "No closedown",
-    pageStart: 62,
-    earlyClose: "No",
-    description: "",
-    issueLink: "https://github.com/codegoesinhere/celeries/issues/1",
-    htmlVer: ""
-  },   
-  {
-    portfolio: "Climate Change, Energy, the Environment and Water",
-    entityType: "cce",
     agency: "Murray-Darling Basin Authority (MDBA)",
     website: "https://www.mdba.gov.au/",
     eaUrl: "https://www.mdba.gov.au/sites/default/files/publications/murray-darling-basin-authority-enterprise-agreement-2024-2027.pdf",
@@ -1060,6 +1045,21 @@ window.agreements = [
     description: "",
     htmlVer: ""
   },
+  {
+    portfolio: "Health, Disability and Ageing",
+    entityType: "ncce",
+    agency: "Australian Centre for Disease Control",
+    website: "https://www.cdc.gov.au/",
+    eaUrl: "https://www.health.gov.au/sites/default/files/2025-11/enterprise-agreement-ea_0.pdf",
+    name: "Department of Health and Aged Care Enterprise Agreement 2024-2027",
+    eaHeading: "Annual closedown and early stand down",
+    clauses: "215 to 219",
+    pageStart: 36,
+    earlyClose: "03:00pm",
+    description: "",
+    extraStreams: "Entry Level, Gradate, Professional 1, Medical Officer, Legal, Public Affairs Officer, Research Scientist",
+    htmlVer: ""
+  },    
   {
     portfolio: "Health, Disability and Ageing",
     entityType: "cce",
@@ -5887,278 +5887,6 @@ window.payRates = [
       { kind: "step", step: 4, rate: 132713 },    
     ]
   },   
-  {
-    agencyId: "climate-change-energy-the-environment-and-water|australian-institute-of-marine-science-aims",
-    classification: "APS1",
-    agencyClassification: "AOF Level 1",
-    setName: "General",
-    year: 2025,
-    effectiveFrom: "2025-03-13",
-    effectiveTo: "2026-03-11",
-    points: [
-      { kind: "step", step: 1, rate: 55285 },
-      { kind: "step", step: 2, rate: 56294 },
-      { kind: "step", step: 3, rate: 57289 }, 
-      { kind: "step", step: "SP", rate: 61299 },              
-    ]
-  },
-  {
-    agencyId: "climate-change-energy-the-environment-and-water|australian-institute-of-marine-science-aims",
-    classification: "APS1",
-    agencyClassification: "AOF Level 1",
-    setName: "General",
-    year: 2026,
-    effectiveFrom: "2026-03-12",
-    effectiveTo: "",
-    points: [
-      { kind: "step", step: 1, rate: 57165 },
-      { kind: "step", step: 2, rate: 58208 },
-      { kind: "step", step: 3, rate: 59237 },   
-      { kind: "step", step: "SP", rate: 63384 },    
-    ]
-  },  
-  {
-    agencyId: "climate-change-energy-the-environment-and-water|australian-institute-of-marine-science-aims",
-    classification: "APS2",
-    agencyClassification: "AOF Level 2",
-    setName: "General",
-    year: 2025,
-    effectiveFrom: "2025-03-13",
-    effectiveTo: "2026-03-11",
-    points: [
-      { kind: "step", step: 1, rate: 59300 },
-      { kind: "step", step: 2, rate: 60972 },
-      { kind: "step", step: 3, rate: 62637 },   
-      { kind: "step", step: 4, rate: 64298 },
-      { kind: "step", step: 5, rate: 65969 },
-      { kind: "step", step: 6, rate: 67634 }, 
-      { kind: "step", step: 7, rate: 69300 },
-      { kind: "step", step: 8, rate: 70964 },
-      { kind: "step", step: 9, rate: 72629 },
-      { kind: "step", step: "SP", rate: 77715 },                         
-    ]
-  },
-  {
-    agencyId: "climate-change-energy-the-environment-and-water|australian-institute-of-marine-science-aims",
-    classification: "APS2",
-    agencyClassification: "AOF Level 2",
-    setName: "General",
-    year: 2026,
-    effectiveFrom: "2026-03-12",
-    effectiveTo: "",
-    points: [
-      { kind: "step", step: 1, rate: 61316 },
-      { kind: "step", step: 2, rate: 63045 },
-      { kind: "step", step: 3, rate: 64767 },
-      { kind: "step", step: 4, rate: 66485 },
-      { kind: "step", step: 5, rate: 68212 },
-      { kind: "step", step: 6, rate: 69934 }, 
-      { kind: "step", step: 7, rate: 71656 },
-      { kind: "step", step: 8, rate: 73377 },
-      { kind: "step", step: 9, rate: 75098 }, 
-      { kind: "step", step: "SP", rate: 80357 },            
-    ]
-  },  
-  {
-    agencyId: "climate-change-energy-the-environment-and-water|australian-institute-of-marine-science-aims",
-    classification: "APS3",
-    agencyClassification: "AOF Level 3",
-    setName: "General",
-    year: 2025,
-    effectiveFrom: "2025-03-13",
-    effectiveTo: "2026-03-11",
-    points: [
-      { kind: "step", step: 1, rate: 76454 },
-      { kind: "step", step: 2, rate: 78874 },
-      { kind: "step", step: 3, rate: 81304 },
-      { kind: "step", step: 4, rate: 83728 },
-      { kind: "step", step: 5, rate: 86147 },
-      { kind: "step", step: "SP ", rate: 92179 },
-      { kind: "step", step: 6, rate: 88578 }, 
-      { kind: "step", step: 7, rate: 90999 },
-      { kind: "step", step: 8, rate: 93425 },
-      { kind: "step", step: 9, rate: 95846 },
-      { kind: "step", step: "SP", rate: 102555 },                    
-    ]
-  },
-  {
-    agencyId: "climate-change-energy-the-environment-and-water|australian-institute-of-marine-science-aims",
-    classification: "APS3",
-    agencyClassification: "AOF Level 3",
-    setName: "General",
-    year: 2026,
-    effectiveFrom: "2026-03-12",
-    effectiveTo: "",
-    points: [
-      { kind: "step", step: 1, rate: 79053 },
-      { kind: "step", step: 2, rate: 81556 },
-      { kind: "step", step: 3, rate: 84068 },
-      { kind: "step", step: 4, rate: 86574 },
-      { kind: "step", step: 5, rate: 89076 },
-      { kind: "step", step: "SP", rate: 95313 },
-      { kind: "step", step: 6, rate: 91590 }, 
-      { kind: "step", step: 7, rate: 94093 },
-      { kind: "step", step: 8, rate: 96601 },
-      { kind: "step", step: 9, rate: 99105 },
-      { kind: "step", step: "SP", rate: 106042 },          
-    ]
-  },  
-  {
-    agencyId: "climate-change-energy-the-environment-and-water|australian-institute-of-marine-science-aims",
-    classification: "APS4",
-    agencyClassification: "AOF Level 4",
-    setName: "General",
-    year: 2025,
-    effectiveFrom: "2025-03-13",
-    effectiveTo: "2026-03-11",
-    points: [
-      { kind: "step", step: 1, rate: 97503 },
-      { kind: "step", step: 2, rate: 100862 },
-      { kind: "step", step: 3, rate: 104232 },
-      { kind: "step", step: 4, rate: 107593 },
-      { kind: "step", step: 5, rate: 110957 },  
-      { kind: "step", step: "SP", rate: 118723 },                   
-    ]
-  },
-  {
-    agencyId: "climate-change-energy-the-environment-and-water|australian-institute-of-marine-science-aims",
-    classification: "APS4",
-    agencyClassification: "AOF Level 4",
-    setName: "General",
-    year: 2026,
-    effectiveFrom: "2026-03-12",
-    effectiveTo: "",
-    points: [
-      { kind: "step", step: 1, rate: 100818 },
-      { kind: "step", step: 2, rate: 104291 },
-      { kind: "step", step: 3, rate: 107776 },
-      { kind: "step", step: 4, rate: 111251 },
-      { kind: "step", step: 5, rate: 114730 },
-      { kind: "step", step: "SP", rate: 122760 },          
-    ]
-  },  
-  {
-    agencyId: "climate-change-energy-the-environment-and-water|australian-institute-of-marine-science-aims",
-    classification: "APS5",
-    agencyClassification: "AOF Level 5",
-    setName: "General",
-    year: 2025,
-    effectiveFrom: "2025-03-13",
-    effectiveTo: "2026-03-11",
-    points: [
-      { kind: "step", step: 1, rate: 122283 },
-      { kind: "step", step: 2, rate: 131521 },
-      { kind: "step", step: 3, rate: 134056 },  
-      { kind: "step", step: "SP", rate: 143439 },             
-    ]
-  },
-  {
-    agencyId: "climate-change-energy-the-environment-and-water|australian-institute-of-marine-science-aims",
-    classification: "APS5",
-    agencyClassification: "AOF Level 5",
-    setName: "General",
-    year: 2026,
-    effectiveFrom: "2026-03-12",
-    effectiveTo: "",
-    points: [
-      { kind: "step", step: 1, rate: 126440 },
-      { kind: "step", step: 2, rate: 135993 },
-      { kind: "step", step: 3, rate: 138614 },
-      { kind: "step", step: "SP", rate: 148316 },    
-    ]
-  },  
-  {
-    agencyId: "climate-change-energy-the-environment-and-water|australian-institute-of-marine-science-aims",
-    classification: "APS6",
-    agencyClassification: "AOF Level 6",
-    setName: "General",
-    year: 2025,
-    effectiveFrom: "2025-03-13",
-    effectiveTo: "2026-03-11",
-    points: [
-      { kind: "step", step: 1, rate: 141261 },
-      { kind: "step", step: 2, rate: 151591 },
-      { kind: "step", step: 3, rate: 159178 },  
-      { kind: "step", step: "SP", rate: 170319 },             
-    ]
-  },
-  {
-    agencyId: "climate-change-energy-the-environment-and-water|australian-institute-of-marine-science-aims",
-    classification: "APS6",
-    agencyClassification: "AOF Level 6",
-    setName: "General",
-    year: 2026,
-    effectiveFrom: "2026-03-12",
-    effectiveTo: "",
-    points: [
-      { kind: "step", step: 1, rate: 146063 },
-      { kind: "step", step: 2, rate: 156745 },
-      { kind: "step", step: 3, rate: 164591 },   
-      { kind: "step", step: "SP", rate: 176110 }, 
-    ]
-  },  
-  {
-    agencyId: "climate-change-energy-the-environment-and-water|australian-institute-of-marine-science-aims",
-    classification: "EL1",
-    agencyClassification: "AOF Level 7",
-    setName: "General",
-    year: 2025,
-    effectiveFrom: "2025-03-13",
-    effectiveTo: "2026-03-11",
-    points: [
-      { kind: "step", step: 1, rate: 161802 },
-      { kind: "step", step: 2, rate: 166837 },
-      { kind: "step", step: 3, rate: 171318 },
-      { kind: "step", step: 4, rate: 176077 },
-      { kind: "step", step: 5, rate: 180846 },  
-      { kind: "step", step: "SP", rate: 193505 },                   
-    ]
-  },
-  {
-    agencyId: "climate-change-energy-the-environment-and-water|australian-institute-of-marine-science-aims",
-    classification: "EL1",
-    agencyClassification: "AOF Level 7",
-    setName: "General",
-    year: 2026,
-    effectiveFrom: "2026-03-12",
-    effectiveTo: "",
-    points: [
-      { kind: "step", step: 1, rate: 167303 },
-      { kind: "step", step: 2, rate: 172509 },
-      { kind: "step", step: 3, rate: 177142 }, 
-      { kind: "step", step: 4, rate: 182064 },
-      { kind: "step", step: 5, rate: 186994 }, 
-      { kind: "step", step: "SP", rate: 200084 },        
-    ]
-  },
-  {
-    agencyId: "climate-change-energy-the-environment-and-water|australian-institute-of-marine-science-aims",
-    classification: "EL2",
-    agencyClassification: "AOF Level 8",
-    setName: "General",
-    year: 2025,
-    effectiveFrom: "2025-03-13",
-    effectiveTo: "2026-03-11",
-    points: [
-      { kind: "step", step: 1, rate: 189465 },
-      { kind: "step", step: 2, rate: 206325 },
-      { kind: "step", step: "SP", rate: 220767 },
-    ]
-  },
-  {
-    agencyId: "climate-change-energy-the-environment-and-water|australian-institute-of-marine-science-aims",
-    classification: "EL2",
-    agencyClassification: "AOF Level 8",
-    setName: "General",
-    year: 2026,
-    effectiveFrom: "2026-03-12",
-    effectiveTo: "",
-    points: [
-      { kind: "step", step: 1, rate: 195907 },
-      { kind: "step", step: 2, rate: 213340 },
-      { kind: "step", step: "SP", rate: 228273 },
-    ]
-  },  
   {
     agencyId: "climate-change-energy-the-environment-and-water|murray-darling-basin-authority-mdba",
     classification: "APS1",
@@ -13594,6 +13322,225 @@ window.payRates = [
       { kind: "step", step: 5, rate: 170830 },          
     ]
   },  
+  {
+    agencyId: "health-disability-and-ageing|australian-centre-for-disease-control",
+    classification: "APS1",
+    setName: "General",
+    year: 2025,
+    effectiveFrom: "2025-03-13",
+    effectiveTo: "2026-03-11",
+    points: [
+      { kind: "step", step: 1, rate: 54516 },
+      { kind: "step", step: 2, rate: 55452 },
+      { kind: "step", step: 3, rate: 57351 },
+      { kind: "step", step: 4, rate: 60150 },               
+    ]
+  },
+  {
+    agencyId: "health-disability-and-ageing|australian-centre-for-disease-control",
+    classification: "APS1",
+    setName: "General",
+    year: 2026,
+    effectiveFrom: "2026-03-12",
+    effectiveTo: "",
+    points: [
+      { kind: "step", step: 1, rate: 57497 },
+      { kind: "step", step: 2, rate: 59301 },
+      { kind: "step", step: 3, rate: 62195 },
+    ]
+  },   
+  {
+    agencyId: "health-disability-and-ageing|australian-centre-for-disease-control",
+    classification: "APS2",
+    setName: "General",
+    year: 2025,
+    effectiveFrom: "2025-03-13",
+    effectiveTo: "2026-03-11",
+    points: [
+      { kind: "step", step: 1, rate: 62595 },
+      { kind: "step", step: 2, rate: 64473 },
+      { kind: "step", step: 3, rate: 66410 },
+      { kind: "step", step: 4, rate: 68307 },  
+    ]
+  },
+  {
+    agencyId: "health-disability-and-ageing|australian-centre-for-disease-control",
+    classification: "APS2",
+    setName: "General",
+    year: 2026,
+    effectiveFrom: "2026-03-12",
+    effectiveTo: "",
+    points: [
+      { kind: "step", step: 1, rate: 64723 },
+      { kind: "step", step: 2, rate: 66665 },
+      { kind: "step", step: 3, rate: 68668 },
+      { kind: "step", step: 4, rate: 70629 },   
+    ]
+  }, 
+  {
+    agencyId: "health-disability-and-ageing|australian-centre-for-disease-control",
+    classification: "APS3",
+    setName: "General",
+    year: 2025,
+    effectiveFrom: "2025-03-13",
+    effectiveTo: "2026-03-11",
+    points: [
+      { kind: "step", step: 1, rate: 72336 },
+      { kind: "step", step: 2, rate: 74384 },
+      { kind: "step", step: 3, rate: 76542 },
+      { kind: "step", step: 4, rate: 80179 },         
+    ]
+  },
+  {
+    agencyId: "health-disability-and-ageing|australian-centre-for-disease-control",
+    classification: "APS3",
+    setName: "General",
+    year: 2026,
+    effectiveFrom: "2026-03-12",
+    effectiveTo: "",
+    points: [
+      { kind: "step", step: 1, rate: 74795 },
+      { kind: "step", step: 2, rate: 76913 },
+      { kind: "step", step: 3, rate: 79144 },
+      { kind: "step", step: 4, rate: 82905 },                               
+    ]
+  }, 
+  {
+    agencyId: "health-disability-and-ageing|australian-centre-for-disease-control",
+    classification: "APS4",
+    setName: "General",
+    year: 2025,
+    effectiveFrom: "2025-03-13",
+    effectiveTo: "2026-03-11",
+    points: [
+      { kind: "step", step: 1, rate: 81954 },
+      { kind: "step", step: 2, rate: 84209 },
+      { kind: "step", step: 3, rate: 86594 },             
+    ]
+  },
+  {
+    agencyId: "health-disability-and-ageing|australian-centre-for-disease-control",
+    classification: "APS4",
+    setName: "General",
+    year: 2026,
+    effectiveFrom: "2026-03-12",
+    effectiveTo: "",
+    points: [
+      { kind: "step", step: 1, rate: 84740 },
+      { kind: "step", step: 2, rate: 87072 },
+      { kind: "step", step: 3, rate: 89538 },         
+    ]
+  },     
+  {
+    agencyId: "health-disability-and-ageing|australian-centre-for-disease-control",
+    classification: "APS5",
+    setName: "General",
+    year: 2025,
+    effectiveFrom: "2025-03-13",
+    effectiveTo: "2026-03-11",
+    points: [
+      { kind: "step", step: 1, rate: 87843 },
+      { kind: "step", step: 2, rate: 90231 },
+      { kind: "step", step: 3, rate: 94998 },   
+    ]
+  },
+  {
+    agencyId: "health-disability-and-ageing|australian-centre-for-disease-control",
+    classification: "APS5",
+    setName: "General",
+    year: 2026,
+    effectiveFrom: "2026-03-12",
+    effectiveTo: "",
+    points: [
+      { kind: "step", step: 1, rate: 90830 },
+      { kind: "step", step: 2, rate: 93299 },
+      { kind: "step", step: 3, rate: 98229 },       
+    ]
+  }, 
+  {
+    agencyId: "health-disability-and-ageing|australian-centre-for-disease-control",
+    classification: "APS6",
+    setName: "General",
+    year: 2025,
+    effectiveFrom: "2025-03-13",
+    effectiveTo: "2026-03-11",
+    points: [
+      { kind: "step", step: 1, rate: 98336 },
+      { kind: "step", step: 2, rate: 103106 },
+      { kind: "step", step: 3, rate: 108509 },
+      { kind: "step", step: 4, rate: 110937 },                     
+    ]
+  },
+  {
+    agencyId: "health-disability-and-ageing|australian-centre-for-disease-control",
+    classification: "APS6",
+    setName: "General",
+    year: 2026,
+    effectiveFrom: "2026-03-12",
+    effectiveTo: "",
+    points: [
+      { kind: "step", step: 1, rate: 101679 },
+      { kind: "step", step: 2, rate: 106612 },
+      { kind: "step", step: 3, rate: 112198 },
+      { kind: "step", step: 4, rate: 114709 },                               
+    ]
+  },    
+  {
+    agencyId: "health-disability-and-ageing|australian-centre-for-disease-control",
+    classification: "EL1",
+    setName: "General",
+    year: 2025,
+    effectiveFrom: "2025-03-13",
+    effectiveTo: "2026-03-11",
+    points: [
+      { kind: "step", step: 1, rate: 120842 },
+      { kind: "step", step: 2, rate: 126100 },
+      { kind: "step", step: 3, rate: 132368 },
+      { kind: "step", step: 4, rate: 137823 },                                 
+    ]
+  },
+  {
+    agencyId: "health-disability-and-ageing|australian-centre-for-disease-control",
+    classification: "EL1",
+    setName: "General",  
+    year: 2026,
+    effectiveFrom: "2026-03-12",
+    effectiveTo: "",
+    points: [
+      { kind: "step", step: 1, rate: 124951 },
+      { kind: "step", step: 2, rate: 130387 },
+      { kind: "step", step: 3, rate: 136869 },
+      { kind: "step", step: 4, rate: 142509 },                        
+    ]
+  }, 
+  {
+    agencyId: "health-disability-and-ageing|australian-centre-for-disease-control",
+    classification: "EL2",
+    setName: "General",
+    year: 2025,
+    effectiveFrom: "2025-03-13",
+    effectiveTo: "2026-03-11",
+    points: [
+      { kind: "step", step: 1, rate: 144175 },
+      { kind: "step", step: 2, rate: 157252 },
+      { kind: "step", step: 3, rate: 162501 },
+      { kind: "step", step: 4, rate: 170695 },                       
+    ]
+  },
+  {
+    agencyId: "health-disability-and-ageing|australian-centre-for-disease-control",
+    classification: "EL2",
+    setName: "General",
+    year: 2026,
+    effectiveFrom: "2026-03-12",
+    effectiveTo: "",
+    points: [
+      { kind: "step", step: 1, rate: 149077 },
+      { kind: "step", step: 2, rate: 162599 },
+      { kind: "step", step: 3, rate: 168026 },
+      { kind: "step", step: 4, rate: 176499 },                       
+    ]
+  },   
   {
     agencyId: "health-disability-and-ageing|australian-commission-on-safety-and-quality-in-health-care",
     classification: "APS1",

@@ -514,11 +514,24 @@ function renderPortfolioPayChart(opts = {}){
   const portfolio      = (opts.portfolio || portSel?.value || "Treasury");
 
   // Build data per scope
-  const data = scope === 'depts'
-    ? buildDepartmentsPaySeries(classification)
-    : buildPortfolioPaySeries(portfolio, classification);
-
-  const { categories, dumbbellData, scatterData } = data;
+  let data;
+  if (scope === 'depts') {
+    data = buildDepartmentsPaySeries(classification);
+  } else if (scope === 'portfolio') {
+    data = buildPortfolioPaySeries(portfolio, classification);
+  } else if (scope === 'az') {
+    data = buildAllAgenciesPaySeriesAZ(classification);
+  } else if (scope === 'pgpa') {
+    data = buildAllAgenciesPaySeriesPGPA(classification);
+  } else if (scope === 'min_desc') {
+    data = buildAllAgenciesPaySeriesMinDesc(classification);
+  } else if (scope === 'max_desc') {
+    data = buildAllAgenciesPaySeriesMaxDesc(classification);
+  } else {
+    // safe fallback
+    data = buildDepartmentsPaySeries(classification);
+  }
+const { categories, dumbbellData, scatterData } = data;
   const container = document.getElementById("chartContainer");
   if (!container) return;
 
@@ -1145,6 +1158,202 @@ if (a.issueLink && String(a.issueLink).trim()){
     }))
   );
 
+
+
+  return { categories, dumbbellData, scatterData };
+}
+
+// === Chart 1 extra scopes (inherit table ordering) ===
+function buildAllAgenciesPaySeriesAZ(classification){
+  const effDate = getSelectedEffectiveDateString();
+  const ordered = (window.agreements || []).slice().sort((a,b)=>
+    (a.agency || '').localeCompare(b.agency || '', 'en-AU', { sensitivity:'base' })
+  );
+
+  const rows = [];
+  for (const a of ordered) {
+    const id = agencyKey(a);
+    const pay = findPaySet(id, classification, effDate);
+    const __ov = (pay && pay.agencyClassification) || '';
+    const __classBase = (__ov && /^[A-Za-z]{1,4}\d{1,2}$/i.test(__ov)) ? __ov.toUpperCase() : classification;
+    if (!pay || !pay.points || !pay.points.length) continue;
+
+    const minPoint = pay.points.find(p => p.kind === "min");
+    const maxPoint = pay.points.find(p => p.kind === "max");
+    const steps    = pay.points.filter(p => p.kind === "step");
+
+    const minVal = minPoint ? minPoint.rate : Math.min(...steps.map(s => s.rate));
+    const maxVal = maxPoint ? maxPoint.rate : Math.max(...steps.map(s => s.rate));
+
+    rows.push({
+      a,
+      agency: a.agency,
+      color: colorForEntityType(a),
+      min: Number(minVal),
+      max: Number(maxVal),
+      stepPairs: [
+        ...(minPoint ? [{ rate: Number(minPoint.rate), label: stepDisplayLabel(__classBase, { kind: "min",  label: minPoint.label }) }] : []),
+        ...steps.map(st => ({ rate: Number(st.rate), label: stepDisplayLabel(__classBase, { kind: "step", step: st.step }) })),
+        ...(maxPoint ? [{ rate: Number(maxPoint.rate), label: stepDisplayLabel(__classBase, { kind: "max",  label: maxPoint.label }) }] : []),
+      ],
+    });
+  }
+
+  const categories   = rows.map(r => r.agency);
+  const dumbbellData = rows.map(r => ({ low: r.min, high: r.max, color: r.color }));
+  const scatterData  = rows.flatMap((r, i) =>
+    (r.stepPairs || []).map(sp => ({
+      x: i,
+      y: Number(sp.rate),
+      name: sp.label,
+      stepLabel: sp.label,
+      color: STEP_POINT_COLOR,
+      marker: { radius: 7, symbol: 'circle', lineColor: STEP_POINT_COLOR, fillColor: STEP_POINT_COLOR }
+    }))
+  );
+
+  return { categories, dumbbellData, scatterData };
+}
+
+function buildAllAgenciesPaySeriesPGPA(classification){
+  const effDate = getSelectedEffectiveDateString();
+  const ordered = (window.agreements || []).slice();
+  if (typeof comparePGPA === 'function') ordered.sort(comparePGPA);
+  else ordered.sort((a,b)=>{
+    const p = (a.portfolio || '').localeCompare(b.portfolio || '', 'en-AU', { sensitivity:'base' });
+    if (p !== 0) return p;
+    return (a.agency || '').localeCompare(b.agency || '', 'en-AU', { sensitivity:'base' });
+  });
+
+  const rows = [];
+  for (const a of ordered) {
+    const id = agencyKey(a);
+    const pay = findPaySet(id, classification, effDate);
+    const __ov = (pay && pay.agencyClassification) || '';
+    const __classBase = (__ov && /^[A-Za-z]{1,4}\d{1,2}$/i.test(__ov)) ? __ov.toUpperCase() : classification;
+    if (!pay || !pay.points || !pay.points.length) continue;
+
+    const minPoint = pay.points.find(p => p.kind === "min");
+    const maxPoint = pay.points.find(p => p.kind === "max");
+    const steps    = pay.points.filter(p => p.kind === "step");
+
+    const minVal = minPoint ? minPoint.rate : Math.min(...steps.map(s => s.rate));
+    const maxVal = maxPoint ? maxPoint.rate : Math.max(...steps.map(s => s.rate));
+
+    rows.push({
+      a,
+      agency: a.agency,
+      color: colorForEntityType(a),
+      min: Number(minVal),
+      max: Number(maxVal),
+      stepPairs: [
+        ...(minPoint ? [{ rate: Number(minPoint.rate), label: stepDisplayLabel(__classBase, { kind: "min",  label: minPoint.label }) }] : []),
+        ...steps.map(st => ({ rate: Number(st.rate), label: stepDisplayLabel(__classBase, { kind: "step", step: st.step }) })),
+        ...(maxPoint ? [{ rate: Number(maxPoint.rate), label: stepDisplayLabel(__classBase, { kind: "max",  label: maxPoint.label }) }] : []),
+      ],
+    });
+  }
+
+  const categories   = rows.map(r => r.agency);
+  const dumbbellData = rows.map(r => ({ low: r.min, high: r.max, color: r.color }));
+  const scatterData  = rows.flatMap((r, i) =>
+    (r.stepPairs || []).map(sp => ({
+      x: i,
+      y: Number(sp.rate),
+      name: sp.label,
+      stepLabel: sp.label,
+      color: STEP_POINT_COLOR,
+      marker: { radius: 7, symbol: 'circle', lineColor: STEP_POINT_COLOR, fillColor: STEP_POINT_COLOR }
+    }))
+  );
+
+  return { categories, dumbbellData, scatterData };
+}
+
+
+function buildAllAgenciesPaySeriesMinDesc(classification){
+  const effDate = getSelectedEffectiveDateString();
+  const rows = [];
+
+  for (const a of (window.agreements || [])) {
+    const id  = agencyKey(a);
+    const pay = findPaySet(id, classification, effDate);
+    if (!pay || !pay.points || !pay.points.length) continue;
+
+    const minPoint = pay.points.find(p => p.kind === "min");
+    const maxPoint = pay.points.find(p => p.kind === "max");
+    const steps    = pay.points.filter(p => p.kind === "step");
+
+    if (!minPoint && !steps.length) continue;
+
+    const minVal = minPoint ? Number(minPoint.rate) : Math.min(...steps.map(s => Number(s.rate)));
+    const maxVal = maxPoint ? Number(maxPoint.rate) : (steps.length ? Math.max(...steps.map(s => Number(s.rate))) : minVal);
+
+    rows.push({
+      agency: `${a.agency || ''}`,
+      color: colorForEntityType(a),
+      min: Number(minVal),
+      max: Number(maxVal),
+      stepPairs: [
+        ...(minPoint ? [{ rate: Number(minPoint.rate), label: stepDisplayLabel(classification, { kind: "min",  label: minPoint.label }) }] : []),
+        ...steps.map(s => ({ rate: Number(s.rate), label: stepDisplayLabel(classification, { kind: "step", step: s.step }) })),
+        ...(maxPoint ? [{ rate: Number(maxPoint.rate), label: stepDisplayLabel(classification, { kind: "max",  label: maxPoint.label }) }] : []),
+      ],
+    });
+  }
+
+  // Largest minimum -> lowest minimum; tie-break A–Z by agency
+  rows.sort((a,b) => (b.min - a.min) || (a.agency || '').localeCompare(b.agency || '', 'en-AU', { sensitivity:'base' }));
+
+  const categories   = rows.map(r => r.agency);
+  const dumbbellData = rows.map(r => ({ low: r.min, high: r.max, color: r.color }));
+  const scatterData  = rows.flatMap((r, i) =>
+    (r.stepPairs || []).map(sp => ({ x: i, y: Number(sp.rate), name: sp.label, stepLabel: sp.label, color: STEP_POINT_COLOR, marker: { radius: 7, symbol: 'circle', lineColor: STEP_POINT_COLOR, fillColor: STEP_POINT_COLOR } }))
+  );
+
+  return { categories, dumbbellData, scatterData };
+}
+
+function buildAllAgenciesPaySeriesMaxDesc(classification){
+  const effDate = getSelectedEffectiveDateString();
+  const rows = [];
+
+  for (const a of (window.agreements || [])) {
+    const id  = agencyKey(a);
+    const pay = findPaySet(id, classification, effDate);
+    if (!pay || !pay.points || !pay.points.length) continue;
+
+    const minPoint = pay.points.find(p => p.kind === "min");
+    const maxPoint = pay.points.find(p => p.kind === "max");
+    const steps    = pay.points.filter(p => p.kind === "step");
+
+    if (!maxPoint && !steps.length) continue;
+
+    const minVal = minPoint ? Number(minPoint.rate) : (steps.length ? Math.min(...steps.map(s => Number(s.rate))) : Number(maxPoint.rate));
+    const maxVal = maxPoint ? Number(maxPoint.rate) : Math.max(...steps.map(s => Number(s.rate)));
+
+    rows.push({
+      agency: `${a.agency || ''}`,
+      color: colorForEntityType(a),
+      min: Number(minVal),
+      max: Number(maxVal),
+      stepPairs: [
+        ...(minPoint ? [{ rate: Number(minPoint.rate), label: stepDisplayLabel(classification, { kind: "min",  label: minPoint.label }) }] : []),
+        ...steps.map(s => ({ rate: Number(s.rate), label: stepDisplayLabel(classification, { kind: "step", step: s.step }) })),
+        ...(maxPoint ? [{ rate: Number(maxPoint.rate), label: stepDisplayLabel(classification, { kind: "max",  label: maxPoint.label }) }] : []),
+      ],
+    });
+  }
+
+  // Largest maximum -> lowest maximum; tie-break A–Z by agency
+  rows.sort((a,b) => (b.max - a.max) || (a.agency || '').localeCompare(b.agency || '', 'en-AU', { sensitivity:'base' }));
+
+  const categories   = rows.map(r => r.agency);
+  const dumbbellData = rows.map(r => ({ low: r.min, high: r.max, color: r.color }));
+  const scatterData  = rows.flatMap((r, i) =>
+    (r.stepPairs || []).map(sp => ({ x: i, y: Number(sp.rate), name: sp.label, stepLabel: sp.label, color: STEP_POINT_COLOR, marker: { radius: 7, symbol: 'circle', lineColor: STEP_POINT_COLOR, fillColor: STEP_POINT_COLOR } }))
+  );
+
   return { categories, dumbbellData, scatterData };
 }
 
@@ -1337,7 +1546,7 @@ const scopeSel = document.getElementById("chartScopeSel");
     const portSel  = document.getElementById("chartPortfolioSel");
 
     function syncPortfolioEnable() {
-      const isDepts = (scopeSel?.value === 'depts');
+      const isDepts = (scopeSel?.value === 'depts' || scopeSel?.value === 'az' || scopeSel?.value === 'pgpa' || scopeSel?.value === 'min_desc' || scopeSel?.value === 'max_desc');
         if (portSel) {
           portSel.disabled = isDepts;
           portSel.style.opacity = isDepts ? 0.5 : 1;
@@ -1348,7 +1557,7 @@ const scopeSel = document.getElementById("chartScopeSel");
     populateChartPortfolioOptions(classSel?.value || "APS6");
 
     function syncPortfolioEnable() {
-      const isDepts = (scopeSel?.value === 'depts');
+      const isDepts = (scopeSel?.value === 'depts' || scopeSel?.value === 'az' || scopeSel?.value === 'pgpa' || scopeSel?.value === 'min_desc' || scopeSel?.value === 'max_desc');
       if (portSel) {
         portSel.disabled = isDepts;
         portSel.style.opacity = isDepts ? 0.5 : 1;

@@ -60,9 +60,9 @@
   </section>
   <section id="currency">
     <h2>Currency of information</h2>
-    <p>Version: <span class="current-date">1.0.0</span></p>
-    <p>Last updated: <span class="current-date">3 January 2026</span></p>
-    <p>Information in line with PGPA Flipchart: <span class="current-date">3 November 2025</span></p>
+    <p>Version: <span class="current-date">1.1.0</span></p>
+    <p>Last updated: <span class="current-date">12 January 2026</span></p>
+    <p>Information in line with PGPA Flipchart: <span class="current-date">5 January 2026</span></p>
   </section>  
 
   <section>
@@ -170,6 +170,10 @@
         <select id="chartScopeSel">
           <option value="depts" selected>Departments (all portfolios)</option>
           <option value="portfolio">By portfolio</option>
+          <option value="az">All entities - A-Z (by Entity/Company name)</option>
+          <option value="pgpa">All entities - PGPA flipchart order</option>
+          <option value="min_desc">Min. salary guidepoint (High → Low)</option>
+          <option value="max_desc">Max. salary guidepoint (High → Low)</option>          
         </select>
 
         <label for="chartPortfolioSel">Portfolio:</label>
@@ -229,12 +233,14 @@
       <div class="help">
         <p>This are enterprise agreements that use different classification levels, or aren't clearly aligned to APS and EL levels.</p>
         <ol class="indentChild">
-          <p><strong>Education</strong></p>
-          <li>Australian Curriculum Assessment and Reporting Authority - <a href="https://www.acara.edu.au/docs/default-source/corporate-publications/acara-enterprise-agreement-2023-2026-fwc-approved.pdf" target="_blank">Enterprise Agreement 2023-2026 (Page 53)</a></li>
-          <li>Australian National University (ANU) - <a href="https://services.anu.edu.au/files/2024-03/ANU%20Enterprise%20Agreement%202023-2026%20Approved.pdf" target="_blank">Enterprise Agreement 2023-2026 (Page 101)</a></li>
           <p><strong>Agriculture, Fisheries and Forestry</strong></p>
           <li>Grains Research and Development Corporation (GRDC) - <a href="https://www.fwc.gov.au/document-search/view/3/aHR0cHM6Ly9zYXNyY2RhdGFwcmRhdWVhYS5ibG9iLmNvcmUud2luZG93cy5uZXQvZW50ZXJwcmlzZWFncmVlbWVudHMvMjAyNC8zL2FlNTI0MDA0LnBkZg2?sid=" target="_blank">Enterprise Agreement 2024-2027 (Page 47)</a></li>
           <li>Rural Industries Research and Development Corporation (AgriFutures) - <a href="https://www.fwc.gov.au/document-search/view/3/aHR0cHM6Ly9zYXNyY2RhdGFwcmRhdWVhYS5ibG9iLmNvcmUud2luZG93cy5uZXQvZW50ZXJwcmlzZWFncmVlbWVudHMvMjAyMi8yL0FFNTE0ODg3LnBkZg2?sid=" target="_blank">Enterprise Agreement 2022-2025 (Page 9)</a></li>
+          <p><strong>Climate Change, Energy, the Environment and Water</strong></p>
+          <li>Australian Institute of Marine Science (AIMS) - <a href="https://www.aims.gov.au/sites/default/files/2024-05/AIMS%20Enterprise%20Agreement%202024-2027.pdf" target="_blank">Enterprise Agreement 2024-2027 (Page 91)</a></li>
+          <p><strong>Education</strong></p>
+          <li>Australian Curriculum Assessment and Reporting Authority - <a href="https://www.acara.edu.au/docs/default-source/corporate-publications/acara-enterprise-agreement-2023-2026-fwc-approved.pdf" target="_blank">Enterprise Agreement 2023-2026 (Page 53)</a></li>
+          <li>Australian National University (ANU) - <a href="https://services.anu.edu.au/files/2024-03/ANU%20Enterprise%20Agreement%202023-2026%20Approved.pdf" target="_blank">Enterprise Agreement 2023-2026 (Page 101)</a></li>
           <p><strong>Health, Disability and Ageing</strong></p>
           <li>Australian Hearing Services (Hearing Australia) - <a href="https://www.fwc.gov.au/document-search/view/3/aHR0cHM6Ly9zYXNyY2RhdGFwcmRhdWVhYS5ibG9iLmNvcmUud2luZG93cy5uZXQvZW50ZXJwcmlzZWFncmVlbWVudHMvMjAyMy8xMC9hZTUyMjEwMy5wZGY1?sid=" target="_blank">Enterprise Agreement 2023 (Page 39)</a></li>
           <p><strong>Home Affairs</strong></p>
