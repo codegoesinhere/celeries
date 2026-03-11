@@ -401,10 +401,6 @@ section.payrates-multi,
 }
 
 /* === Payrates table === */
-.payrates-table-wrapper {
-  width: 100%;
-  overflow-x: auto;
-}
 .payrates { margin-top: 0.75rem; }
 .payrates-title { margin: 0.25rem 0 0.5rem; font-size: 1rem; }
 .payrates .muted { color: var(--muted); font-weight: 400; }
@@ -438,11 +434,6 @@ section.payrates-multi,
 .payrates-table tbody th {
   white-space: normal;
   overflow-wrap: anywhere;
-}
-.payrates-table-wrap {
-  width: 100%;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
 }
 .payrates-multi .payrates + .payrates { margin-top: 1rem; margin-bottom:1rem; }
 
@@ -478,26 +469,43 @@ section.payrates-multi,
     font-weight: 600;
     color: var(--muted);
   }
-  .payrates-table-wrap {
+  .payrates .table-wrap {
+    display: block;
+    width: 100%;
     max-width: 100%;
     overflow-x: auto;
     overflow-y: hidden;
     -webkit-overflow-scrolling: touch;
+    border: 1px solid var(--border);
+    border-radius: .6rem;
+    background: var(--panel);
   }
   .payrates-table {
-    min-width: 640px;
     width: max-content;
+    min-width: 100%;
+    table-layout: auto;
+    border-collapse: collapse;
   }
-  /* .payrates-table {
-    width: 100%;
-    min-width: 640px;
-  } */
-  .payrates-table th,
-  .payrates-table td {
+  .payrates-table thead th {
+    position: static;
+    top: auto;
+    background: #111318;
     white-space: nowrap;
   }
+  .payrates-table tbody td {
+    white-space: nowrap;
+  }
+  .payrates-table tbody th {
+    white-space: normal;
+    min-width: 10rem;
+  }
+  .payrates-table th:nth-child(2),
+  .payrates-table th:nth-child(3),
+  .payrates-table td:nth-child(2),
+  .payrates-table td:nth-child(3) {
+    min-width: 8rem;
+  }  
 }
-
 
 /* === Responsive: chart dropdowns === */
 /* Chart 1 controls: keep long dropdowns from blowing out layout */
