@@ -340,7 +340,7 @@ section.payrates-multi,
     color: var(--muted);
   }
   /* Ensure the (website) link behaves inline with the agency name */
-  #eaTable tbody td:nth-child(2) a {
+  #eaTable > tbody > tr:not(.desc-row) > td:nth-child(2) a {
     display: inline;
     white-space: normal;
   }
@@ -373,7 +373,7 @@ section.payrates-multi,
     content: none !important;            /* no injected label on description */
   }
   /* Keep links and badges wrapping nicely inside cards */
-  #eaTable > tbody > td a {
+  #eaTable > tbody > tr > td a {
     white-space: normal;
     overflow-wrap: anywhere;
     word-break: break-word;
@@ -455,7 +455,7 @@ section.payrates-multi,
   #eaTable > tbody > tr:not(.desc-row) > td:nth-child(3)::before { content: "Entity"; font-weight: 600; color: var(--muted); }
   #eaTable > tbody > tr:not(.desc-row) > td:nth-child(4)::before { content: "Details"; font-weight: 600; color: var(--muted); }
 
-  #eaTable tbody td:nth-child(2) {
+  /* #eaTable tbody td:nth-child(2) {
     display: block !important;
     position: relative;
     padding-left: calc(9.5rem + 0.5rem + 0.75rem) !important;
@@ -468,7 +468,21 @@ section.payrates-multi,
     width: 9.5rem;
     font-weight: 600;
     color: var(--muted);
+  } */
+  #eaTable > tbody > tr:not(.desc-row) > td:nth-child(2) {
+    display: block !important;
+    position: relative;
+    padding-left: calc(9.5rem + 0.5rem + 0.75rem) !important;
   }
+  #eaTable > tbody > tr:not(.desc-row) > td:nth-child(2)::before {
+    content: "Agency";
+    position: absolute;
+    left: 0.75rem;
+    top: 0.6rem;
+    width: 9.5rem;
+    font-weight: 600;
+    color: var(--muted);
+  }   
   .payrates .table-wrap {
     display: block;
     width: 100%;
