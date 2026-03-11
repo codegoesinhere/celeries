@@ -420,11 +420,16 @@ section.payrates-multi,
   border-collapse: collapse;
   table-layout: auto;
 }
+.payrates-table th:last-child,
+.payrates-table td:last-child {
+  width: auto;
+}
 .payrates-table th,
 .payrates-table td {
   padding: .4rem .5rem;
   border-bottom: 1px solid rgba(0,0,0,.1);
   text-align: left;
+  width: auto;
 }
 .payrates-table thead th {
   font-weight: 600;
@@ -477,11 +482,16 @@ section.payrates-multi,
     max-width: 100%;
     overflow-x: auto;
     overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
   }
   .payrates-table {
+    min-width: 640px;
+    width: max-content;
+  }
+  /* .payrates-table {
     width: 100%;
     min-width: 640px;
-  }
+  } */
   .payrates-table th,
   .payrates-table td {
     white-space: nowrap;
