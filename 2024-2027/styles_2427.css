@@ -96,7 +96,11 @@ td a:hover { text-decoration: underline; }
 }
 .tooltip.top .tip { top: auto; bottom: -6px; transform: rotate(225deg); }
 /* Expander */
-th:last-child, td:last-child { width: 2.75rem; }
+/* th:last-child, td:last-child { width: 2.75rem; } */
+table:not(.payrates-table) th:last-child,
+table:not(.payrates-table) td:last-child {
+  width: 2.75rem;
+}
 .expander {
   width: 1.9rem; height: 1.9rem; display: inline-flex; align-items: center; justify-content: center;
   border-radius: .45rem; background: #94a0ce; border: 1px solid var(--border); cursor: pointer; font-weight: 700; line-height: 1; color: #06121a;
@@ -238,9 +242,15 @@ hr.zag {
   color: var(--muted);
   cursor: pointer;
 }
-section.payrates-multi, .extra-streams, .extra-class {
+/* section.payrates-multi, .extra-streams, .extra-class {
     width: 90%;
     margin-left: 2rem;
+} */
+section.payrates-multi,
+.extra-streams,
+.extra-class {
+  width: 100%;
+  margin-left: 0;
 }
 .copy-link:hover { color: var(--text); }
 /* Give the content a little left padding to not collide with the button */
@@ -390,12 +400,16 @@ section.payrates-multi, .extra-streams, .extra-class {
 }
 
 /* === Payrates table === */
+.payrates-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
 .payrates { margin-top: 0.75rem; }
 .payrates-title { margin: 0.25rem 0 0.5rem; font-size: 1rem; }
 .payrates .muted { color: var(--muted); font-weight: 400; }
 .pay-chip { background: rgba(0,0,0,.06); border-radius: 999px; padding: 0 .5rem; font-size: .8em; }
 .table-wrap { overflow-x: auto; }
-.payrates-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+.payrates-table { width: 100%; border-collapse: collapse; table-layout: auto /* fixed */; }
 .payrates-table th, .payrates-table td { padding: .4rem .5rem; border-bottom: 1px solid rgba(0,0,0,.1); text-align: left; }
 .payrates-table thead th { font-weight: 600; border-bottom: 2px solid rgba(0,0,0,.2); }
 .payrates-table tbody th { white-space: normal; overflow-wrap: anywhere; }

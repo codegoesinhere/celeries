@@ -714,17 +714,17 @@ function renderPayRatesTable(agencyId, classification){
 
   const disp = __agencyClassOverride ? `${__agencyClassOverride} (${displayClassification(classification)})` : displayClassification(classification);
 
-  return `
-    <section class="payrates">
-      <h3 class="payrates-title">Pay rates - ${disp}</h3>
-      <div class="table-wrap">
-        <table class="payrates-table"><colgroup><col style="width:34%"><col style="width:33%"><col style="width:33%"></colgroup>
-          <thead><tr><th>Guidepoint</th><th>${hdrL}</th><th>${hdrR}</th></tr></thead>
-          <tbody>${rows}</tbody>
-        </table>
-      </div>
-    </section>
-  `;
+return `
+  <section class="payrates">
+    <h3 class="payrates-title">Pay rates - ${disp}</h3>
+    <div class="table-wrap payrates-table-wrap">
+      <table class="payrates-table">
+        <thead><tr><th>Guidepoint</th><th>${hdrL}</th><th>${hdrR}</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>
+  </section>
+`;
 }
   // END NEW
 

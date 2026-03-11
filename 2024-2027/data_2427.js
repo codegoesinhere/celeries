@@ -20125,7 +20125,6 @@ window.payRates = [
     effectiveFrom: "2025-03-13",
     effectiveTo: "2026-03-11",
     points: [
-      { kind: "step", step: 1, rate: 0 },
       { kind: "step", step: 2, rate: 54516 },
       { kind: "step", step: 3, rate: 57215 },
       { kind: "step", step: 4, rate: 57787 },               
@@ -20139,7 +20138,6 @@ window.payRates = [
     effectiveFrom: "2026-03-12",
     effectiveTo: "",
     points: [
-      { kind: "step", step: 1, rate: 0 },
       { kind: "step", step: 2, rate: 57497 },
       { kind: "step", step: 3, rate: 59160 },
       { kind: "step", step: 4, rate: 60946 },    
