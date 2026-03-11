@@ -274,21 +274,21 @@ section.payrates-multi,
   /* Always keep hidden rows hidden, even in mobile card view */
   #eaTable [hidden] { display: none !important; }
   /* Hide thead and turn each row into a "card" */
-  #eaTable thead { 
+  #eaTable > thead { 
     display: none; 
   }
-  #eaTable tbody tr {
+  #eaTable > tbody > tr {
     display: block;
     margin: .75rem 0;
     border: 1px solid var(--border);
     border-radius: .6rem;
     background: var(--panel);
   }
-  #eaTable tbody tr:hover {
+  #eaTable > tbody > tr:hover {
     background: var(--panel); /* cancel row hover glow on cards */
   }
     /* Description row: full-width block, no label/value grid */
-  #eaTable tbody tr.desc-row td {
+  #eaTable > tbody > tr.desc-row > td {
     display: block;
     grid-template-columns: 1fr !important; /* cancel the 2-col grid */
     width: auto !important;                 /* override last-child width */
@@ -296,15 +296,15 @@ section.payrates-multi,
     padding-top: .9rem;
     padding-bottom: .9rem;
   }
-  #eaTable tbody tr.desc-row td::before {
+  #eaTable > tbody > tr.desc-row > td::before {
     content: none !important;               /* no injected label on Details */
   }
   /* Explicitly undo the fixed width on the last cell in the desc row */
-  #eaTable tbody tr.desc-row td:last-child {
+  #eaTable > tbody > tr.desc-row > td:last-child {
     width: auto !important;
   }
   /* Make each cell a 2-column grid: label (left) + value (right) */
-  #eaTable tbody td {
+  #eaTable > tbody > tr:not(.desc-row) > td {
     display: grid;
     grid-template-columns: 9.5rem minmax(0, 1fr);
     gap: .5rem;
@@ -315,11 +315,11 @@ section.payrates-multi,
     word-break: break-word;
     hyphens: auto;
   }
-  #eaTable tbody tr > td:last-child {
+  #eaTable > tbody > tr:not(.desc-row) > td:last-child {
     border-bottom: none;                  /* last row edge cleanup */
   }
   /* Override the generic grid/flex on the 2nd column (Agency) */
-  #eaTable tbody td:nth-child(2) {
+  #eaTable > tbody > tr:not(.desc-row) > td:nth-child(2) {
     display: block !important;        /* cancel the grid/flex used for other cells */
     position: relative;
     /* Leave the same top/right/bottom padding; create a left “label column”:
@@ -330,7 +330,7 @@ section.payrates-multi,
     word-break: break-word;
   }
   /* Place the "Agency" label just like other labels */
-  #eaTable tbody td:nth-child(2)::before {
+  #eaTable > tbody > tr:not(.desc-row) > td:nth-child(2)::before {
     content: "Agency";                /* same label text as the grid version */
     position: absolute;
     left: 0.75rem;                    /* matches your cell left padding */
@@ -345,49 +345,49 @@ section.payrates-multi,
     white-space: normal;
   }
   /* Inject per-cell labels via CSS (matches your current column order) */
-  #eaTable tbody td:nth-child(1)::before { content: "Portfolio"; font-weight: 600; color: var(--muted); }
-  #eaTable tbody td:nth-child(2)::before { content: "Agency";    font-weight: 600; color: var(--muted); }
-  #eaTable tbody td:nth-child(3)::before { content: "Entity";    font-weight: 600; color: var(--muted); }
-  #eaTable tbody td:nth-child(4)::before { content: "Listed as"; font-weight: 600; color: var(--muted); }
-  #eaTable tbody td:nth-child(5)::before { content: "Shutdown?"; font-weight: 600; color: var(--muted); }
-  #eaTable tbody td:nth-child(6)::before { content: "Early Close"; font-weight: 600; color: var(--muted); }
-  #eaTable tbody td:nth-child(7)::before { content: "Details";   font-weight: 600; color: var(--muted); }
+  #eaTable > tbody > tr:not(.desc-row) > td:nth-child(1)::before { content: "Portfolio"; font-weight: 600; color: var(--muted); }
+  #eaTable > tbody > tr:not(.desc-row) > td:nth-child(2)::before { content: "Agency";    font-weight: 600; color: var(--muted); }
+  #eaTable > tbody > tr:not(.desc-row) > td:nth-child(3)::before { content: "Entity";    font-weight: 600; color: var(--muted); }
+  #eaTable > tbody > tr:not(.desc-row) > td:nth-child(4)::before { content: "Listed as"; font-weight: 600; color: var(--muted); }
+  #eaTable > tbody > tr:not(.desc-row) > td:nth-child(5)::before { content: "Shutdown?"; font-weight: 600; color: var(--muted); }
+  #eaTable > tbody > tr:not(.desc-row) > td:nth-child(6)::before { content: "Early Close"; font-weight: 600; color: var(--muted); }
+  #eaTable > tbody > tr:not(.desc-row) > td:nth-child(7)::before { content: "Details";   font-weight: 600; color: var(--muted); }
   /* Make the "Details" cell a little tighter so the expander sits nicely */
-  #eaTable tbody td:nth-child(7) {
+  #eaTable > tbody > tr:not(.desc-row) > td:nth-child(7) {
     align-items: center;
   }
   /* Expanded description rows: full-width, no label column */
-  #eaTable tbody tr.desc-row {
+  #eaTable > tbody > tr.desc-row {
     margin-top: -.5rem;                  /* visually attaches to the parent card */
     border-top-left-radius: 0;
     border-top-right-radius: 0;
   }
-  #eaTable tbody tr.desc-row td {
+  #eaTable > tbody > tr.desc-row > td {
     display: block;
     border-bottom: none;
     grid-template-columns: 1fr;          /* no label/value split */
     padding-top: .9rem;
     padding-bottom: .9rem;
   }
-  #eaTable tbody tr.desc-row td::before {
+  #eaTable > tbody > tr.desc-row > td::before {
     content: none !important;            /* no injected label on description */
   }
   /* Keep links and badges wrapping nicely inside cards */
-  #eaTable td a {
+  #eaTable > tbody > td a {
     white-space: normal;
     overflow-wrap: anywhere;
     word-break: break-word;
   }
   /* Optional: slightly smaller text for dense screens */
-  #eaTable tbody td { font-size: .95rem; }
+  #eaTable > tbody > tr > td { font-size: .95rem; }
     /* Normal (summary) rows become "cards" with more space below */
-  #eaTable tbody tr:not(.desc-row) {
+  #eaTable > tbody > tr:not(.desc-row) {
     margin: 1rem 0 .25rem;           /* bigger gap before next card */
     border-radius: .6rem;
     box-shadow: 0 4px 12px rgba(0,0,0,.25);  /* subtle lift for delineation */
   }
   /* Description row visually attaches to its card, then adds spacing after */
-  #eaTable tbody tr.desc-row {
+  #eaTable > tbody > tr.desc-row {
     margin: -.5rem 0 1.25rem;        /* snug to card, extra gap after pair */
     border-top-left-radius: 0;
     border-top-right-radius: 0;
@@ -450,10 +450,10 @@ section.payrates-multi,
 
 /* === Salaries view: 4-column mobile labels override === */
 @media (max-width: 880px) {
-  #eaTable tbody td:nth-child(1)::before { content: "Portfolio"; font-weight: 600; color: var(--muted); }
-  #eaTable tbody td:nth-child(2)::before { content: "Agency"; font-weight: 600; color: var(--muted); }
-  #eaTable tbody td:nth-child(3)::before { content: "Entity"; font-weight: 600; color: var(--muted); }
-  #eaTable tbody td:nth-child(4)::before { content: "Details"; font-weight: 600; color: var(--muted); }
+  #eaTable > tbody > tr:not(.desc-row) > td:nth-child(1)::before { content: "Portfolio"; font-weight: 600; color: var(--muted); }
+  #eaTable > tbody > tr:not(.desc-row) > td:nth-child(2)::before { content: "Agency"; font-weight: 600; color: var(--muted); }
+  #eaTable > tbody > tr:not(.desc-row) > td:nth-child(3)::before { content: "Entity"; font-weight: 600; color: var(--muted); }
+  #eaTable > tbody > tr:not(.desc-row) > td:nth-child(4)::before { content: "Details"; font-weight: 600; color: var(--muted); }
 
   #eaTable tbody td:nth-child(2) {
     display: block !important;
