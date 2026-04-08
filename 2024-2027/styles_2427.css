@@ -70,7 +70,7 @@ thead th {
   text-align: left; padding: .75rem .75rem; font-size: .95rem; z-index: 1;
 }
 tbody td { padding: .6rem .75rem; border-bottom: 1px solid var(--border); vertical-align: top; }
-tbody tr:hover { background: rgba(255,255,255,.02); }
+tbody tr:hover, .payrates-table tbody tr:hover td {background: rgba(255,255,255,.02);}
 td a { text-decoration: none; }
 td a:hover { text-decoration: underline; }
 .badge { display: inline-block; padding: .2rem .5rem; border-radius: .5rem; font-size: .8rem; font-weight: 700; }
@@ -452,8 +452,8 @@ section.payrates-multi,
 @media (max-width: 880px) {
   #eaTable > tbody > tr:not(.desc-row) > td:nth-child(1)::before { content: "Portfolio"; font-weight: 600; color: var(--muted); }
   #eaTable > tbody > tr:not(.desc-row) > td:nth-child(2)::before { content: "Agency"; font-weight: 600; color: var(--muted); }
-  #eaTable > tbody > tr:not(.desc-row) > td:nth-child(3)::before { content: "Entity"; font-weight: 600; color: var(--muted); }
-  #eaTable > tbody > tr:not(.desc-row) > td:nth-child(4)::before { content: "Details"; font-weight: 600; color: var(--muted); }
+  #eaTable > tbody > tr:not(.desc-row) > td:nth-child(3)::before { content: "Entity Type"; font-weight: 600; color: var(--muted); }
+  #eaTable > tbody > tr:not(.desc-row) > td:nth-child(4)::before { content: "More salary streams"; font-weight: 600; color: var(--muted); }
 
 .table-wrap.payrates-table-wrap {
     margin-left: 0.5rem;
