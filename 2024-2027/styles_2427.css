@@ -260,8 +260,8 @@ section.payrates-multi,
 /* On small screens, tuck it in slightly different if you like */
 @media (max-width: 880px) {
   .copy-link { top: .5rem; right: .6rem; }
-  #eaTable tbody tr.desc-row td .ea-head /*,
-  #eaTable tbody tr.desc-row td p:first-child */ { padding-left: 6rem; }
+  /* #eaTable tbody tr.desc-row td .ea-head,
+  #eaTable tbody tr.desc-row td p:first-child { padding-left: 6rem; } */
 }
 /* Offset anchor targets so sticky headers don't cover them */
 #eaTable tbody tr[id] { scroll-margin-top: 65px; }  
@@ -406,11 +406,11 @@ section.payrates-multi,
 .payrates .muted { color: var(--muted); font-weight: 400; }
 .pay-chip { background: rgba(0,0,0,.06); border-radius: 999px; padding: 0 .5rem; font-size: .8em; }
 .table-wrap { overflow-x: auto; }
-/* .payrates-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
-.payrates-table th, .payrates-table td { padding: .4rem .5rem; border-bottom: 1px solid rgba(0,0,0,.1); text-align: left; }
-.payrates-table thead th { font-weight: 600; border-bottom: 2px solid rgba(0,0,0,.2); }
-.payrates-table tbody th { white-space: normal; overflow-wrap: anywhere; } */
 /* Multiple payrate sections stack cleanly */
+.table-wrap.payrates-table-wrap {
+    margin-left: 2rem;
+    width: 85%;
+}
 .payrates-table {
   width: 100%;
   border-collapse: collapse;
@@ -455,20 +455,10 @@ section.payrates-multi,
   #eaTable > tbody > tr:not(.desc-row) > td:nth-child(3)::before { content: "Entity"; font-weight: 600; color: var(--muted); }
   #eaTable > tbody > tr:not(.desc-row) > td:nth-child(4)::before { content: "Details"; font-weight: 600; color: var(--muted); }
 
-  /* #eaTable tbody td:nth-child(2) {
-    display: block !important;
-    position: relative;
-    padding-left: calc(9.5rem + 0.5rem + 0.75rem) !important;
-  }
-  #eaTable tbody td:nth-child(2)::before {
-    content: "Agency";
-    position: absolute;
-    left: 0.75rem;
-    top: 0.6rem;
-    width: 9.5rem;
-    font-weight: 600;
-    color: var(--muted);
-  } */
+.table-wrap.payrates-table-wrap {
+    margin-left: 0.5rem;
+    width: auto;
+}
   #eaTable > tbody > tr:not(.desc-row) > td:nth-child(2) {
     display: block !important;
     position: relative;
