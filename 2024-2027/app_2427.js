@@ -717,7 +717,7 @@ function renderPayRatesTable(agencyId, classification){
 return `
   <section class="payrates">
     <h3 class="payrates-title">Pay rates - ${disp}</h3>
-    <div class="table-wrap payrates-table-wrap">
+    <div class="table-wrap">
       <table class="payrates-table">
         <thead><tr><th>Guidepoint</th><th>${hdrL}</th><th>${hdrR}</th></tr></thead>
         <tbody>${rows}</tbody>
@@ -1950,8 +1950,8 @@ function ensureCompareQuickMount(){
     html += '<th>Classification</th>';
     html += '<th style="text-align:right">Salary</th>';
     html += '<th style="text-align:right">Hourly rate</th>';
-    html += '<th style="text-align:right">Fortnightly Gross (before tax pay)</th>';
-    html += '<th style="text-align:right">Superannuation (15.4%)</th>';
+    html += '<th style="text-align:right">Fortnightly<br>Gross (before tax pay)</th>';
+    html += '<th style="text-align:right">Superannuation<br>(15.4%)</th>';
     html += '</tr></thead>';
     html += '<tbody>';
 
@@ -1989,8 +1989,8 @@ if (!picked.length){
   compareHtml += '<th>Classification</th>';
   compareHtml += '<th style="text-align:right">Salary</th>';
   compareHtml += '<th style="text-align:right">Hourly rate</th>';
-  compareHtml += '<th style="text-align:right">Fortnightly Gross before tax pay)</th>';
-  compareHtml += '<th style="text-align:right">Superannuation (15.4%)</th>';
+  compareHtml += '<th style="text-align:right">Fortnightly Gross<br>(before tax pay)</th>';
+  compareHtml += '<th style="text-align:right">Superannuation<br>(15.4%)</th>';
   compareHtml += '</tr></thead><tbody>';
 
   for (const r of picked){
