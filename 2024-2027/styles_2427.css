@@ -405,7 +405,6 @@ section.payrates-multi,
 .payrates-title { margin: 0.25rem 0 0.5rem; font-size: 1rem; }
 .payrates .muted { color: var(--muted); font-weight: 400; }
 .pay-chip { background: rgba(0,0,0,.06); border-radius: 999px; padding: 0 .5rem; font-size: .8em; }
-.table-wrap { overflow-x: auto; }
 /* Multiple payrate sections stack cleanly */
 .table-wrap.payrates-table-wrap {
     margin-left: 2rem;
