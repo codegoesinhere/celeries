@@ -21,6 +21,7 @@ body {
   color: var(--text);
   line-height: 1.5;
 }
+hr {background:#d88c11; color:#eb9806; height:1px; border:0;}
 a, a:visited {color:orange;}
 a:hover {background: #df90001f;}
 .container { max-width: 1200px; margin: 0 auto; padding: 1rem; }
@@ -67,7 +68,7 @@ h1 { margin: 0 0 .25rem; font-size: clamp(1.25rem, 1.5vw + 1rem, 2rem); }
 table { width: 100%; border-collapse: separate; border-spacing: 0; }
 thead th { position: sticky; top: 0; background: #111318; border-bottom: 1px solid var(--border);  text-align: left; padding: .75rem .75rem; font-size: .95rem; z-index: 100;}
 tbody td { padding: .6rem .75rem; border-bottom: 1px solid var(--border); vertical-align: top; }
-tbody tr:hover, .payrates-table tbody tr:hover td {background: rgba(255,255,255,.02);}
+tbody tr:hover, .payrates-table tbody tr:hover td, .salariesTable tbody tr:hover td {background: rgba(255,255,255,.02);}
 td a { text-decoration: none; }
 td a:hover { text-decoration: underline; }
 .badge { display: inline-block; padding: .2rem .5rem; border-radius: .5rem; font-size: .8rem; font-weight: 700; }
@@ -443,6 +444,12 @@ table.payrates-table thead th {z-index:10;}
 .payrates-table td {
     width: 33%;
 }
+/* Later fortnightly and compare tables */
+table#fortnightSalaryTable td:nth-child(1) {width:5%}
+table#fortnightSalaryTable td:nth-child(2) {width:45%}
+table#compareSalaryTable td:nth-child(1) {width: 50%;}
+table#fortnightSalaryTable td:nth-child(n+3), table#compareSalaryTable td:nth-child(n+2) {width:10%}
+table#fortnightSalaryTable td:not(:nth-child(2)), table#CompareSalaryTable td:not(:nth-child(1))
 /* === Pay chart === */
 #pay-chart { margin: 2rem 0 1.5rem; }
 #pay-chart .chart-controls { margin: .5rem 0 1rem; display: flex; gap: .5rem; align-items: flex-end; flex-wrap: wrap; }
