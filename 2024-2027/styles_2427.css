@@ -573,7 +573,6 @@ table#fortnightSalaryTable td:not(:nth-child(2)), table#CompareSalaryTable td:no
 
 /* Keep the table itself wider than a phone so the wrapper gets a scroll bar */
 table.salariesTable {
-  width: max-content !important;
   min-width: 760px;          /* enough to force horizontal scroll on mobile */
   border-collapse: collapse;
   font-size: 0.8em;          /* ~80% of current size */
