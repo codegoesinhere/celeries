@@ -537,6 +537,10 @@ function renderPortfolioPayChart(opts = {}){
   let data;
   if (scope === 'depts') {
     data = buildDepartmentsPaySeries(classification);
+  } else if (scope === 'dept_min_desc') {
+    data = buildDepartmentsPaySeriesMinDesc(classification);
+  } else if (scope === 'dept_max_desc') {
+    data = buildDepartmentsPaySeriesMaxDesc(classification);
   } else if (scope === 'portfolio') {
     data = buildPortfolioPaySeries(portfolio, classification);
   } else if (scope === 'portfolio_az') {
@@ -1187,6 +1191,32 @@ if (a.issueLink && String(a.issueLink).trim()){
 
 
   return { categories, dumbbellData, scatterData };
+}
+
+function buildDepartmentsPaySeriesMinDesc(classification){
+  const ordered = (window.agreements || []).filter(a => {
+    if (normEntityTypeForPGPA(a) !== 'department') return false;
+    const id = agencyKey(a);
+    return !String(id).startsWith('parliamentary-departments-not-a-portfolio|');
+  });
+  return buildScopedPaySeries(
+    ordered,
+    classification,
+    (a,b) => (b.min - a.min) || (a.agency || '').localeCompare(b.agency || '', 'en-AU', { sensitivity:'base' })
+  );
+}
+
+function buildDepartmentsPaySeriesMaxDesc(classification){
+  const ordered = (window.agreements || []).filter(a => {
+    if (normEntityTypeForPGPA(a) !== 'department') return false;
+    const id = agencyKey(a);
+    return !String(id).startsWith('parliamentary-departments-not-a-portfolio|');
+  });
+  return buildScopedPaySeries(
+    ordered,
+    classification,
+    (a,b) => (b.max - a.max) || (a.agency || '').localeCompare(b.agency || '', 'en-AU', { sensitivity:'base' })
+  );
 }
 
 // === Chart 1 extra scopes (inherit table ordering) ===

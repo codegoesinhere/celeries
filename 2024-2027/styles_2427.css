@@ -668,9 +668,7 @@ body.has-sticky-effective-date { padding-top: 5.5rem; }
   #compareRows select { max-width: 100%; }
 }
 
-
 /* === Mobile: contain Table 1 & 2 (salariesTable) === */
-
 /* Wrap the generated salary tables so they scroll horizontally inside their own area (instead of blowing out the page) */
 #fortnightTableMount,
 #compareTableMount {
