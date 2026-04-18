@@ -449,14 +449,115 @@ table#fortnightSalaryTable td:nth-child(n+3), table#compareSalaryTable td:nth-ch
 table#fortnightSalaryTable td:not(:nth-child(2)), table#CompareSalaryTable td:not(:nth-child(1))
 /* === Pay chart === */
 #pay-chart { margin: 2rem 0 1.5rem; }
-#pay-chart .chart-controls { margin: .5rem 0 1rem; display: flex; gap: .5rem; align-items: flex-end; flex-wrap: wrap; }
+#pay-chart .chart-controls { margin: .5rem 0 1rem; }
+#pay-chart .chart-controls-row {
+  display: grid;
+  gap: 1rem;
+  align-items: end;
+}
+#pay-chart .chart-controls-row + .chart-controls-row { margin-top: 1rem; }
+#pay-chart .chart-controls-row-date {
+  grid-template-columns: minmax(220px, 22rem);
+}
+#pay-chart .chart-controls-row-main {
+  grid-template-columns: repeat(3, minmax(220px, 1fr));
+}
+#pay-chart .chart-controls .control { min-width: 0; }
+#pay-chart .chart-controls .control input,
+#pay-chart .chart-controls .control select {
+  width: 100%;
+  padding: .6rem .7rem;
+  background: #0b0c10;
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: .6rem;
+  outline: none;
+}
+#pay-chart .chart-controls .control input:focus,
+#pay-chart .chart-controls .control select:focus { border-color: var(--accent); }
+#pay-chart .chart-controls .chart-date-control {
+  width: min(100%, 22rem);
+}
 .chart-container { min-height: 420px; }
 .highcharts-figure, .chart-container { width: 100%; }
-/* Make the chart background follow the page; Highcharts will be transparent. */
 #chartContainer { background: transparent; }
-
-/* Optional: label colour nudge if your page is dark */
 #pay-chart label { color: rgba(255,255,255,.9); }
+
+/* Sticky effective date bar */
+.sticky-effective-date-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 300;
+  background: rgba(14,15,18,.96);
+  border-bottom: 1px solid var(--border);
+  box-shadow: 0 8px 24px rgba(0,0,0,.28);
+}
+.sticky-effective-date-inner {
+  padding-top: .5rem;
+  padding-bottom: .5rem;
+}
+.sticky-effective-date-inline {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: .75rem;
+}
+.sticky-effective-date-inline label {
+  margin: 0;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+}
+.sticky-effective-date-inline input {
+  width: min(100%, 14rem);
+  padding: .6rem .7rem;
+  background: #0b0c10;
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: .6rem;
+  outline: none;
+}
+.sticky-effective-date-inline input:focus { border-color: var(--accent); }
+
+/* Sticky effective date bar */
+.sticky-effective-date-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: rgba(22, 24, 29, 0.96);
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 8px 18px rgba(0,0,0,.25);
+}
+.sticky-effective-date-inner {
+  display: grid;
+  grid-template-columns: 1fr minmax(220px, 22rem);
+  gap: 1rem;
+  align-items: end;
+  padding-top: .5rem;
+  padding-bottom: .5rem;
+}
+.sticky-effective-date-control {
+  min-width: 0;
+}
+.sticky-effective-date-control input {
+  width: 100%;
+  padding: .6rem .7rem;
+  background: #0b0c10;
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: .6rem;
+  outline: none;
+}
+.sticky-effective-date-control input:focus { border-color: var(--accent); }
+.sticky-effective-date-field { justify-self: end; width: min(100%, 22rem); }
+.sticky-effective-date-field label { display: block; font-weight: 600; margin-bottom: .35rem; text-align: right; }
+.sticky-effective-date-spacer { visibility: hidden; }
+body.has-sticky-effective-date { padding-top: 5.5rem; }
 
 /* === Salaries view: 4-column mobile labels override === */
 @media (max-width: 880px) {
@@ -530,10 +631,25 @@ table#fortnightSalaryTable td:not(:nth-child(2)), table#CompareSalaryTable td:no
 
 /* Mobile: stack each label + control, and collapse the 2-column compare grid */
 @media (max-width: 720px) {
-  #pay-chart .chart-controls { gap: .35rem; }
-  #pay-chart .chart-controls label { flex: 1 0 100%; margin: 0; }
-  #pay-chart .chart-controls select,
-  #pay-chart .chart-controls input { flex: 1 0 100%; }
+  #pay-chart .chart-controls-row-date,
+  #pay-chart .chart-controls-row-main {
+    grid-template-columns: 1fr;
+    gap: .75rem;
+  }
+
+  #pay-chart .chart-controls .chart-date-control {
+    width: 100%;
+  }
+
+  .sticky-effective-date-inline {
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .sticky-effective-date-inline input {
+    width: 100%;
+    max-width: 100%;
+  }
 
   /* Portfolio select should not force horizontal scrolling */
   #chartPortfolioSel { max-width: 100%; }
@@ -589,4 +705,10 @@ table.salariesTable td {
   table.salariesTable td {
     white-space: nowrap;
   }
+}
+
+/* Chart 1 grouped scope dropdown */
+#chartScopeSel option[disabled] {
+  color: var(--muted);
+  font-style: italic;
 }

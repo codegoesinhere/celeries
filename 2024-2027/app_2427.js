@@ -331,6 +331,26 @@ function colorForEntityType(a){
 if (typeof window !== 'undefined') window.colorForEntityType = window.colorForEntityType || colorForEntityType;
 
 
+function getEntityLegendItems(){
+  return [
+    { key: 'department', label: 'Department', color: colorForEntityType({ entityType: 'department', agency: 'Department of Example' }) },
+    { key: 'ncce', label: 'NCCE', color: colorForEntityType({ entityType: 'ncce' }) },
+    { key: 'cce', label: 'CCE', color: colorForEntityType({ entityType: 'cce' }) },
+    { key: 'company', label: 'Company', color: colorForEntityType({ entityType: 'company' }) }
+  ];
+}
+
+function renderEntityLegend(targetId){
+  const el = document.getElementById(targetId);
+  if (!el) return;
+  const items = getEntityLegendItems();
+  el.innerHTML = items.map(item => (
+    `<span class="legend-item"><span class="legend-line" style="background:${item.color}"></span><span>${item.label}</span></span>`
+  )).join('');
+}
+if (typeof window !== 'undefined') window.renderEntityLegend = renderEntityLegend;
+
+
 // === Classification ordering (APS1..APS6, EL1, EL2, EL2.1, EL2.2, SESx) ===
 function classificationRank(level) {
   if (!level) return 999;
@@ -519,6 +539,12 @@ function renderPortfolioPayChart(opts = {}){
     data = buildDepartmentsPaySeries(classification);
   } else if (scope === 'portfolio') {
     data = buildPortfolioPaySeries(portfolio, classification);
+  } else if (scope === 'portfolio_az') {
+    data = buildPortfolioPaySeriesAZ(portfolio, classification);
+  } else if (scope === 'portfolio_min_desc') {
+    data = buildPortfolioPaySeriesMinDesc(portfolio, classification);
+  } else if (scope === 'portfolio_max_desc') {
+    data = buildPortfolioPaySeriesMaxDesc(portfolio, classification);
   } else if (scope === 'az') {
     data = buildAllAgenciesPaySeriesAZ(classification);
   } else if (scope === 'pgpa') {
@@ -540,7 +566,9 @@ const { categories, dumbbellData, scatterData } = data;
     return;
   }
 
-  Highcharts.chart(container, {
+  renderEntityLegend('chartEntityLegend');
+
+  window.Highcharts.chart(container, {
     chart: {
       type: 'dumbbell',
       inverted: true,
@@ -563,10 +591,7 @@ const { categories, dumbbellData, scatterData } = data;
       },
       gridLineColor: 'rgba(255,255,255,0.12)'
     },
-    legend: {
-      enabled: true,
-      itemStyle: { color: '#fff' }
-    },
+    legend: { enabled: false },
     tooltip: { headerFormat: '', backgroundColor: 'rgba(0,0,0,0.85)', borderColor: 'rgba(255,255,255,0.2)', style: { color: '#fff' }, 
       shared: false,
       backgroundColor: 'rgba(0,0,0,0.85)',
@@ -978,6 +1003,7 @@ function populateChartPortfolioOptions(classification, preferred){
       const entityText = document.createElement("span");
       entityText.className = "etag";
       entityText.textContent = ENTITY_LABEL[(a.entityType||"").toLowerCase()] || (a.entityType||"").toUpperCase();
+      entityText.style.borderColor = colorForEntityType(a);
       entityWrap.appendChild(entityText);
       attachEntityTooltip(entityWrap, a, entityText);
       tdEntity.appendChild(entityWrap);
@@ -1161,6 +1187,88 @@ if (a.issueLink && String(a.issueLink).trim()){
 
 
   return { categories, dumbbellData, scatterData };
+}
+
+// === Chart 1 extra scopes (inherit table ordering) ===
+function buildScopedPaySeries(ordered, classification, rowSorter){
+  const effDate = getSelectedEffectiveDateString();
+  const rows = [];
+
+  for (const a of (ordered || [])) {
+    const id = agencyKey(a);
+    const pay = findPaySet(id, classification, effDate);
+    const __ov = (pay && pay.agencyClassification) || '';
+    const __classBase = (__ov && /^[A-Za-z]{1,4}\d{1,2}$/i.test(__ov)) ? __ov.toUpperCase() : classification;
+    if (!pay || !pay.points || !pay.points.length) continue;
+
+    const minPoint = pay.points.find(p => p.kind === "min");
+    const maxPoint = pay.points.find(p => p.kind === "max");
+    const steps    = pay.points.filter(p => p.kind === "step");
+    if (!minPoint && !maxPoint && !steps.length) continue;
+
+    const minVal = minPoint ? Number(minPoint.rate) : Math.min(...steps.map(s => Number(s.rate)));
+    const maxVal = maxPoint ? Number(maxPoint.rate) : Math.max(...steps.map(s => Number(s.rate)));
+
+    rows.push({
+      a,
+      agency: a.agency,
+      color: colorForEntityType(a),
+      min: Number(minVal),
+      max: Number(maxVal),
+      stepPairs: [
+        ...(minPoint ? [{ rate: Number(minPoint.rate), label: stepDisplayLabel(__classBase, { kind: "min",  label: minPoint.label }) }] : []),
+        ...steps.map(st => ({ rate: Number(st.rate), label: stepDisplayLabel(__classBase, { kind: "step", step: st.step }) })),
+        ...(maxPoint ? [{ rate: Number(maxPoint.rate), label: stepDisplayLabel(__classBase, { kind: "max",  label: maxPoint.label }) }] : []),
+      ],
+    });
+  }
+
+  if (typeof rowSorter === 'function') rows.sort(rowSorter);
+
+  const categories   = rows.map(r => r.agency);
+  const dumbbellData = rows.map(r => ({ low: r.min, high: r.max, color: r.color }));
+  const scatterData  = rows.flatMap((r, i) =>
+    (r.stepPairs || []).map(sp => ({
+      x: i,
+      y: Number(sp.rate),
+      name: sp.label,
+      stepLabel: sp.label,
+      color: STEP_POINT_COLOR,
+      marker: { radius: 7, symbol: 'circle', lineColor: STEP_POINT_COLOR, fillColor: STEP_POINT_COLOR }
+    }))
+  );
+
+  return { categories, dumbbellData, scatterData };
+}
+
+function buildPortfolioPaySeriesAZ(portfolioName, classification){
+  const ordered = (window.agreements || [])
+    .filter(a => (a.portfolio || '') === portfolioName)
+    .slice()
+    .sort((a,b) => (a.agency || '').localeCompare(b.agency || '', 'en-AU', { sensitivity:'base' }));
+  return buildScopedPaySeries(ordered, classification);
+}
+
+function buildPortfolioPaySeriesMinDesc(portfolioName, classification){
+  const ordered = (window.agreements || [])
+    .filter(a => (a.portfolio || '') === portfolioName)
+    .slice();
+  return buildScopedPaySeries(
+    ordered,
+    classification,
+    (a,b) => (b.min - a.min) || (a.agency || '').localeCompare(b.agency || '', 'en-AU', { sensitivity:'base' })
+  );
+}
+
+function buildPortfolioPaySeriesMaxDesc(portfolioName, classification){
+  const ordered = (window.agreements || [])
+    .filter(a => (a.portfolio || '') === portfolioName)
+    .slice();
+  return buildScopedPaySeries(
+    ordered,
+    classification,
+    (a,b) => (b.max - a.max) || (a.agency || '').localeCompare(b.agency || '', 'en-AU', { sensitivity:'base' })
+  );
 }
 
 // === Chart 1 extra scopes (inherit table ordering) ===
@@ -1502,6 +1610,59 @@ function ensureExpanderRotationCSS(){
     else { els.backToTop.classList.remove("show"); els.backToTop.hidden=true; }
   }
 
+
+function initStickyEffectiveDateBar(){
+  const mainInput = document.getElementById('chartDateSel');
+  const stickyBar = document.getElementById('stickyEffectiveDateBar');
+  const stickyInput = document.getElementById('stickyChartDateSel');
+  if (!mainInput || !stickyBar || !stickyInput) return;
+
+  stickyInput.value = mainInput.value || todayISODate();
+
+  let syncing = false;
+  function syncFrom(source, target){
+    if (!source || !target) return;
+    if (target.value !== source.value) target.value = source.value;
+  }
+  function triggerMainDateChange(){
+    mainInput.dispatchEvent(new Event('change', { bubbles: true }));
+  }
+
+  mainInput.addEventListener('change', () => {
+    if (syncing) return;
+    syncing = true;
+    syncFrom(mainInput, stickyInput);
+    syncing = false;
+  });
+  stickyInput.addEventListener('change', () => {
+    if (syncing) return;
+    syncing = true;
+    syncFrom(stickyInput, mainInput);
+    syncing = false;
+    triggerMainDateChange();
+  });
+
+  const sectionIds = ['pay-chart', 'userpick', 'fortnight', 'compare'];
+  const sections = sectionIds.map(id => document.getElementById(id)).filter(Boolean);
+
+  function updateStickyVisibility(){
+    const viewportTop = window.scrollY || window.pageYOffset || 0;
+    const stickyStart = Math.floor(mainInput.getBoundingClientRect().top + viewportTop);
+    const stickyEnd = sections.length
+      ? Math.max(...sections.map(section => Math.floor(section.getBoundingClientRect().bottom + viewportTop)))
+      : stickyStart;
+    const active = viewportTop >= stickyStart && viewportTop < stickyEnd;
+
+    stickyBar.hidden = !active;
+    stickyBar.setAttribute('aria-hidden', active ? 'false' : 'true');
+    document.body.classList.toggle('has-sticky-effective-date', active);
+  }
+
+  window.addEventListener('scroll', updateStickyVisibility, { passive: true });
+  window.addEventListener('resize', updateStickyVisibility, { passive: true });
+  updateStickyVisibility();
+}
+
   // --- Init ---
   document.addEventListener("DOMContentLoaded", () => {
     populatePortfolioFilter();
@@ -1530,6 +1691,7 @@ function ensureExpanderRotationCSS(){
       // Default to today's date if empty
       if (!dateSel.value) dateSel.value = todayISODate();
       updateEffectiveDateDisplays();
+      initStickyEffectiveDateBar();
       dateSel.addEventListener("change", () => {
         renderPortfolioPayChart({
           classification: classSel?.value,
@@ -1546,29 +1708,19 @@ const scopeSel = document.getElementById("chartScopeSel");
     const portSel  = document.getElementById("chartPortfolioSel");
 
     function syncPortfolioEnable() {
-      const isDepts = (scopeSel?.value === 'depts' || scopeSel?.value === 'az' || scopeSel?.value === 'pgpa' || scopeSel?.value === 'min_desc' || scopeSel?.value === 'max_desc');
-        if (portSel) {
-          portSel.disabled = isDepts;
-          portSel.style.opacity = isDepts ? 0.5 : 1;
-        }
-      }
-
-    // Populate portfolios for the default class
-    populateChartPortfolioOptions(classSel?.value || "APS6");
-
-    function syncPortfolioEnable() {
-      const isDepts = (scopeSel?.value === 'depts' || scopeSel?.value === 'az' || scopeSel?.value === 'pgpa' || scopeSel?.value === 'min_desc' || scopeSel?.value === 'max_desc');
+      const needsPortfolio = ['portfolio', 'portfolio_az', 'portfolio_min_desc', 'portfolio_max_desc'].includes(scopeSel?.value);
       if (portSel) {
-        portSel.disabled = isDepts;
-        portSel.style.opacity = isDepts ? 0.5 : 1;
+        portSel.disabled = !needsPortfolio;
+        portSel.style.opacity = needsPortfolio ? 1 : 0.5;
       }
     }
 
-  populateChartPortfolioOptions(classSel?.value || "APS6", portSel?.value);
+    // Populate portfolios for the default class
+    populateChartPortfolioOptions(classSel?.value || "APS6", portSel?.value);
 
   classSel?.addEventListener("change", () => {
-    // Only repopulate when scope is "portfolio"
-    if (scopeSel?.value === 'portfolio') {
+    // Only repopulate when scope uses the portfolio dropdown
+    if (['portfolio', 'portfolio_az', 'portfolio_min_desc', 'portfolio_max_desc'].includes(scopeSel?.value)) {
       populateChartPortfolioOptions(classSel.value, portSel?.value);
     }
     renderPortfolioPayChart({
@@ -2031,6 +2183,10 @@ if (compareMount) compareMount.innerHTML = compareHtml;
 
   function renderCompareChart(){
     updateEffectiveDateDisplays();
+    const legendRenderer = (typeof renderEntityLegend === 'function')
+      ? renderEntityLegend
+      : ((typeof window !== 'undefined' && typeof window.renderEntityLegend === 'function') ? window.renderEntityLegend : null);
+    if (legendRenderer) legendRenderer('compareEntityLegend');
     const container = document.getElementById('compareChartContainer');
     if (!container) return;
     const selections = [];
@@ -2059,7 +2215,7 @@ if (compareMount) compareMount.innerHTML = compareHtml;
     // Use the exact same Highcharts options as main chart by calling a shared renderer if available
     // Otherwise, minimal config (we already copied main options in earlier build)
     
-Highcharts.chart(container, {
+window.Highcharts.chart(container, {
       chart: { height: Math.max(420, 28 * categories.length + 160), inverted: true, backgroundColor: 'transparent' },
       title: { text: null },
       xAxis: { categories, labels: { style: { color: '#fff' } }, gridLineColor: 'rgba(255,255,255,0.12)', title: { text: null, style: { color: '#fff' } } },
@@ -2272,7 +2428,7 @@ function recalcFromCompareChart() {
   const cmpEl = $('compareChartContainer');
   if (!cmpEl) return;
 
-  const chart = (Highcharts.charts || []).find(c => c && c.renderTo && c.renderTo.id === 'compareChartContainer');
+  const chart = (window.Highcharts && window.Highcharts.charts ? window.Highcharts.charts : []).find(c => c && c.renderTo && c.renderTo.id === 'compareChartContainer');
   if (!chart) return;
 
   const fortnightHost = $('fortnightTables');
@@ -2351,7 +2507,7 @@ function recalcFromCompareChart() {
   }
 
   if (!hourlyEl.__hourlyChart) {
-    hourlyEl.__hourlyChart = Highcharts.chart('hourlyChartContainer', {
+    hourlyEl.__hourlyChart = window.Highcharts.chart('hourlyChartContainer', {
       title: { text: null },
       xAxis: { categories: unionCats },
       yAxis: {
@@ -2422,7 +2578,7 @@ function recalcFromCompareChart() {
   const cmpEl = $('compareChartContainer');
   if (!cmpEl) return;
 
-  const chart = (Highcharts.charts || []).find(c => c && c.renderTo && c.renderTo.id === 'compareChartContainer');
+  const chart = (window.Highcharts && window.Highcharts.charts ? window.Highcharts.charts : []).find(c => c && c.renderTo && c.renderTo.id === 'compareChartContainer');
   if (!chart) return;
 
   const cats = (chart.xAxis && chart.xAxis[0] && chart.xAxis[0].categories) ? chart.xAxis[0].categories.slice() : [];
@@ -2521,7 +2677,7 @@ function recalcFromCompareChart() {
   }
 
   if (!hourlyEl.__hourlyChart) {
-    hourlyEl.__hourlyChart = Highcharts.chart('hourlyChartContainer', {
+    hourlyEl.__hourlyChart = window.Highcharts.chart('hourlyChartContainer', {
       title: { text: null },
       xAxis: { categories: unionCats },
       yAxis: {

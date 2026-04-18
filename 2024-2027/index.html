@@ -1,21 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <!-- Redirect (JS + non-JS fallback) -->
-    <script>
-    (function () {
-        var TARGET = "https://celeries.ausgovinfo.com/";
 
-        // Prevent redirect loop if already on the correct domain
-        if (window.location.origin !== TARGET.replace(/\/$/, "")) {
-        window.location.replace(TARGET);
-        }
-    })();
-    </script>
-  <noscript>
-    <!-- Non-JS fallback -->
-    <meta http-equiv="refresh" content="0; url=https://celeries.ausgovinfo.com">
-  </noscript>
   <link rel="canonical" href="https://celeries.ausgovinfo.com">    
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-56C3Y1EV22"></script>
@@ -40,6 +26,14 @@
     <h1>Australian Federal Government – Salaries 2024-2027</h1>
     <p class="lead">Browse agencies by portfolio and entity for salary views for the current enterprise agreement windows.</p>
   </header>
+  <div id="stickyEffectiveDateBar" class="sticky-effective-date-bar" hidden aria-hidden="true">
+    <div class="sticky-effective-date-inner container">
+      <div class="sticky-effective-date-inline">
+        <label for="stickyChartDateSel">Effective date</label>
+        <input id="stickyChartDateSel" type="date" />
+      </div>
+    </div>
+  </div>
  <main class="container" id="top">
   <section class="toc">
     <h2>Table of Contents</h2>
@@ -76,8 +70,8 @@
   </section>
   <section id="currency">
     <h2>Currency of information</h2>
-    <p>Version: <span class="current-date">1.3.0</span></p>
-    <p>Last updated: <span class="current-date">17 April 2026</span></p>
+    <p>Version: <span class="current-date">1.4.0</span></p>
+    <p>Last updated: <span class="current-date">18 April 2026</span></p>
     <p>Information in line with PGPA Flipchart: <span class="current-date">5 January 2026</span></p>
   </section>  
 
@@ -168,38 +162,58 @@
     <section id="pay-chart" aria-label="Portfolio pay rates - Base salaries">
       <h2>Chart 1: Base salaries by Portfolio</h2>
       <p>This chart shows the base salaries from enterprise agreements at the relevant APS or EL levels. Where entities have levels that have different names, but equate to specific APS/EL levels, they are provided and labelled accordingly.</p>
-      <div class="chart-controls">
-        <label for="chartClassSel">Classification:</label>
-        <select id="chartClassSel">
-          <option value="APS1">APS1</option>
-          <option value="APS2">APS2</option>
-          <option value="APS3">APS3</option>
-          <option value="APS4">APS4</option>
-          <option value="APS5">APS5</option>
-          <option value="APS6" selected>APS6</option>
-          <option value="EL1">EL1</option>
-          <option value="EL2">EL2</option>
-          <option value="EL2.1">EL2.1</option>
-          <option value="EL2.2">EL2.2</option>          
-        </select>
+      <div class="chart-controls" aria-label="Chart 1 controls">
+        <div class="chart-controls-row chart-controls-row-date controls">
+          <div class="control chart-date-control">
+            <label for="chartDateSel">Effective date</label>
+            <input id="chartDateSel" type="date" />
+          </div>
+        </div>
 
-        <label for="chartScopeSel">Scope:</label>
-        <select id="chartScopeSel">
-          <option value="depts" selected>Departments (all portfolios)</option>
-          <option value="portfolio">By portfolio</option>
-          <option value="az">All entities - A-Z (by Entity/Company name)</option>
-          <option value="pgpa">All entities - PGPA flipchart order</option>
-          <option value="min_desc">Min. salary guidepoint (High → Low)</option>
-          <option value="max_desc">Max. salary guidepoint (High → Low)</option>          
-        </select>
+        <div class="chart-controls-row chart-controls-row-main controls">
+          <div class="control">
+            <label for="chartClassSel">Classification</label>
+            <select id="chartClassSel">
+              <option value="APS1">APS1</option>
+              <option value="APS2">APS2</option>
+              <option value="APS3">APS3</option>
+              <option value="APS4">APS4</option>
+              <option value="APS5">APS5</option>
+              <option value="APS6" selected>APS6</option>
+              <option value="EL1">EL1</option>
+              <option value="EL2">EL2</option>
+              <option value="EL2.1">EL2.1</option>
+              <option value="EL2.2">EL2.2</option>
+            </select>
+          </div>
 
-        <label for="chartPortfolioSel">Portfolio:</label>
-        <select id="chartPortfolioSel">
-          <!-- options populated by JS -->
-        </select>
+          <div class="control">
+            <label for="chartScopeSel">Scope</label>
+            <select id="chartScopeSel">
+              <option value="" disabled>Departments</option>
+              <option value="depts" selected>&nbsp;&nbsp;&nbsp;&nbsp;Departments (all portfolios)</option>
+              <option value="" disabled>──────────</option>
+              <option value="" disabled>By portfolio</option>
+              <option value="portfolio">&nbsp;&nbsp;&nbsp;&nbsp;PGPA flipchart</option>
+              <option value="portfolio_az">&nbsp;&nbsp;&nbsp;&nbsp;A-Z</option>
+              <option value="portfolio_min_desc">&nbsp;&nbsp;&nbsp;&nbsp;Min salary guidepoint</option>
+              <option value="portfolio_max_desc">&nbsp;&nbsp;&nbsp;&nbsp;Max salary guidepoint</option>
+              <option value="" disabled>──────────</option>
+              <option value="" disabled>All entities</option>
+              <option value="pgpa">&nbsp;&nbsp;&nbsp;&nbsp;PGPA flipchart</option>
+              <option value="az">&nbsp;&nbsp;&nbsp;&nbsp;A-Z</option>
+              <option value="min_desc">&nbsp;&nbsp;&nbsp;&nbsp;Min salary guidepoint</option>
+              <option value="max_desc">&nbsp;&nbsp;&nbsp;&nbsp;Max salary guidepoint</option>
+            </select>
+          </div>
 
-        <label for="chartDateSel">Effective date:</label>
-        <input id="chartDateSel" type="date" />
+          <div class="control">
+            <label for="chartPortfolioSel">Portfolio</label>
+            <select id="chartPortfolioSel">
+              <!-- options populated by JS -->
+            </select>
+          </div>
+        </div>
       </div>
 
       <div id="chartContainer" class="chart-container" role="img" aria-label="Dumbbell chart of pay ranges"></div>
@@ -367,7 +381,7 @@
   <footer class="site-footer">
     <small>Thanks for taking a look :)</small>
   </footer>
-  <script defer src="data_2427.js"></script>
+  <script defer src="../data_2427.js"></script>
   <script defer src="app_2427.js"></script> <!--PATCHED-->
 </body>
 </html>
