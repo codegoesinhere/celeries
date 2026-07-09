@@ -528,6 +528,21 @@ window.agreements = [
   {
     portfolio: "Climate Change, Energy, the Environment and Water",
     entityType: "ncce",
+    agency: "Australian Energy Regulator (AER)",
+    website: "https://www.aer.gov.au/",
+    eaUrl: "https://www.accc.gov.au/system/files/accc-enterprise-agreement-2024-27.pdf",
+    name: "ACCC Enterprise Agreement 2024-2027",
+    eaHeading: "End of year closedown",
+    clauses: "211 to 214",
+    pageStart: 39,
+    earlyClose: "12:00pm",
+    description: "",
+    extraStreams: "Internal Lawyer, Graduate APS, IAGDP",
+    htmlVer: ""
+  },   
+  {
+    portfolio: "Climate Change, Energy, the Environment and Water",
+    entityType: "ncce",
     agency: "Bureau of Meteorology (BOM)",
     website: "https://www.bom.gov.au/",
     eaUrl: "https://www.fwc.gov.au/document-search/view/3/aHR0cHM6Ly9zYXNyY2RhdGFwcmRhdWVhYS5ibG9iLmNvcmUud2luZG93cy5uZXQvZW50ZXJwcmlzZWFncmVlbWVudHMvMjAyNC8zL2FlNTIzOTE1LnBkZg2?sid=",
@@ -541,6 +556,7 @@ window.agreements = [
     issueLink: "https://github.com/codegoesinhere/celeries/issues",
     htmlVer: ""
   },
+ 
   {
     portfolio: "Climate Change, Energy, the Environment and Water",
     entityType: "ncce",
@@ -588,6 +604,21 @@ window.agreements = [
   },  
   {
     portfolio: "Climate Change, Energy, the Environment and Water",
+    entityType: "ncce",
+    agency: "National Environmental Protection Agency (NEPA)",
+    website: "https://www.nationalepa.gov.au/",
+    eaUrl: "https://www.dcceew.gov.au/sites/default/files/documents/dcceew-enterprise-agreement-2024-2027.pdf",
+    name: "Department of Climate Change, Energy, the Environment and Water Enterprise Agreement 2024-2027",
+    eaHeading: "Christmas closedown",
+    clauses: "4.93 to 4.98",
+    pageStart: 31,
+    earlyClose: "No",
+    description: "",
+    extraClass: "Legal Officer, Public Affairs Officer, Head Office Antarctic Medical Practitioner, Research Scientist",
+    htmlVer: ""
+  },     
+  {
+    portfolio: "Climate Change, Energy, the Environment and Water",
     entityType: "cce",
     agency: "Murray-Darling Basin Authority (MDBA)",
     website: "https://www.mdba.gov.au/",
@@ -619,6 +650,22 @@ window.agreements = [
   {
     portfolio: "Defence",
     entityType: "ncce",
+    agency: "Australian Naval Nuclear Power Safety Regulator",
+    website: "https://www.annpsr.gov.au/",
+    eaUrl: "https://www.defence.gov.au/sites/default/files/2024-04/Defence-Enterprise-Collective-Agreement-2024.pdf",
+    name: "Defence Enterprise Collective Agreement 2024",
+    eaHeading: "Christmas stand down",
+    clauses: "E20",
+    pageStart: 64,
+    earlyClose: "No",
+    description: "",
+    extraClass: "Trainee APS (Administrative), Trainee APS (Technical)",
+    extraStreams: "Science and Technology, Medical, Trainee, Trainee Advancement",
+    htmlVer: ""
+  },    
+  {
+    portfolio: "Defence",
+    entityType: "ncce",
     agency: "Australian Signals Directorate (ASD)",
     website: "https://www.asd.gov.au/",
     eaUrl: "https://www.asd.gov.au/sites/default/files/2024-04/ASD-Terms-and-Conditions-of-Employment-non-SES-Determination-2024.pdf",
@@ -647,6 +694,20 @@ window.agreements = [
     extraClass: "Trainee APS (Administrative), Trainee APS (Technical)",
     htmlVer: ""
   },
+  {
+    portfolio: "Defence",
+    entityType: "ncce",
+    agency: "Defence and Veterans' Service Commission",
+    website: "https://www.dvsc.gov.au/",
+    eaUrl: "https://www.pmc.gov.au/sites/default/files/resource/download/pmc-enterprise-agreement-2024-27_0.pdf",
+    name: "PM&C Enterprise Agreement 2024-2027",
+    eaHeading: "Christmas closedown",
+    clauses: "174 to 176",
+    pageStart: 26,
+    earlyClose: "No",
+    description: "",
+    htmlVer: ""
+  },    
   {
     portfolio: "Defence",
     entityType: "cce",
@@ -5472,7 +5533,226 @@ window.payRates = [
       { kind: "step", step: 5, rate: 164814 }, 
       { kind: "step", step: "Performance Point", rate: 167898 },          
     ]
-  },                      
+  },            
+  {
+    agencyId: "climate-change-energy-the-environment-and-water|national-environmental-protection-agency-nepa",
+    classification: "APS1",
+    setName: "General",
+    year: 2025,
+    effectiveFrom: "2025-03-13",
+    effectiveTo: "2026-03-11",
+    points: [
+      { kind: "step", step: 1, rate: 54516 },
+      { kind: "step", step: 2, rate: 56015 },
+      { kind: "step", step: 3, rate: 57215 },
+      { kind: "step", step: 4, rate: 57877 },                  
+    ]
+  },
+  {
+    agencyId: "climate-change-energy-the-environment-and-water|national-environmental-protection-agency-nepa",
+    classification: "APS1",
+    setName: "General",
+    year: 2026,
+    effectiveFrom: "2026-03-12",
+    effectiveTo: "",
+    points: [
+      { kind: "step", step: 1, rate: 57497 },
+      { kind: "step", step: 2, rate: 57920 },
+      { kind: "step", step: 3, rate: 59160 },
+      { kind: "step", step: 4, rate: 60946 },        
+    ]
+  },   
+  {
+    agencyId: "climate-change-energy-the-environment-and-water|national-environmental-protection-agency-nepa",
+    classification: "APS2",
+    setName: "General",
+    year: 2025,
+    effectiveFrom: "2025-03-13",
+    effectiveTo: "2026-03-11",
+    points: [
+      { kind: "step", step: 5, rate: 60677 },
+      { kind: "step", step: 6, rate: 64241 },
+      { kind: "step", step: 7, rate: 68460 },
+    ]
+  },
+  {
+    agencyId: "climate-change-energy-the-environment-and-water|national-environmental-protection-agency-nepa",
+    classification: "APS2",
+    setName: "General",
+    year: 2026,
+    effectiveFrom: "2026-03-12",
+    effectiveTo: "",
+    points: [
+      { kind: "step", step: 5, rate: 62740 },
+      { kind: "step", step: 6, rate: 66425 },
+      { kind: "step", step: 7, rate: 70788 },     
+    ]
+  }, 
+  {
+    agencyId: "climate-change-energy-the-environment-and-water|national-environmental-protection-agency-nepa",
+    classification: "APS3",
+    setName: "General",
+    year: 2025,
+    effectiveFrom: "2025-03-13",
+    effectiveTo: "2026-03-11",
+    points: [
+      { kind: "step", step: 8, rate: 68946 },
+      { kind: "step", step: 9, rate: 71015 },
+      { kind: "step", step: 10, rate: 74443 },
+      { kind: "step", step: 11, rate: 77125 },
+    ]
+  },
+  {
+    agencyId: "climate-change-energy-the-environment-and-water|national-environmental-protection-agency-nepa",
+    classification: "APS3",
+    setName: "General",
+    year: 2026,
+    effectiveFrom: "2026-03-12",
+    effectiveTo: "",
+    points: [
+      { kind: "step", step: 8, rate: 71290 },
+      { kind: "step", step: 9, rate: 73430 },
+      { kind: "step", step: 10, rate: 76974 },
+      { kind: "step", step: 11, rate: 79747 },                               
+    ]
+  }, 
+  {
+    agencyId: "climate-change-energy-the-environment-and-water|national-environmental-protection-agency-nepa",
+    classification: "APS4",
+    setName: "General",
+    year: 2025,
+    effectiveFrom: "2025-03-13",
+    effectiveTo: "2026-03-11",
+    points: [
+      { kind: "step", step: 1, rate: 77728 },
+      { kind: "step", step: 2, rate: 79931 },
+      { kind: "step", step: 3, rate: 84619 },                 
+    ]
+  },
+  {
+    agencyId: "climate-change-energy-the-environment-and-water|national-environmental-protection-agency-nepa",
+    classification: "APS4",
+    setName: "General",
+    year: 2026,
+    effectiveFrom: "2026-03-12",
+    effectiveTo: "",
+    points: [
+      { kind: "step", step: 1, rate: 80371 },
+      { kind: "step", step: 2, rate: 82649 },
+      { kind: "step", step: 3, rate: 87496 },           
+    ]
+  },     
+  {
+    agencyId: "climate-change-energy-the-environment-and-water|national-environmental-protection-agency-nepa",
+    classification: "APS5",
+    setName: "General",
+    year: 2025,
+    effectiveFrom: "2025-03-13",
+    effectiveTo: "2026-03-11",
+    points: [
+      { kind: "step", step: 1, rate: 84794 },
+      { kind: "step", step: 2, rate: 87335 },
+      { kind: "step", step: 3, rate: 93020 },       
+    ]
+  },
+  {
+    agencyId: "climate-change-energy-the-environment-and-water|national-environmental-protection-agency-nepa",
+    classification: "APS5",
+    setName: "General",
+    year: 2026,
+    effectiveFrom: "2026-03-12",
+    effectiveTo: "",
+    points: [
+      { kind: "step", step: 1, rate: 88834 },
+      { kind: "step", step: 2, rate: 90304 },
+      { kind: "step", step: 3, rate: 96183 },
+      { kind: "step", step: 4, rate: 96829 },           
+    ]
+  }, 
+  {
+    agencyId: "climate-change-energy-the-environment-and-water|national-environmental-protection-agency-nepa",
+    classification: "APS6",
+    setName: "General",
+    year: 2025,
+    effectiveFrom: "2025-03-13",
+    effectiveTo: "2026-03-11",
+    points: [       
+      { kind: "step", step: 1, rate: 95438 },
+      { kind: "step", step: 2, rate: 98298 },
+      { kind: "step", step: 3, rate: 102935 },
+      { kind: "step", step: 4, rate: 108360 },
+    ]
+  },
+  {
+    agencyId: "climate-change-energy-the-environment-and-water|national-environmental-protection-agency-nepa",
+    classification: "APS6",
+    setName: "General",
+    year: 2026,
+    effectiveFrom: "2026-03-12",
+    effectiveTo: "",
+    points: [
+      { kind: "step", step: 1, rate: 99734 },
+      { kind: "step", step: 2, rate: 101640 },
+      { kind: "step", step: 3, rate: 106435 },
+      { kind: "step", step: 4, rate: 112044 },
+    ]
+  },    
+  {
+    agencyId: "climate-change-energy-the-environment-and-water|national-environmental-protection-agency-nepa",
+    classification: "EL1",
+    setName: "General",
+    year: 2025,
+    effectiveFrom: "2025-03-13",
+    effectiveTo: "2026-03-11",
+    points: [
+      { kind: "step", step: 1, rate: 124861 },
+      { kind: "step", step: 2, rate: 128249 },
+      { kind: "step", step: 3, rate: 134295 },  
+    ]
+  },
+  {
+    agencyId: "climate-change-energy-the-environment-and-water|national-environmental-protection-agency-nepa",
+    classification: "EL1",
+    setName: "General",  
+    year: 2026,
+    effectiveFrom: "2026-03-12",
+    effectiveTo: "",
+    points: [
+      { kind: "step", step: 1, rate: 129106 },
+      { kind: "step", step: 2, rate: 132609 },
+      { kind: "step", step: 3, rate: 138861 },                        
+    ]
+  }, 
+  {
+    agencyId: "climate-change-energy-the-environment-and-water|national-environmental-protection-agency-nepa",
+    classification: "EL2",
+    setName: "General",
+    year: 2025,
+    effectiveFrom: "2025-03-13",
+    effectiveTo: "2026-03-11",
+    points: [
+      { kind: "step", step: 1, rate: 146942 },
+      { kind: "step", step: 2, rate: 151352 },
+      { kind: "step", step: 3, rate: 155891 },
+      { kind: "step", step: 4, rate: 165095 }, 
+      { kind: "step", step: 5, rate: 170725 },                           
+    ]
+  },
+  {
+    agencyId: "climate-change-energy-the-environment-and-water|national-environmental-protection-agency-nepa",
+    classification: "EL2",
+    setName: "General",
+    year: 2026,
+    effectiveFrom: "2026-03-12",
+    effectiveTo: "",
+    points: [
+      { kind: "step", step: 1, rate: 151938 },
+      { kind: "step", step: 2, rate: 156498 },
+      { kind: "step", step: 3, rate: 161191 },
+      { kind: "step", step: 4, rate: 170708 }, 
+      { kind: "step", step: 5, rate: 176530 },                        
+    ]
+  },            
   {
     agencyId: "climate-change-energy-the-environment-and-water|department-of-climate-change-energy-the-environment-and-water-cceew",
     classification: "APS1",
@@ -5692,6 +5972,233 @@ window.payRates = [
       { kind: "step", step: 5, rate: 176530 },                        
     ]
   },
+  {
+    agencyId: "climate-change-energy-the-environment-and-water|australian-energy-regulator-aer",
+    classification: "APS1",
+    setName: "General",
+    year: 2025,
+    effectiveFrom: "2025-03-13",
+    effectiveTo: "2026-03-11",
+    points: [
+      { kind: "step", step: 1, rate: 56131 },
+      { kind: "step", step: 2, rate: 58488 },
+      { kind: "step", step: 3, rate: 60243 },
+      { kind: "step", step: 4, rate: 62042 },      
+    ]
+  },
+  {
+    agencyId: "climate-change-energy-the-environment-and-water|australian-energy-regulator-aer",
+    classification: "APS1",
+    setName: "General",
+    year: 2026,
+    effectiveFrom: "2026-03-12",
+    effectiveTo: "",
+    points: [
+      { kind: "step", step: 1, rate: 58039 },
+      { kind: "step", step: 2, rate: 60477 },
+      { kind: "step", step: 3, rate: 62292 },
+      { kind: "step", step: 4, rate: 64151 },      
+    ]
+  },   
+  {
+    agencyId: "climate-change-energy-the-environment-and-water|australian-energy-regulator-aer",
+    classification: "APS2",
+    setName: "General",
+    year: 2025,
+    effectiveFrom: "2025-03-13",
+    effectiveTo: "2026-03-11",
+    points: [
+      { kind: "step", step: 1, rate: 63521 },
+      { kind: "step", step: 2, rate: 66380 },
+      { kind: "step", step: 3, rate: 68371 },   
+      { kind: "step", step: 4, rate: 70439 },   
+
+    ]
+  },
+  {
+    agencyId: "climate-change-energy-the-environment-and-water|australian-energy-regulator-aer",
+    classification: "APS2",
+    setName: "General",
+    year: 2026,
+    effectiveFrom: "2026-03-12",
+    effectiveTo: "",
+    points: [
+      { kind: "step", step: 1, rate: 65681 },
+      { kind: "step", step: 2, rate: 68637 },
+      { kind: "step", step: 3, rate: 70696 },  
+      { kind: "step", step: 4, rate: 72834 },   
+    ]
+  }, 
+  {
+    agencyId: "climate-change-energy-the-environment-and-water|australian-energy-regulator-aer",
+    classification: "APS3",
+    setName: "General",
+    year: 2025,
+    effectiveFrom: "2025-03-13",
+    effectiveTo: "2026-03-11",
+    points: [
+      { kind: "step", step: 1, rate: 72348 },
+      { kind: "step", step: 2, rate: 75242 },
+      { kind: "step", step: 3, rate: 78092 },      
+    ]
+  },
+  {
+    agencyId: "climate-change-energy-the-environment-and-water|australian-energy-regulator-aer",
+    classification: "APS3",
+    setName: "General",
+    year: 2026,
+    effectiveFrom: "2026-03-12",
+    effectiveTo: "",
+    points: [
+      { kind: "step", step: 1, rate: 74808 },
+      { kind: "step", step: 2, rate: 77800 }, 
+      { kind: "step", step: 3, rate: 80747 },                         
+    ]
+  }, 
+  {
+    agencyId: "climate-change-energy-the-environment-and-water|australian-energy-regulator-aer",
+    classification: "APS4",
+    setName: "General",
+    year: 2025,
+    effectiveFrom: "2025-03-13",
+    effectiveTo: "2026-03-11",
+    points: [
+      { kind: "step", step: 1, rate: 80643 },
+      { kind: "step", step: 2, rate: 83063 },
+      { kind: "step", step: 3, rate: 85555 },  
+      { kind: "step", step: 4, rate: 87558 },            
+    ]
+  },
+  {
+    agencyId: "climate-change-energy-the-environment-and-water|australian-energy-regulator-aer",
+    classification: "APS4",
+    setName: "General",
+    year: 2026,
+    effectiveFrom: "2026-03-12",
+    effectiveTo: "",
+    points: [
+      { kind: "step", step: 1, rate: 83385 },
+      { kind: "step", step: 2, rate: 85887 },
+      { kind: "step", step: 3, rate: 88464 },                         
+      { kind: "step", step: 4, rate: 90535 },        
+    ]
+  },     
+  {
+    agencyId: "climate-change-energy-the-environment-and-water|australian-energy-regulator-aer",
+    classification: "APS5",
+    setName: "General",
+    year: 2025,
+    effectiveFrom: "2025-03-13",
+    effectiveTo: "2026-03-11",
+    points: [
+      { kind: "step", step: 1, rate: 89946 },
+      { kind: "step", step: 2, rate: 92644 },
+      { kind: "step", step: 3, rate: 95374 },     
+    ]
+  },
+  {
+    agencyId: "climate-change-energy-the-environment-and-water|australian-energy-regulator-aer",
+    classification: "APS5",
+    setName: "General",
+    year: 2026,
+    effectiveFrom: "2026-03-12",
+    effectiveTo: "",
+    points: [
+      { kind: "step", step: 1, rate: 93004 },
+      { kind: "step", step: 2, rate: 95793 },
+      { kind: "step", step: 3, rate: 98617 },      
+    ]
+  }, 
+  {
+    agencyId: "climate-change-energy-the-environment-and-water|australian-energy-regulator-aer",
+    classification: "APS6",
+    setName: "General",
+    year: 2025,
+    effectiveFrom: "2025-03-13",
+    effectiveTo: "2026-03-11",
+    points: [
+      { kind: "step", step: 1, rate: 99562 },
+      { kind: "step", step: 2, rate: 102549 },
+      { kind: "step", step: 3, rate: 105625 },  
+      { kind: "step", step: 4, rate: 108794 },
+      { kind: "step", step: 5, rate: 111590 },                
+    ]
+  },
+  {
+    agencyId: "climate-change-energy-the-environment-and-water|australian-energy-regulator-aer",
+    classification: "APS6",
+    setName: "General",
+    year: 2026,
+    effectiveFrom: "2026-03-12",
+    effectiveTo: "",
+    points: [
+      { kind: "step", step: 1, rate: 102947 },
+      { kind: "step", step: 2, rate: 106036 },
+      { kind: "step", step: 3, rate: 109216 },
+      { kind: "step", step: 4, rate: 112493 },     
+      { kind: "step", step: 5, rate: 115384 },                            
+    ]
+  },    
+  {
+    agencyId: "climate-change-energy-the-environment-and-water|australian-energy-regulator-aer",
+    classification: "EL1",
+    setName: "General",
+    year: 2025,
+    effectiveFrom: "2025-03-13",
+    effectiveTo: "2026-03-11",
+    points: [
+      { kind: "step", step: 1, rate: 123702 },
+      { kind: "step", step: 2, rate: 129020 },
+      { kind: "step", step: 3, rate: 132891 },
+      { kind: "step", step: 4, rate: 136900 },                   
+    ]
+  },
+  {
+    agencyId: "climate-change-energy-the-environment-and-water|australian-energy-regulator-aer",
+    classification: "EL1",
+    setName: "General",  
+    year: 2026,
+    effectiveFrom: "2026-03-12",
+    effectiveTo: "",
+    points: [
+      { kind: "step", step: 1, rate: 127908 },
+      { kind: "step", step: 2, rate: 133407 },
+      { kind: "step", step: 3, rate: 137409 },
+      { kind: "step", step: 4, rate: 141555 },                   
+    ]
+  }, 
+  {
+    agencyId: "climate-change-energy-the-environment-and-water|australian-energy-regulator-aer",
+    classification: "EL2",
+    setName: "General",
+    year: 2025,
+    effectiveFrom: "2025-03-13",
+    effectiveTo: "2026-03-11",
+    points: [
+      { kind: "step", step: 1, rate: 143411 },
+      { kind: "step", step: 2, rate: 149435 },
+      { kind: "step", step: 3, rate: 153928 },
+      { kind: "step", step: 4, rate: 158535 },
+      { kind: "step", step: 5, rate: 163291 },    
+      { kind: "step", step: 6, rate: 168064 },                
+    ]
+  },
+  {
+    agencyId: "climate-change-energy-the-environment-and-water|australian-energy-regulator-aer",
+    classification: "EL2",
+    setName: "General",
+    year: 2026,
+    effectiveFrom: "2026-03-12",
+    effectiveTo: "",
+    points: [
+      { kind: "step", step: 1, rate: 148287 },
+      { kind: "step", step: 2, rate: 154515 },
+      { kind: "step", step: 3, rate: 159162 },
+      { kind: "step", step: 4, rate: 163925 },
+      { kind: "step", step: 5, rate: 168843 },    
+      { kind: "step", step: 6, rate: 173778 },            
+    ]
+  },  
   {
     agencyId: "climate-change-energy-the-environment-and-water|bureau-of-meteorology-bom",
     classification: "APS1",
@@ -7017,7 +7524,246 @@ window.payRates = [
       { kind: "step", step: "Top", rate: 227590 },                       
     ]
   },  
-
+  {
+    agencyId: "defence|australian-naval-nuclear-power-safety-regulator",
+    classification: "APS1",
+    setName: "General",
+    year: 2025,
+    effectiveFrom: "2025-03-13",
+    effectiveTo: "2026-03-11",
+    points: [
+      { kind: "step", step: "Base", rate: 54516 },  
+      { kind: "step", step: "Top", rate: 60865 },              
+    ]
+  },
+  {
+    agencyId: "defence|australian-naval-nuclear-power-safety-regulator",
+    classification: "APS1",
+    setName: "General",
+    year: 2026,
+    effectiveFrom: "2026-03-12",
+    effectiveTo: "",
+    points: [
+      { kind: "step", step: "Base", rate: 57497 },         
+      { kind: "step", step: "Top", rate: 62934 },              
+    ]
+  },   
+  {
+    agencyId: "defence|australian-naval-nuclear-power-safety-regulator",
+    classification: "APS2",
+    setName: "General",
+    year: 2025,
+    effectiveFrom: "2025-03-13",
+    effectiveTo: "2026-03-11",
+    points: [
+      { kind: "step", step: "Base", rate: 61363 },         
+      { kind: "step", step: "Top", rate: 68984 },              
+    ]
+  },
+  {
+    agencyId: "defence|australian-naval-nuclear-power-safety-regulator",
+    classification: "APS2",
+    setName: "General",
+    year: 2026,
+    effectiveFrom: "2026-03-12",
+    effectiveTo: "",
+    points: [
+      { kind: "step", step: "Base", rate: 63449 },         
+      { kind: "step", step: "Top", rate: 71329 },      
+    ]
+  }, 
+  {
+    agencyId: "defence|australian-naval-nuclear-power-safety-regulator",
+    classification: "APS3",
+    setName: "General",
+    year: 2025,
+    effectiveFrom: "2025-03-13",
+    effectiveTo: "2026-03-11",
+    points: [
+      { kind: "step", step: "Base", rate: 69898 },         
+      { kind: "step", step: "Top", rate: 77016 },        
+    ]
+  },
+  {
+    agencyId: "defence|australian-naval-nuclear-power-safety-regulator",
+    classification: "APS3",
+    setName: "General",
+    year: 2026,
+    effectiveFrom: "2026-03-12",
+    effectiveTo: "",
+    points: [
+      { kind: "step", step: "Base", rate: 72275 },         
+      { kind: "step", step: "Top", rate: 79635 },                            
+    ]
+  }, 
+  {
+    agencyId: "defence|australian-naval-nuclear-power-safety-regulator",
+    classification: "APS4",
+    setName: "General",
+    year: 2025,
+    effectiveFrom: "2025-03-13",
+    effectiveTo: "2026-03-11",
+    points: [
+      { kind: "step", step: "Base", rate: 79176 },         
+      { kind: "step", step: "Top", rate: 86438 },                 
+    ]
+  },
+  {
+    agencyId: "defence|australian-naval-nuclear-power-safety-regulator",
+    classification: "APS4",
+    setName: "General",
+    year: 2026,
+    effectiveFrom: "2026-03-12",
+    effectiveTo: "",
+    points: [
+      { kind: "step", step: "Base", rate: 81868 },         
+      { kind: "step", step: "Top", rate: 89377 },          
+    ]
+  },     
+  {
+    agencyId: "defence|australian-naval-nuclear-power-safety-regulator",
+    classification: "APS5",
+    setName: "General",
+    year: 2025,
+    effectiveFrom: "2025-03-13",
+    effectiveTo: "2026-03-11",
+    points: [
+      { kind: "step", step: "Base", rate: 86887 },         
+      { kind: "step", step: "Top", rate: 93066 },        
+    ]
+  },
+  {
+    agencyId: "defence|australian-naval-nuclear-power-safety-regulator",
+    classification: "APS5",
+    setName: "General",
+    year: 2026,
+    effectiveFrom: "2026-03-12",
+    effectiveTo: "",
+    points: [
+      { kind: "step", step: "Base", rate: 89841 },         
+      { kind: "step", step: "Top", rate: 96829 },         
+    ]
+  }, 
+  {
+    agencyId: "defence|australian-naval-nuclear-power-safety-regulator",
+    classification: "APS6",
+    setName: "General",
+    year: 2025,
+    effectiveFrom: "2025-03-13",
+    effectiveTo: "2026-03-11",
+    points: [
+      { kind: "step", step: "Base", rate: 95187 },         
+      { kind: "step", step: "Top", rate: 108734 },                    
+    ]
+  },
+  {
+    agencyId: "defence|australian-naval-nuclear-power-safety-regulator",
+    classification: "APS6",
+    setName: "General",
+    year: 2026,
+    effectiveFrom: "2026-03-12",
+    effectiveTo: "",
+    points: [
+      { kind: "step", step: "Base", rate: 99733 },         
+      { kind: "step", step: "Top", rate: 112431 },                                  
+    ]
+  },    
+  {
+    agencyId: "defence|australian-naval-nuclear-power-safety-regulator",
+    classification: "EL1",
+    setName: "General",
+    year: 2025,
+    effectiveFrom: "2025-03-13",
+    effectiveTo: "2026-03-11",
+    points: [
+      { kind: "step", step: "Base", rate: 120303 },         
+      { kind: "step", step: "Top", rate: 135701 },                                  
+    ]
+  },
+  {
+    agencyId: "defence|australian-naval-nuclear-power-safety-regulator",
+    classification: "EL1",
+    setName: "General",  
+    year: 2026,
+    effectiveFrom: "2026-03-12",
+    effectiveTo: "",
+    points: [
+      { kind: "step", step: "Base", rate: 124393 },            
+      { kind: "step", step: "Top", rate: 140315 },                           
+    ]
+  }, 
+  {
+    agencyId: "defence|australian-naval-nuclear-power-safety-regulator",
+    classification: "EL2",
+    setName: "General",
+    year: 2025,
+    effectiveFrom: "2025-03-13",
+    effectiveTo: "2026-03-11",
+    points: [
+      { kind: "step", step: "Base", rate: 139681 },         
+      { kind: "step", step: "Top", rate: 167659 },                          
+    ]
+  },
+  {
+    agencyId: "defence|australian-naval-nuclear-power-safety-regulator",
+    classification: "EL2",
+    setName: "General",
+    year: 2026,
+    effectiveFrom: "2026-03-12",
+    effectiveTo: "",
+    points: [
+      { kind: "step", step: "Base", rate: 144430 },             
+      { kind: "step", step: "Top", rate: 173359 },                       
+    ]
+  },  
+  {
+    agencyId: "defence|australian-naval-nuclear-power-safety-regulator",
+    classification: "EL2.1",
+    setName: "General",
+    year: 2025,
+    effectiveFrom: "2025-03-13",
+    effectiveTo: "2026-03-11",
+    points: [
+      { kind: "step", step: "Base", rate: 167660 },         
+      { kind: "step", step: "Top", rate: 199525 },                          
+    ]
+  },
+  {
+    agencyId: "defence|australian-naval-nuclear-power-safety-regulator",
+    classification: "EL2.1",
+    setName: "General",
+    year: 2026,
+    effectiveFrom: "2026-03-12",
+    effectiveTo: "",
+    points: [
+      { kind: "step", step: "Base", rate: 173360 },             
+      { kind: "step", step: "Top", rate: 206309 },                       
+    ]
+  },  
+  {
+    agencyId: "defence|australian-naval-nuclear-power-safety-regulator",
+    classification: "EL2.2",
+    setName: "General",
+    year: 2025,
+    effectiveFrom: "2025-03-13",
+    effectiveTo: "2026-03-11",
+    points: [
+      { kind: "step", step: "Base", rate: 199526 },         
+      { kind: "step", step: "Top", rate: 224464 },                          
+    ]
+  },
+  {
+    agencyId: "defence|australian-naval-nuclear-power-safety-regulator",
+    classification: "EL2.2",
+    setName: "General",
+    year: 2026,
+    effectiveFrom: "2026-03-12",
+    effectiveTo: "",
+    points: [
+      { kind: "step", step: "Base", rate: 206310 },             
+      { kind: "step", step: "Top", rate: 232096 },                       
+    ]
+  },
   {
     agencyId: "defence|australian-submarine-agency",
     classification: "APS1",
@@ -7258,6 +8004,226 @@ window.payRates = [
       { kind: "step", step: "Top", rate: 232096 },                       
     ]
   },
+  {
+    agencyId: "defence|defence-and-veterans-service-commission",
+    classification: "APS1",
+    setName: "General",
+    year: 2025,
+    effectiveFrom: "2025-03-13",
+    effectiveTo: "2026-03-11",
+    points: [
+      { kind: "step", step: 1, rate: 56423 },
+      { kind: "step", step: 2, rate: 59648 },
+      { kind: "step", step: "Maximum pay point", rate: 61695 },
+    ]
+  },
+  {
+    agencyId: "defence|defence-and-veterans-service-commission",
+    classification: "APS1",
+    setName: "General",
+    year: 2026,
+    effectiveFrom: "2026-03-12",
+    effectiveTo: "",
+    points: [
+      { kind: "step", step: 1, rate: 58341 },
+      { kind: "step", step: 2, rate: 61676 },
+      { kind: "step", step: "Maximum pay point", rate: 63793 },       
+    ]
+  },   
+  {
+    agencyId: "defence|defence-and-veterans-service-commission",
+    classification: "APS2",
+    setName: "General",
+    year: 2025,
+    effectiveFrom: "2025-03-13",
+    effectiveTo: "2026-03-11",
+    points: [
+      { kind: "step", step: 1, rate: 66271 },
+      { kind: "step", step: 2, rate: 67884 },
+      { kind: "step", step: 3, rate: 69316 },      
+      { kind: "step", step: "Maximum pay point", rate: 70619 },     
+    ]
+  },
+  {
+    agencyId: "defence|defence-and-veterans-service-commission",
+    classification: "APS2",
+    setName: "General",
+    year: 2026,
+    effectiveFrom: "2026-03-12",
+    effectiveTo: "",
+    points: [
+      { kind: "step", step: 1, rate: 68524 },
+      { kind: "step", step: 2, rate: 70192 },
+      { kind: "step", step: 3, rate: 71673 },
+      { kind: "step", step: "Maximum pay point", rate: 73020 },     
+    ]
+  }, 
+  {
+    agencyId: "defence|defence-and-veterans-service-commission",
+    classification: "APS3",
+    setName: "General",
+    year: 2025,
+    effectiveFrom: "2025-03-13",
+    effectiveTo: "2026-03-11",
+    points: [
+      { kind: "step", step: 1, rate: 74007 },
+      { kind: "step", step: 2, rate: 75826 },
+      { kind: "step", step: "Maximum pay point", rate: 77086 },          
+    ]
+  },
+  {
+    agencyId: "defence|defence-and-veterans-service-commission",
+    classification: "APS3",
+    setName: "General",
+    year: 2026,
+    effectiveFrom: "2026-03-12",
+    effectiveTo: "",
+    points: [
+      { kind: "step", step: 1, rate: 76523 },
+      { kind: "step", step: 2, rate: 78404 },
+      { kind: "step", step: "Maximum pay point", rate: 79707 },              
+    ]
+  }, 
+  {
+    agencyId: "defence|defence-and-veterans-service-commission",
+    classification: "APS4",
+    setName: "General",
+    year: 2025,
+    effectiveFrom: "2025-03-13",
+    effectiveTo: "2026-03-11",
+    points: [
+      { kind: "step", step: 1, rate: 80505 },
+      { kind: "step", step: 2, rate: 82751 },
+      { kind: "step", step: 3, rate: 84237 },
+      { kind: "step", step: "Maximum pay point", rate: 86097 },                 
+    ]
+  },
+  {
+    agencyId: "defence|defence-and-veterans-service-commission",
+    classification: "APS4",
+    setName: "General",
+    year: 2026,
+    effectiveFrom: "2026-03-12",
+    effectiveTo: "",
+    points: [
+      { kind: "step", step: 1, rate: 83242 },
+      { kind: "step", step: 2, rate: 85565 },
+      { kind: "step", step: 3, rate: 87101 },
+      { kind: "step", step: "Maximum pay point", rate: 89024 },
+    ]
+  },     
+  {
+    agencyId: "defence|defence-and-veterans-service-commission",
+    classification: "APS5",
+    setName: "General",
+    year: 2025,
+    effectiveFrom: "2025-03-13",
+    effectiveTo: "2026-03-11",
+    points: [
+      { kind: "step", step: 1, rate: 88887 },
+      { kind: "step", step: 2, rate: 90780 },
+      { kind: "step", step: 3, rate: 92904 },
+      { kind: "step", step: "Maximum pay point", rate: 95028 },       
+    ]
+  },
+  {
+    agencyId: "defence|defence-and-veterans-service-commission",
+    classification: "APS5",
+    setName: "General",
+    year: 2026,
+    effectiveFrom: "2026-03-12",
+    effectiveTo: "",
+    points: [
+      { kind: "step", step: 1, rate: 91909 },
+      { kind: "step", step: 2, rate: 93867 },
+      { kind: "step", step: 3, rate: 96063 },
+      { kind: "step", step: "Maximum pay point", rate: 98259 },         
+    ]
+  }, 
+  {
+    agencyId: "defence|defence-and-veterans-service-commission",
+    classification: "APS6",
+    setName: "General",
+    year: 2025,
+    effectiveFrom: "2025-03-13",
+    effectiveTo: "2026-03-11",
+    points: [
+      { kind: "step", step: 1, rate: 98314 },
+      { kind: "step", step: 2, rate: 103182 },
+      { kind: "step", step: 3, rate: 107077 },
+      { kind: "step", step: "Maximum pay point", rate: 110483 },    
+    ]
+  },
+  {
+    agencyId: "defence|defence-and-veterans-service-commission",
+    classification: "APS6",
+    setName: "General",
+    year: 2026,
+    effectiveFrom: "2026-03-12",
+    effectiveTo: "",
+    points: [
+      { kind: "step", step: 1, rate: 101657 },
+      { kind: "step", step: 2, rate: 106690 },
+      { kind: "step", step: 3, rate: 110718 },
+      { kind: "step", step: "Maximum pay point", rate: 114239 },             
+    ]
+  },    
+  {
+    agencyId: "defence|defence-and-veterans-service-commission",
+    classification: "EL1",
+    setName: "General",
+    year: 2025,
+    effectiveFrom: "2025-03-13",
+    effectiveTo: "2026-03-11",
+    points: [
+      { kind: "step", step: 1, rate: 126342 },
+      { kind: "step", step: 2, rate: 132226 },
+      { kind: "step", step: 3, rate: 138109 },
+      { kind: "step", step: "Maximum pay point", rate: 143993 },              
+    ]
+  },
+  {
+    agencyId: "defence|defence-and-veterans-service-commission",
+    classification: "EL1",
+    setName: "General",  
+    year: 2026,
+    effectiveFrom: "2026-03-12",
+    effectiveTo: "",
+    points: [
+      { kind: "step", step: 1, rate: 130638 },
+      { kind: "step", step: 2, rate: 136722 },
+      { kind: "step", step: 3, rate: 142805 },
+      { kind: "step", step: "Maximum pay point", rate: 148889 },         
+    ]
+  }, 
+  {
+    agencyId: "defence|defence-and-veterans-service-commission",
+    classification: "EL2",
+    setName: "General",
+    year: 2025,
+    effectiveFrom: "2025-03-13",
+    effectiveTo: "2026-03-11",
+    points: [
+      { kind: "step", step: 1, rate: 147052 },
+      { kind: "step", step: 2, rate: 156373 },
+      { kind: "step", step: 3, rate: 165698 },
+      { kind: "step", step: "Maximum pay point", rate: 175016 },      
+    ]
+  },
+  {
+    agencyId: "defence|defence-and-veterans-service-commission",
+    classification: "EL2",
+    setName: "General",
+    year: 2026,
+    effectiveFrom: "2026-03-12",
+    effectiveTo: "",
+    points: [
+      { kind: "step", step: 1, rate: 152052 },
+      { kind: "step", step: 2, rate: 161690 },
+      { kind: "step", step: 3, rate: 171332 },
+      { kind: "step", step: "Maximum pay point", rate: 180967 },   
+    ]
+  },  
   {
     agencyId: "employment-and-workplace-relations|department-of-employment-and-workplace-relations-dewr",
     classification: "APS1",
