@@ -559,6 +559,13 @@ table#fortnightSalaryTable td:not(:nth-child(2)), table#CompareSalaryTable td:no
 .sticky-effective-date-spacer { visibility: hidden; }
 body.has-sticky-effective-date { padding-top: 5.5rem; }
 
+.high-level-statistics {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: .8rem;
+    padding: 1rem 1.25rem;
+}
+
 /* === Salaries view: 4-column mobile labels override === */
 @media (max-width: 880px) {
   #eaTable > tbody > tr:not(.desc-row) > td:nth-child(1)::before { content: "Portfolio"; font-weight: 600; color: var(--muted); }
