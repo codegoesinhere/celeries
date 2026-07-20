@@ -40,6 +40,7 @@
     <ol>
       <li><a href="#tonote">Things to note</a></li>
       <li><a href="#currency">Currency of information</a></li>
+      <li><a href="#statistics">High level statistics</a></li>
       <li><a href="#table">Table: Entities base salaries table</a></li>
       <li><a href="#pay-chart">Chart 1: Base salaries by Portfolio</a></li>
       <li><a href="#userpick">Chart 2: Compare base salaries between entities</a></li>
@@ -70,10 +71,53 @@
   </section>
   <section id="currency">
     <h2>Currency of information</h2>
-    <p>Version: <span class="current-date">1.5.1</span></p>
-    <p>Last updated: <span class="current-date">09 July 2026</span></p>
+    <p>Version: <span class="current-date">1.6.0</span></p>
+    <p>Last updated: <span class="current-date">20 July 2026</span></p>
     <p>Information in line with PGPA Flipchart: <span class="current-date">01 July 2026</span></p>
   </section>  
+
+
+  <section id="statistics" class="high-level-statistics" aria-labelledby="statistics-heading">
+    <h2 id="statistics-heading">High level statistics</h2>
+
+    <p><strong>Number of total entities:</strong> <span id="statsTotalEntities">0</span></p>
+    <ul>
+      <li>Number of NCCEs: <span id="statsTotalNcce">0</span></li>
+      <li>Number of CCEs: <span id="statsTotalCce">0</span></li>
+      <li>Number of Companies: <span id="statsTotalCompany">0</span></li>
+    </ul>
+
+    <p><strong>Number of entities with an Enterprise Agreement:</strong></p>
+    <ul>
+      <li><strong>Listed:</strong> <span id="statsListedTotal">0</span>
+        <ul>
+          <li>NCCE: <span id="statsListedNcce">0</span></li>
+          <li>CCE: <span id="statsListedCce">0</span></li>
+          <li>Companies: <span id="statsListedCompany">0</span></li>
+        </ul>
+      </li>
+      <li><strong>Entities with Enterprise Agreements available but not aligned on classifications:</strong> <span id="statsNotAlignedTotal">0</span>
+        <ul>
+          <li>NCCE: <span id="statsNotAlignedNcce">0</span></li>
+          <li>CCE: <span id="statsNotAlignedCce">0</span></li>
+          <li>Companies: <span id="statsNotAlignedCompany">0</span></li>
+        </ul>
+      </li>
+      <li><strong>Entities with no Enterprise Agreement available:</strong> <span id="statsNotListedTotal">0</span>
+        <ul>
+          <li>NCCE: <span id="statsNotListedNcce">0</span></li>
+          <li>CCE: <span id="statsNotListedCce">0</span></li>
+          <li>Companies: <span id="statsNotListedCompany">0</span></li>
+        </ul>
+      </li>
+    </ul>
+
+    <p><strong>Those with an Enterprise Agreement listed:</strong> <span id="statsListedReminder">0</span></p>
+    <ul>
+      <li>Number of entities with more salary streams: <span id="statsStreamsYes">0</span> <em id="statsStreamsAll"></em></li>
+      <li>Number of entities with Extra classifications: <span id="statsExtraClassYes">0</span> <em id="statsExtraClassAll"></em></li>
+    </ul>
+  </section>
 
   <section>
     <h2 id="table">Table: Entities base salaries table</h2>

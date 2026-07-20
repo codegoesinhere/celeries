@@ -28,7 +28,7 @@ a:hover {background: #df90001f;}
 .site-header, .site-footer { padding: 1rem; background: var(--panel); border-bottom: 1px solid var(--border); }
 .site-footer { border-top: 1px solid var(--border); border-bottom: none; color: var(--muted); }
 h1 { margin: 0 0 .25rem; font-size: clamp(1.25rem, 1.5vw + 1rem, 2rem); }
-#tonote, #table, #currency, #pay-chart, #userpick, #fortnight, #notaligned, #notlisted, #compare, #pare {margin-top: 4rem;}
+#tonote, #table, #currency, #statistics, #pay-chart, #userpick, #fortnight, #notaligned, #notlisted, #compare, #pare {margin-top: 4rem;}
 .lead { margin: 0; color: var(--muted); }
 .notes {font-size: 0.9rem;}
 .controls { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); align-items: end; margin: 1rem 0; }
@@ -709,4 +709,21 @@ table.salariesTable td {
 #chartScopeSel option[disabled] {
   color: var(--muted);
   font-style: italic;
+}
+
+/* High level statistics */
+.high-level-statistics {
+  margin-bottom: 2rem;
+}
+.high-level-statistics > ul {
+  margin-top: .35rem;
+  margin-bottom: 1.25rem;
+}
+.high-level-statistics ul ul {
+  margin-top: .35rem;
+  margin-bottom: .65rem;
+}
+.high-level-statistics em {
+  color: var(--muted);
+  margin-left: .25rem;
 }

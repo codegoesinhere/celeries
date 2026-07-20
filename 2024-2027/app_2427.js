@@ -930,9 +930,96 @@ function populateChartPortfolioOptions(classification, preferred){
     setToggleAllLabel();
   }
 
+
+  // --- High level statistics ---
+  function statsPercent(value, total){
+    return total > 0 ? `${((value / total) * 100).toFixed(2)}%` : "0.00%";
+  }
+
+  function statsEntityType(value){
+    const type = (value || "").toString().trim().toLowerCase();
+    // Departments are NCCEs under the PGPA framework.
+    if (type === "department" || type === "ncce") return "ncce";
+    if (type === "cce") return "cce";
+    if (type === "company") return "company";
+    return "";
+  }
+
+  function countStatsList(sectionId){
+    const counts = { total: 0, ncce: 0, cce: 0, company: 0 };
+    const section = document.getElementById(sectionId);
+    if (!section) return counts;
+
+    section.querySelectorAll("ol.indentChild > li").forEach(li => {
+      const label = li.querySelector(".etag")?.textContent || "";
+      const type = statsEntityType(label);
+      if (!type) return;
+      counts.total += 1;
+      counts[type] += 1;
+    });
+    return counts;
+  }
+
+  function setStatsText(id, value, denominator){
+    const el = document.getElementById(id);
+    if (el) el.textContent = `${value} (${statsPercent(value, denominator)})`;
+  }
+
+  function renderHighLevelStatistics(){
+    const listedData = Array.isArray(window.agreements) ? window.agreements : [];
+    const listed = { total: listedData.length, ncce: 0, cce: 0, company: 0 };
+
+    listedData.forEach(a => {
+      const type = statsEntityType(a.entityType);
+      if (type) listed[type] += 1;
+    });
+
+    const notAligned = countStatsList("notaligned");
+    const notListed = countStatsList("notlisted");
+    const all = {
+      total: listed.total + notAligned.total + notListed.total,
+      ncce: listed.ncce + notAligned.ncce + notListed.ncce,
+      cce: listed.cce + notAligned.cce + notListed.cce,
+      company: listed.company + notAligned.company + notListed.company
+    };
+
+    setStatsText("statsTotalEntities", all.total, all.total);
+    setStatsText("statsTotalNcce", all.ncce, all.total);
+    setStatsText("statsTotalCce", all.cce, all.total);
+    setStatsText("statsTotalCompany", all.company, all.total);
+
+    setStatsText("statsListedTotal", listed.total, all.total);
+    setStatsText("statsListedNcce", listed.ncce, all.total);
+    setStatsText("statsListedCce", listed.cce, all.total);
+    setStatsText("statsListedCompany", listed.company, all.total);
+
+    setStatsText("statsNotAlignedTotal", notAligned.total, all.total);
+    setStatsText("statsNotAlignedNcce", notAligned.ncce, all.total);
+    setStatsText("statsNotAlignedCce", notAligned.cce, all.total);
+    setStatsText("statsNotAlignedCompany", notAligned.company, all.total);
+
+    setStatsText("statsNotListedTotal", notListed.total, all.total);
+    setStatsText("statsNotListedNcce", notListed.ncce, all.total);
+    setStatsText("statsNotListedCce", notListed.cce, all.total);
+    setStatsText("statsNotListedCompany", notListed.company, all.total);
+
+    setStatsText("statsListedReminder", listed.total, all.total);
+
+    const streamsYes = listedData.reduce((n, a) => n + ((a.extraStreams && String(a.extraStreams).trim()) ? 1 : 0), 0);
+    const extraClassYes = listedData.reduce((n, a) => n + ((a.extraClass && String(a.extraClass).trim()) ? 1 : 0), 0);
+    setStatsText("statsStreamsYes", streamsYes, listed.total);
+    setStatsText("statsExtraClassYes", extraClassYes, listed.total);
+
+    const streamsAll = document.getElementById("statsStreamsAll");
+    if (streamsAll) streamsAll.textContent = `(${statsPercent(streamsYes, all.total)} of all entities)`;
+    const extraClassAll = document.getElementById("statsExtraClassAll");
+    if (extraClassAll) extraClassAll.textContent = `(${statsPercent(extraClassYes, all.total)} of all entities)`;
+  }
+
   // --- Core render ---
   function render(){
     ensureStreamTagCSS();
+    renderHighLevelStatistics();
     const data = Array.isArray(window.agreements) ? window.agreements : [];
     const q = (els.search?.value || "").toString().trim().toLowerCase();
     const selPortfolio = (els.portfolioFilter?.value || "all").toString().trim();
