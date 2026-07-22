@@ -1710,6 +1710,23 @@ function ensureExpanderRotationCSS(){
     tip.style.zIndex = "9999";
   }
 
+  function initStaticEntityTooltips(){
+    document.querySelectorAll("#notaligned .etag, #notlisted .etag").forEach(tag => {
+      if (tag.dataset.entityTooltipReady === "true") return;
+
+      const raw = (tag.textContent || "").trim().toLowerCase();
+      const entityType = raw === "department" ? "department"
+        : raw === "ncce" ? "ncce"
+        : raw === "cce" ? "cce"
+        : raw === "company" ? "company"
+        : "";
+      if (!entityType) return;
+
+      tag.dataset.entityTooltipReady = "true";
+      attachEntityTooltip(tag.closest(".entity-cell") || tag, { entityType }, tag);
+    });
+  }
+
   function normalizeZigZag(container){
     if (!container) return;
     const hrs = Array.from(container.querySelectorAll("hr.zigzag, hr.zig-zag, hr.zig_zag"));
@@ -1798,6 +1815,7 @@ function initStickyEffectiveDateBar(){
     window.addEventListener("scroll", onScroll, {passive:true});
 
     render();
+    initStaticEntityTooltips();
     onScroll();
 
     const classSel = document.getElementById("chartClassSel");
