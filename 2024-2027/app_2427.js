@@ -3260,10 +3260,10 @@ function recalcFromCompareChart() {
       for (const row of rows){
         html += '<tr>';
         html += `<td data-label="Level">${esc(row.level)}</td>`;
-        html += `<td data-label="Min salary guidepoint" class="num">${fmtSalary(row.min)}</td>`;
-        html += `<td data-label="Min salary rank" class="num">${esc(rankText(row.minRank, row.minTotal))}</td>`;
-        html += `<td data-label="Max salary guidepoint" class="num">${fmtSalary(row.max)}</td>`;
-        html += `<td data-label="Max salary rank" class="num">${esc(rankText(row.maxRank, row.maxTotal))}</td>`;
+        html += `<td data-label="Min salary guidepoint" class="num" style="text-align:right">${fmtSalary(row.min)}</td>`;
+        html += `<td data-label="Min salary rank" class="num" style="text-align:right">${esc(rankText(row.minRank, row.minTotal))}</td>`;
+        html += `<td data-label="Max salary guidepoint" class="num" style="text-align:right">${fmtSalary(row.max)}</td>`;
+        html += `<td data-label="Max salary rank" class="num" style="text-align:right">${esc(rankText(row.maxRank, row.maxTotal))}</td>`;
         html += '</tr>';
       }
       html += '</tbody></table></div>';

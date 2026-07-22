@@ -936,6 +936,33 @@ table.salariesTable td {
   grid-column: 2;
 }
 
+/* The fixed wrapper must not intercept touches outside its visible controls */
+.sticky-effective-date-bar {
+    pointer-events: none;
+}
+
+/* Keep the actual pinned controls usable */
+.sticky-effective-date-bar select,
+.sticky-effective-date-bar button,
+.sticky-effective-date-bar input,
+.sticky-effective-date-bar label,
+.sticky-effective-date-bar .control,
+.sticky-effective-date-bar .effective-date-control {
+    pointer-events: auto;
+}
+
+/* Ensure the Table 2 selector is above ordinary page content */
+.agency-rank-control {
+    position: relative;
+    z-index: 2;
+}
+
+.agency-rank-control select {
+    position: relative;
+    z-index: 3;
+    touch-action: manipulation;
+}
+
 @media (max-width: 720px) {
   .sticky-effective-date-inner {
     display: grid;
