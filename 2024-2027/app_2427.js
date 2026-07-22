@@ -3274,9 +3274,48 @@ function recalcFromCompareChart() {
   function init(){
     const select = document.getElementById('agencyRankSelect');
     if (!select) return;
+
     populateAgencySelect(select);
-    select.addEventListener('change', render);
-    document.getElementById('chartDateSel')?.addEventListener('change', render);
+
+    const mobileQuery = window.matchMedia('(max-width: 700px)');
+
+    function openMobileAgencyList(){
+      if (!mobileQuery.matches) return;
+
+      select.size = Math.min(select.options.length, 10);
+      select.classList.add('is-mobile-open');
+    }
+
+    function closeMobileAgencyList(){
+      select.size = 1;
+      select.classList.remove('is-mobile-open');
+    }
+
+    select.addEventListener('pointerup', () => {
+      if (!mobileQuery.matches) return;
+
+      if (select.size <= 1) {
+        openMobileAgencyList();
+      }
+    });
+
+    select.addEventListener('change', () => {
+      closeMobileAgencyList();
+      render();
+    });
+
+    select.addEventListener('blur', () => {
+      window.setTimeout(closeMobileAgencyList, 150);
+    });
+
+    mobileQuery.addEventListener?.('change', event => {
+      if (!event.matches) closeMobileAgencyList();
+    });
+
+    document
+      .getElementById('chartDateSel')
+      ?.addEventListener('change', render);
+
     render();
   }
 

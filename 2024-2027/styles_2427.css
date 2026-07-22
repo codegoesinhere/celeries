@@ -749,60 +749,32 @@ table.salariesTable td {
   max-width: 34rem;
   margin: 1rem 0;
 }
-.agency-rank-control select {
+
+#agencyRankSelect {
   width: 100%;
-}
-.agency-rank-table .num {
-  text-align: right;
-  white-space: nowrap;
-}
-.agency-rank-empty {
-  padding: .5rem 0;
 }
 
 @media (max-width: 700px) {
-  .agency-rank-table-wrap {
-    overflow-x: visible;
-  }
-  .agency-rank-table,
-  .agency-rank-table tbody,
-  .agency-rank-table tr,
-  .agency-rank-table td {
-    display: block;
+  .agency-rank-control {
     width: 100%;
+    max-width: none;
   }
-  .agency-rank-table thead {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border: 0;
+
+  #agencyRankSelect {
+    min-height: 44px;
+    font-size: 16px;
   }
-  .agency-rank-table tr {
-    margin: 0 0 .8rem;
-    padding: .75rem;
-    border: 1px solid rgba(255,255,255,.18);
-    border-radius: .5rem;
+
+  #agencyRankSelect.is-mobile-open {
+    height: auto;
+    max-height: 22rem;
+    overflow-y: auto;
+    padding: .25rem;
   }
-  .agency-rank-table td {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    gap: .75rem;
-    padding: .3rem 0;
-    border: 0;
-    text-align: right;
-  }
-  .agency-rank-table td::before {
-    content: attr(data-label);
-    text-align: left;
-    font-weight: 600;
-  }
-  .agency-rank-table td:first-child {
-    font-weight: 700;
+
+  #agencyRankSelect.is-mobile-open option {
+    padding: .65rem .5rem;
+    white-space: normal;
   }
 }
 
@@ -1106,23 +1078,6 @@ table.salariesTable td {
   }
   .agency-rank-table td:first-child::before { display: none; }
   .agency-rank-table .num { text-align: left !important; }
-}
-
-/* v23: make the Table 2 agency selector reliably tappable on real mobile browsers */
-#agency-rankings,
-.agency-rank-control {
-  position: relative;
-  isolation: isolate;
-}
-
-#agencyRankSelect {
-  position: relative;
-  z-index: 2;
-  display: block;
-  width: 100%;
-  max-width: 100%;
-  pointer-events: auto;
-  touch-action: manipulation;
 }
 
 @media (max-width: 700px) {
