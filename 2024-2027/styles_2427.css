@@ -1255,3 +1255,90 @@ table.salariesTable td {
     color: var(--muted);
   }
 }
+
+/* v25: contain Table 2 mobile cards within the viewport */
+@media (max-width: 700px) {
+  #agency-rankings,
+  #agencyRankTableMount,
+  .agency-rank-table-wrap {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  .agency-rank-table-wrap {
+    overflow: visible;
+    border: 0;
+    padding: 0;
+    background: transparent;
+  }
+
+  table.salariesTable.agency-rank-table {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    table-layout: fixed;
+  }
+
+  .agency-rank-table thead {
+    display: none;
+  }
+
+  .agency-rank-table tbody {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  .agency-rank-table tr {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  table.salariesTable.agency-rank-table td {
+    min-width: 0;
+    max-width: 100%;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    word-break: normal;
+  }
+}
+
+/* v26: finish Table 2 mobile card layout */
+@media (max-width: 700px) {
+  /* Cancel the global last-column width that squeezes Max salary rank. */
+  table.salariesTable.agency-rank-table td:last-child {
+    width: auto !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+
+  /* No dividers beneath individual fields. */
+  table.salariesTable.agency-rank-table td {
+    border-bottom: 0 !important;
+  }
+
+  /* Keep one divider beneath the full-width Level heading. */
+  table.salariesTable.agency-rank-table td:first-child {
+    width: 100% !important;
+    padding-bottom: .45rem;
+    margin-bottom: .05rem;
+    border-bottom: 1px solid var(--border) !important;
+  }
+
+  /* Let both rank labels and values use their complete half-column. */
+  table.salariesTable.agency-rank-table td:nth-child(3),
+  table.salariesTable.agency-rank-table td:nth-child(5) {
+    width: auto !important;
+    min-width: 0 !important;
+    overflow: visible;
+  }
+
+  table.salariesTable.agency-rank-table td::before {
+    overflow-wrap: normal;
+    word-break: normal;
+  }
+}
+
