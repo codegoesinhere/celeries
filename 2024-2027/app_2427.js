@@ -665,11 +665,11 @@ function renderChart1SalaryTable(data, classification, scope){
     html += '<thead><tr><th class="count-col">#</th><th>Entity</th><th style="text-align:right">Min guidepoint</th><th style="text-align:right">Max guidepoint</th><th style="text-align:right"># of paypoints</th></tr></thead><tbody>';
     rows.forEach((row, index) => {
       html += '<tr>';
-      html += '<td class="count-col">' + (index + 1).toLocaleString('en-AU') + '</td>';
-      html += '<td>' + esc(row.agency) + '</td>';
-      html += '<td style="text-align:right">' + fmtSalary(row.min) + '</td>';
-      html += '<td style="text-align:right">' + fmtSalary(row.max) + '</td>';
-      html += '<td style="text-align:right">' + row.paypointCount.toLocaleString('en-AU') + '</td>';
+      html += '<td class="count-col chart1-mobile-meta" data-label="#">' + (index + 1).toLocaleString('en-AU') + '</td>';
+      html += '<td class="chart1-entity-cell">' + esc(row.agency) + '</td>';
+      html += '<td class="chart1-detail-cell" data-label="Min guidepoint" style="text-align:right">' + fmtSalary(row.min) + '</td>';
+      html += '<td class="chart1-detail-cell" data-label="Max guidepoint" style="text-align:right">' + fmtSalary(row.max) + '</td>';
+      html += '<td class="chart1-detail-cell" data-label="# of paypoints" style="text-align:right">' + row.paypointCount.toLocaleString('en-AU') + '</td>';
       html += '</tr>';
     });
     html += '</tbody></table></div>';
@@ -715,11 +715,11 @@ function renderChart1SalaryTable(data, classification, scope){
       const rank = salaryRanks.get(row.annual);
       const rankLabel = (salaryCounts.get(row.annual) > 1 ? '=' : '') + rank.toLocaleString('en-AU');
       html += '<tr>';
-      html += '<td class="count-col">' + (index + 1).toLocaleString('en-AU') + '</td>';
-      html += '<td class="rank-col">' + rankLabel + '</td>';
-      html += '<td>' + esc(row.agency) + '</td>';
-      html += '<td>' + esc(row.guidepoint) + '</td>';
-      html += '<td style="text-align:right">' + fmtSalary(row.annual) + '</td>';
+      html += '<td class="count-col chart1-mobile-meta" data-label="#">' + (index + 1).toLocaleString('en-AU') + '</td>';
+      html += '<td class="rank-col chart1-mobile-meta" data-label="Rank">' + rankLabel + '</td>';
+      html += '<td class="chart1-entity-cell">' + esc(row.agency) + '</td>';
+      html += '<td class="chart1-detail-cell" data-label="Guidepoint">' + esc(row.guidepoint) + '</td>';
+      html += '<td class="chart1-detail-cell" data-label="' + salaryHeading + '" style="text-align:right">' + fmtSalary(row.annual) + '</td>';
       html += '</tr>';
     });
     html += '</tbody></table></div>';
