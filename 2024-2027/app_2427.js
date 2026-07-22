@@ -2503,7 +2503,7 @@ function ensureCompareQuickMount(){
     html += '<th style="text-align:right">Hourly rate</th>';
     html += '<th style="text-align:right">Fortnightly<br>Gross (before tax pay)</th>';
     html += '<th style="text-align:right">Superannuation<br>(15.4%)</th>';
-    html += '<th style="text-align:right">Total package</th>';
+    html += '<th style="text-align:right">Total package<br>(salary + super)</th>';
     html += '</tr></thead>';
     html += '<tbody>';
 
@@ -2544,6 +2544,7 @@ if (!picked.length){
   compareHtml += '<th style="text-align:right">Hourly rate</th>';
   compareHtml += '<th style="text-align:right">Fortnightly Gross<br>(before tax pay)</th>';
   compareHtml += '<th style="text-align:right">Superannuation<br>(15.4%)</th>';
+  compareHtml += '<th style="text-align:right">Total package<br>(salary + super)</th>';
   compareHtml += '</tr></thead><tbody>';
 
   for (const r of picked){
@@ -2554,6 +2555,7 @@ if (!picked.length){
     compareHtml += '<td style="text-align:right">' + fmtHourly(r.hourlyRate) + '</td>';
     compareHtml += '<td style="text-align:right">' + fmtGross(r.fortnightGross) + '</td>';
     compareHtml += '<td style="text-align:right">' + fmtSalary(r.superAnnual) + '</td>';
+    compareHtml += '<td style="text-align:right">' + fmtSalary(r.totalPackage) + '</td>';
     compareHtml += '</tr>';
   }
   compareHtml += '</tbody></table>';
