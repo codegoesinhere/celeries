@@ -3255,7 +3255,7 @@ function recalcFromCompareChart() {
         return;
       }
       let html = '<div class="table-wrap agency-rank-table-wrap"><table class="salariesTable agency-rank-table"><thead><tr>';
-      html += '<th>Level</th><th>Min salary guidepoint</th><th>Min salary rank</th><th>Max salary guidepoint</th><th>Max salary rank</th>';
+      html += '<th>Level</th><th style="text-align:right;">Min salary guidepoint</th><th style="text-align:right;">Min salary rank</th><th style="text-align:right;">Max salary guidepoint</th><th style="text-align:right;">Max salary rank</th>';
       html += '</tr></thead><tbody>';
       for (const row of rows){
         html += '<tr>';
