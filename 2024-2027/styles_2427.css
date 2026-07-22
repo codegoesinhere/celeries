@@ -1080,3 +1080,196 @@ table.salariesTable td {
   .agency-rank-table td:first-child::before { display: none; }
   .agency-rank-table .num { text-align: left !important; }
 }
+
+/* v23: make the Table 2 agency selector reliably tappable on real mobile browsers */
+#agency-rankings,
+.agency-rank-control {
+  position: relative;
+  isolation: isolate;
+}
+
+#agencyRankSelect {
+  position: relative;
+  z-index: 2;
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  pointer-events: auto;
+  touch-action: manipulation;
+}
+
+@media (max-width: 700px) {
+  .agency-rank-control {
+    width: 100%;
+    max-width: none;
+    overflow: visible;
+    z-index: 5;
+  }
+
+  #agencyRankSelect {
+    min-height: 44px;
+    font-size: 16px;
+    -webkit-appearance: menulist;
+    appearance: auto;
+    transform: none;
+  }
+
+  #agencyRankTableMount,
+  .agency-rank-table-wrap {
+    position: relative;
+    z-index: 1;
+  }
+}
+
+/* v24: restore pinned Chart 1 controls and Table 1 cards on real mobile */
+@media (max-width: 760px) {
+  /* Classification, Scope, Portfolio and Effective date: two equal columns. */
+  body.has-sticky-chart1-context .sticky-effective-date-inner {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: end;
+    gap: .45rem .55rem;
+  }
+
+  body.has-sticky-chart1-context .sticky-chart1-context,
+  body.has-sticky-chart1-context .sticky-chart1-context[hidden] {
+    display: contents !important;
+  }
+
+  body.has-sticky-chart1-context .sticky-chart1-control,
+  body.has-sticky-chart1-context .sticky-effective-date-inline {
+    display: block;
+    width: 100%;
+    max-width: none;
+    min-width: 0;
+    justify-self: stretch;
+  }
+
+  body.has-sticky-chart1-context {
+    padding-top: 6.25rem;
+  }
+
+  /* After Table 1, remove the three dropdowns and move Effective date upward. */
+  body.has-sticky-effective-date:not(.has-sticky-chart1-context) .sticky-effective-date-inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+
+  body.has-sticky-effective-date:not(.has-sticky-chart1-context) .sticky-chart1-context,
+  body.has-sticky-effective-date:not(.has-sticky-chart1-context) .sticky-chart1-context[hidden] {
+    display: none !important;
+  }
+
+  body.has-sticky-effective-date:not(.has-sticky-chart1-context) .sticky-effective-date-inline {
+    display: block;
+    grid-column: 1;
+    width: 100%;
+    max-width: none;
+  }
+
+  body.has-sticky-effective-date:not(.has-sticky-chart1-context) {
+    padding-top: 3.35rem;
+  }
+
+  /* Table 1: cards instead of a horizontally scrolling table. */
+  #chart1TableMount .table-wrap {
+    max-width: 100%;
+    overflow: visible;
+    border: 0;
+    padding: 0;
+    background: transparent;
+  }
+
+  #chart1SalaryTable,
+  #chart1SalaryTable tbody,
+  #chart1SalaryTable tr,
+  #chart1SalaryTable td {
+    display: block;
+    width: 100%;
+  }
+
+  #chart1SalaryTable {
+    min-width: 0;
+    border: 0;
+    background: transparent;
+  }
+
+  #chart1SalaryTable thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  #chart1SalaryTable tbody {
+    display: grid;
+    gap: .7rem;
+  }
+
+  #chart1SalaryTable tbody tr {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .35rem .75rem;
+    margin: 0;
+    padding: .7rem .75rem;
+    border: 1px solid var(--border);
+    border-radius: .55rem;
+    background: var(--surface);
+  }
+
+  #chart1SalaryTable tbody td {
+    width: auto;
+    min-width: 0;
+    padding: 0;
+    border: 0;
+    text-align: left !important;
+    white-space: normal !important;
+  }
+
+  #chart1SalaryTable .chart1-mobile-meta {
+    width: auto;
+    font-size: .78rem;
+    color: var(--muted);
+    white-space: nowrap !important;
+  }
+
+  #chart1SalaryTable .chart1-mobile-meta::before {
+    content: attr(data-label) ": ";
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  #chart1SalaryTable .rank-col {
+    text-align: right !important;
+  }
+
+  #chart1SalaryTable .chart1-entity-cell {
+    grid-column: 1 / -1;
+    padding-top: .25rem;
+    font-weight: 700;
+    line-height: 1.35;
+    overflow-wrap: anywhere;
+    word-break: normal;
+  }
+
+  #chart1SalaryTable .chart1-detail-cell {
+    padding-top: .45rem;
+    overflow-wrap: anywhere;
+  }
+
+  #chart1SalaryTable .chart1-detail-cell::before {
+    content: attr(data-label);
+    display: block;
+    margin-bottom: .15rem;
+    font-size: .72rem;
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--muted);
+  }
+}
