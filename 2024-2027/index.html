@@ -63,10 +63,11 @@
       <li><a href="#statistics">High level statistics</a></li>
       <li><a href="#table">Table: Entities base salaries table</a></li>
       <li><a href="#pay-chart">Chart 1: Base salaries by Portfolio</a></li>
-      <li><a href="#userpick">Chart 2: Compare base salaries between entities</a></li>
       <li><a href="#chart1-table">Table 1: Compare base salaries between entities</a></li>
-      <li><a href="#fortnight">Table 2: Calculate fortnightly salary</a></li>
-      <li><a href="#compare">Table 3: Quick compare salaries</a></li>
+      <li><a href="#agency-rankings">Table 2: Agency salary guidepoint rankings</a></li>
+      <li><a href="#userpick">Chart 2: Compare base salaries between entities</a></li>
+      <li><a href="#fortnight">Table 3: Calculate fortnightly salary</a></li>
+      <li><a href="#compare">Table 4: Quick compare salaries</a></li>
       <li><a href="#notaligned">Entities not aligned on salaries</a></li>
       <li><a href="#notlisted">Entities not in the table</a></li>
     </ol>
@@ -92,7 +93,7 @@
   </section>
   <section id="currency">
     <h2>Currency of information</h2>
-    <p>Version: <span class="current-date">1.7.1</span></p>
+    <p>Version: <span class="current-date">1.6.2</span></p>
     <p>Last updated: <span class="current-date">22 July 2026</span></p>
     <p>Information in line with PGPA Flipchart: <span class="current-date">01 July 2026</span></p>
   </section>  
@@ -292,6 +293,16 @@
       <div id="chart1TableMount"></div>
     </section>
     <hr>
+    <section id="agency-rankings">
+      <h2>Table 2: Agency salary guidepoint rankings</h2>
+      <p class="muted">Select an agency to compare its minimum and maximum salary guidepoints at each available level against all entities with data for that level.</p>
+      <div class="control agency-rank-control">
+        <label for="agencyRankSelect">Agency</label>
+        <select id="agencyRankSelect"></select>
+      </div>
+      <div id="agencyRankTableMount"></div>
+    </section>
+    <hr>
     <section class="panel" id="userpick">
       <h2>Chart 2: Compare base salaries between entities</h2>
       <p class="muted">This chart allows you to pick the relevant classifications and entities.</p>
@@ -307,7 +318,7 @@
     </section>
     <hr>
     <section id="fortnight">
-      <h2>Table 2: Calculate fortnightly salary</h2>
+      <h2>Table 3: Calculate fortnightly salary</h2>
       <p>Salary is calculated on a fortnightly basis as it is paid fortnightly.</p>
       <math display="block">
         <mrow>
@@ -328,7 +339,7 @@
       <p>Superannuation for APS is calculated at 15.4%. Superannuation is calculated <strong>on top</strong> of the listed salaries.</p>
     </section>
     <section id="compare">
-  <h2>Table 3: Quick compare salaries</h2>
+  <h2>Table 4: Quick compare salaries</h2>
   <p class="muted">Tick rows in the table above to compare them here.</p>
   <div id="compareTableMount"></div>
 </section>
