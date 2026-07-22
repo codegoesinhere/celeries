@@ -541,6 +541,154 @@ return { categories, dumbbellData, scatterData };
 
 }
 
+const CHART1_SCOPE_LABELS = {
+  depts: 'Departments (all portfolios)',
+  dept_min_desc: 'Departments - Min salary guidepoint',
+  dept_max_desc: 'Departments - Max salary guidepoint',
+  portfolio: 'By portfolio - PGPA flipchart',
+  portfolio_az: 'By portfolio - A-Z',
+  portfolio_min_desc: 'By portfolio - Min salary guidepoint',
+  portfolio_max_desc: 'By portfolio - Max salary guidepoint',
+  pgpa: 'All entities - PGPA flipchart',
+  az: 'All entities - A-Z',
+  min_desc: 'All entities - Min salary guidepoint',
+  max_desc: 'All entities - Max salary guidepoint'
+};
+
+function chart1ScopeLabel(scope){
+  return CHART1_SCOPE_LABELS[scope] || scope || '';
+}
+
+function chart1ScopeUsesPortfolio(scope){
+  return ['portfolio', 'portfolio_az', 'portfolio_min_desc', 'portfolio_max_desc'].includes(scope);
+}
+
+function renderChart1SalaryTable(data, classification, scope){
+  const mount = document.getElementById('chart1TableMount');
+  const section = document.getElementById('chart1-table');
+  if (!mount) return;
+
+  const minScopes = new Set(['dept_min_desc', 'portfolio_min_desc', 'min_desc']);
+  const maxScopes = new Set(['dept_max_desc', 'portfolio_max_desc', 'max_desc']);
+  const summaryScopes = new Set(['depts', 'portfolio', 'portfolio_az', 'az', 'pgpa']);
+  const endpoint = minScopes.has(scope) ? 'min' : (maxScopes.has(scope) ? 'max' : '');
+
+  const categories = (data && data.categories) || [];
+  const dumbbellData = (data && data.dumbbellData) || [];
+  const scatterData = (data && data.scatterData) || [];
+  const esc = (value) => String(value ?? '').replace(/[&<>"']/g, char => ({
+    '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'
+  }[char]));
+  const fmtSalary = (value) => {
+    const number = Number(value);
+    if (!isFinite(number)) return '';
+    return '$' + number.toLocaleString('en-AU', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+  };
+
+  const scopeLabel = chart1ScopeLabel(scope);
+  const classificationLabel = prettyClassificationLabel(classification);
+  const portfolio = document.getElementById('chartPortfolioSel')?.value || '';
+  const showPortfolio = chart1ScopeUsesPortfolio(scope);
+
+  const buildSummaryHtml = (entryCount) => `
+    <dl class="chart1-table-summary" aria-label="Current Chart 1 selections">
+      <div><dt>Scope</dt><dd>${esc(scopeLabel)}</dd></div>
+      <div><dt>Classification</dt><dd>${esc(classificationLabel)}</dd></div>
+      ${showPortfolio ? `<div><dt>Portfolio</dt><dd>${esc(portfolio)}</dd></div>` : ''}
+      <div><dt># of Entries</dt><dd>${Number(entryCount || 0).toLocaleString('en-AU')}</dd></div>
+    </dl>
+  `;
+
+  if (section) section.hidden = false;
+
+  // Broad Chart 1 scopes: one summary row per entity, in the exact chart order.
+  if (summaryScopes.has(scope)){
+    const rows = categories.map((agency, agencyIndex) => {
+      const range = dumbbellData[agencyIndex] || {};
+      const paypointCount = scatterData.filter(point => Number(point.x) === agencyIndex).length;
+      return {
+        agency,
+        min: Number(range.low),
+        max: Number(range.high),
+        paypointCount
+      };
+    }).filter(row => row.agency && isFinite(row.min) && isFinite(row.max));
+
+    if (!rows.length){
+      mount.innerHTML = '<div class="muted" style="padding:0.5rem 0; opacity:0.85">No salary guidepoints are available for the current Chart 1 settings.</div>';
+      return;
+    }
+
+    let html = buildSummaryHtml(rows.length) + '<div class="table-wrap"><table class="salariesTable" id="chart1SalaryTable">';
+    html += '<thead><tr><th class="count-col">#</th><th>Entity</th><th style="text-align:right">Min guidepoint</th><th style="text-align:right">Max guidepoint</th><th style="text-align:right"># of paypoints</th></tr></thead><tbody>';
+    rows.forEach((row, index) => {
+      html += '<tr>';
+      html += '<td class="count-col chart1-mobile-meta" data-label="#">' + (index + 1).toLocaleString('en-AU') + '</td>';
+      html += '<td class="chart1-entity-cell">' + esc(row.agency) + '</td>';
+      html += '<td class="chart1-detail-cell" data-label="Min guidepoint" style="text-align:right">' + fmtSalary(row.min) + '</td>';
+      html += '<td class="chart1-detail-cell" data-label="Max guidepoint" style="text-align:right">' + fmtSalary(row.max) + '</td>';
+      html += '<td class="chart1-detail-cell" data-label="# of paypoints" style="text-align:right">' + row.paypointCount.toLocaleString('en-AU') + '</td>';
+      html += '</tr>';
+    });
+    html += '</tbody></table></div>';
+    mount.innerHTML = html;
+    return;
+  }
+
+  // Ordered minimum/maximum scopes: one selected endpoint per entity.
+  if (endpoint){
+    const rows = categories.map((agency, agencyIndex) => {
+      const range = dumbbellData[agencyIndex] || {};
+      const annual = Number(endpoint === 'min' ? range.low : range.high);
+      const matchingPoint = scatterData.find(point =>
+        Number(point.x) === agencyIndex && Number(point.y) === annual
+      );
+      return {
+        agency,
+        guidepoint: matchingPoint?.stepLabel || matchingPoint?.name ||
+          `${endpoint === 'min' ? 'Minimum' : 'Maximum'} ${prettyClassificationLabel(classification)} guidepoint`,
+        annual
+      };
+    }).filter(row => row.agency && isFinite(row.annual));
+
+    if (!rows.length){
+      mount.innerHTML = '<div class="muted" style="padding:0.5rem 0; opacity:0.85">No salary guidepoints are available for the current Chart 1 settings.</div>';
+      return;
+    }
+
+    // Dense ranking by salary: 1, 2, =3, =3, 4.
+    // Equal salaries share a rank, and the next distinct salary takes the next number.
+    const salaryCounts = new Map();
+    rows.forEach(row => salaryCounts.set(row.annual, (salaryCounts.get(row.annual) || 0) + 1));
+    const rankedValues = Array.from(salaryCounts.keys()).sort((a, b) => b - a);
+    const salaryRanks = new Map();
+    rankedValues.forEach((value, index) => {
+      salaryRanks.set(value, index + 1);
+    });
+
+    const salaryHeading = endpoint === 'min' ? 'Min salary guidepoint' : 'Max salary guidepoint';
+    let html = buildSummaryHtml(rows.length) + '<div class="table-wrap"><table class="salariesTable" id="chart1SalaryTable">';
+    html += '<thead><tr><th class="count-col">#</th><th class="rank-col">Rank</th><th>Entity</th><th>Guidepoint</th><th style="text-align:right">' + salaryHeading + '</th></tr></thead><tbody>';
+    rows.forEach((row, index) => {
+      const rank = salaryRanks.get(row.annual);
+      const rankLabel = (salaryCounts.get(row.annual) > 1 ? '=' : '') + rank.toLocaleString('en-AU');
+      html += '<tr>';
+      html += '<td class="count-col chart1-mobile-meta" data-label="#">' + (index + 1).toLocaleString('en-AU') + '</td>';
+      html += '<td class="rank-col chart1-mobile-meta" data-label="Rank">' + rankLabel + '</td>';
+      html += '<td class="chart1-entity-cell">' + esc(row.agency) + '</td>';
+      html += '<td class="chart1-detail-cell" data-label="Guidepoint">' + esc(row.guidepoint) + '</td>';
+      html += '<td class="chart1-detail-cell" data-label="' + salaryHeading + '" style="text-align:right">' + fmtSalary(row.annual) + '</td>';
+      html += '</tr>';
+    });
+    html += '</tbody></table></div>';
+    mount.innerHTML = html;
+    return;
+  }
+
+  mount.innerHTML = '';
+  if (section) section.hidden = true;
+}
+
 function renderPortfolioPayChart(opts = {}){
   const classSel = document.getElementById("chartClassSel");
   const scopeSel = document.getElementById("chartScopeSel");
@@ -579,6 +727,7 @@ function renderPortfolioPayChart(opts = {}){
     data = buildDepartmentsPaySeries(classification);
   }
 const { categories, dumbbellData, scatterData } = data;
+  renderChart1SalaryTable(data, classification, scope);
   const container = document.getElementById("chartContainer");
   if (!container) return;
 
@@ -1867,6 +2016,7 @@ function initStickyEffectiveDateBar(){
     stickyBar.hidden = !active;
     stickyBar.setAttribute('aria-hidden', active ? 'false' : 'true');
     document.body.classList.toggle('has-sticky-effective-date', active);
+    document.body.classList.toggle('has-sticky-chart1-context', chart1Active);
     stickyBar.classList.toggle('chart1-context-active', chart1Active);
     if (stickyContext) {
       stickyContext.hidden = !chart1Active;

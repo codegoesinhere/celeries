@@ -971,3 +971,112 @@ table.salariesTable td {
     font-size: .85rem;
   }
 }
+
+
+/* v22 restoration: Table 1 summary and mobile pinned-header behaviour */
+.chart1-table-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .65rem 1.5rem;
+  margin: 0 0 1rem;
+  padding: .8rem 1rem;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: .7rem;
+}
+.chart1-table-summary > div {
+  display: flex;
+  gap: .4rem;
+  min-width: 0;
+}
+.chart1-table-summary dt { font-weight: 700; }
+.chart1-table-summary dt::after { content: ":"; }
+.chart1-table-summary dd { margin: 0; }
+
+@media (max-width: 760px) {
+  /* Four pinned fields in two equal-width columns while Chart 1/Table 1 is active. */
+  .sticky-effective-date-inner,
+  body.has-sticky-chart1-context .sticky-effective-date-inner {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: end;
+    gap: .45rem .55rem;
+  }
+  .sticky-chart1-context,
+  .sticky-chart1-context[hidden] {
+    display: contents;
+  }
+  .sticky-chart1-control,
+  .sticky-effective-date-inline {
+    width: 100%;
+    max-width: none;
+    min-width: 0;
+    justify-self: stretch;
+  }
+  body.has-sticky-chart1-context { padding-top: 6.25rem; }
+
+  /* Once Table 1 has passed, remove the empty dropdown grid and move Effective date up. */
+  body.has-sticky-effective-date:not(.has-sticky-chart1-context) .sticky-effective-date-inner {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  body.has-sticky-effective-date:not(.has-sticky-chart1-context) .sticky-chart1-context,
+  body.has-sticky-effective-date:not(.has-sticky-chart1-context) .sticky-chart1-context[hidden] {
+    display: none !important;
+  }
+  body.has-sticky-effective-date:not(.has-sticky-chart1-context) .sticky-effective-date-inline {
+    grid-column: 1;
+    width: 100%;
+  }
+  body.has-sticky-effective-date:not(.has-sticky-chart1-context) {
+    padding-top: 3.35rem;
+  }
+  .chart1-table-summary {
+    display: grid;
+    gap: .4rem;
+  }
+}
+
+/* v22: Table 2 mobile cards */
+@media (max-width: 700px) {
+  .agency-rank-table tbody {
+    display: grid;
+    gap: .75rem;
+  }
+  .agency-rank-table tr {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .7rem .9rem;
+    margin: 0;
+    padding: .8rem;
+    border: 1px solid var(--border);
+    border-radius: .6rem;
+    background: var(--surface);
+  }
+  .agency-rank-table td {
+    display: block;
+    width: auto;
+    min-width: 0;
+    padding: 0;
+    border: 0;
+    text-align: left !important;
+    white-space: normal;
+  }
+  .agency-rank-table td::before {
+    content: attr(data-label);
+    display: block;
+    margin-bottom: .18rem;
+    font-size: .72rem;
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--muted);
+    text-align: left;
+  }
+  .agency-rank-table td:first-child {
+    grid-column: 1 / -1;
+    padding-bottom: .15rem;
+    font-size: 1rem;
+    font-weight: 700;
+  }
+  .agency-rank-table td:first-child::before { display: none; }
+  .agency-rank-table .num { text-align: left !important; }
+}
