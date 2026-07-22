@@ -885,3 +885,89 @@ table.salariesTable td {
 @media (prefers-reduced-motion: reduce) {
   .agency-rank-loading__spinner { animation-duration: 1.6s; }
 }
+
+/* Restored Chart 1 controls in the pinned header */
+.sticky-chart1-context {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: .75rem;
+  min-width: 0;
+}
+.sticky-chart1-context[hidden] { display: none !important; }
+.sticky-chart1-control { min-width: 0; }
+.sticky-chart1-control label,
+.sticky-effective-date-inline label {
+  display: block;
+  margin: 0 0 .35rem;
+  font-weight: 600;
+  color: var(--text);
+  text-align: left;
+}
+.sticky-chart1-control select,
+.sticky-effective-date-inline input {
+  width: 100%;
+  min-width: 0;
+  height: 2.55rem;
+  padding: .55rem .7rem;
+  background: #0b0c10;
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: .6rem;
+  outline: none;
+}
+.sticky-chart1-control select:focus,
+.sticky-effective-date-inline input:focus { border-color: var(--accent); }
+.sticky-chart1-control select:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+}
+.sticky-effective-date-inline {
+  display: block;
+  width: 100%;
+  min-width: 0;
+}
+.sticky-effective-date-inner {
+  grid-template-columns: minmax(0, 1fr) minmax(220px, 22rem);
+}
+.sticky-effective-date-bar:not(.chart1-context-active) .sticky-effective-date-inner {
+  grid-template-columns: minmax(0, 1fr) minmax(220px, 22rem);
+}
+.sticky-effective-date-bar:not(.chart1-context-active) .sticky-effective-date-inline {
+  grid-column: 2;
+}
+
+@media (max-width: 720px) {
+  .sticky-effective-date-inner {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .55rem;
+    align-items: end;
+  }
+  .sticky-chart1-context {
+    display: contents;
+  }
+  .sticky-chart1-control,
+  .sticky-effective-date-inline {
+    width: 100%;
+  }
+  .sticky-effective-date-bar.chart1-context-active .sticky-effective-date-inline {
+    grid-column: auto;
+  }
+  .sticky-effective-date-bar:not(.chart1-context-active) .sticky-effective-date-inner {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .sticky-effective-date-bar:not(.chart1-context-active) .sticky-effective-date-inline {
+    grid-column: 2;
+  }
+  .sticky-chart1-control label,
+  .sticky-effective-date-inline label {
+    font-size: .8rem;
+    margin-bottom: .2rem;
+  }
+  .sticky-chart1-control select,
+  .sticky-effective-date-inline input {
+    height: 2.3rem;
+    padding: .45rem .55rem;
+    font-size: .85rem;
+  }
+}

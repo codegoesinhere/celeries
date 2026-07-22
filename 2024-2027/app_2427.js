@@ -1766,54 +1766,119 @@ function initStickyEffectiveDateBar(){
   const mainInput = document.getElementById('chartDateSel');
   const stickyBar = document.getElementById('stickyEffectiveDateBar');
   const stickyInput = document.getElementById('stickyChartDateSel');
+  const stickyContext = document.getElementById('stickyChart1Context');
+  const mainClass = document.getElementById('chartClassSel');
+  const mainScope = document.getElementById('chartScopeSel');
+  const mainPortfolio = document.getElementById('chartPortfolioSel');
+  const stickyClass = document.getElementById('stickyChartClassSel');
+  const stickyScope = document.getElementById('stickyChartScopeSel');
+  const stickyPortfolio = document.getElementById('stickyChartPortfolioSel');
   if (!mainInput || !stickyBar || !stickyInput) return;
 
-  stickyInput.value = mainInput.value || todayISODate();
-
+  const portfolioScopes = ['portfolio', 'portfolio_az', 'portfolio_min_desc', 'portfolio_max_desc'];
   let syncing = false;
-  function syncFrom(source, target){
+
+  function copyOptions(source, target){
     if (!source || !target) return;
-    if (target.value !== source.value) target.value = source.value;
-  }
-  function triggerMainDateChange(){
-    mainInput.dispatchEvent(new Event('change', { bubbles: true }));
+    const selected = source.value;
+    target.innerHTML = '';
+    Array.from(source.options).forEach(option => target.add(option.cloneNode(true)));
+    target.value = selected;
   }
 
-  mainInput.addEventListener('change', () => {
+  function syncPinnedControls(){
     if (syncing) return;
     syncing = true;
-    syncFrom(mainInput, stickyInput);
+    copyOptions(mainClass, stickyClass);
+    copyOptions(mainScope, stickyScope);
+    copyOptions(mainPortfolio, stickyPortfolio);
+    if (stickyClass && mainClass) stickyClass.value = mainClass.value;
+    if (stickyScope && mainScope) stickyScope.value = mainScope.value;
+    if (stickyPortfolio && mainPortfolio) stickyPortfolio.value = mainPortfolio.value;
+    if (stickyPortfolio && mainScope) {
+      const needed = portfolioScopes.includes(mainScope.value);
+      stickyPortfolio.disabled = !needed;
+      stickyPortfolio.setAttribute('aria-disabled', needed ? 'false' : 'true');
+    }
     syncing = false;
+  }
+
+  function dispatchChange(target){
+    target?.dispatchEvent(new Event('change', { bubbles: true }));
+  }
+
+  stickyInput.value = mainInput.value || todayISODate();
+  syncPinnedControls();
+
+  mainInput.addEventListener('change', () => {
+    if (!syncing) stickyInput.value = mainInput.value;
   });
   stickyInput.addEventListener('change', () => {
     if (syncing) return;
     syncing = true;
-    syncFrom(stickyInput, mainInput);
+    mainInput.value = stickyInput.value;
     syncing = false;
-    triggerMainDateChange();
+    dispatchChange(mainInput);
   });
 
-  const sectionIds = ['pay-chart', 'userpick', 'fortnight', 'compare'];
-  const sections = sectionIds.map(id => document.getElementById(id)).filter(Boolean);
+  [mainClass, mainScope, mainPortfolio].forEach(control => {
+    control?.addEventListener('change', () => requestAnimationFrame(syncPinnedControls));
+  });
+
+  stickyClass?.addEventListener('change', () => {
+    if (syncing || !mainClass) return;
+    mainClass.value = stickyClass.value;
+    dispatchChange(mainClass);
+    requestAnimationFrame(syncPinnedControls);
+  });
+  stickyScope?.addEventListener('change', () => {
+    if (syncing || !mainScope) return;
+    mainScope.value = stickyScope.value;
+    dispatchChange(mainScope);
+    requestAnimationFrame(syncPinnedControls);
+  });
+  stickyPortfolio?.addEventListener('change', () => {
+    if (syncing || !mainPortfolio) return;
+    mainPortfolio.value = stickyPortfolio.value;
+    dispatchChange(mainPortfolio);
+    requestAnimationFrame(syncPinnedControls);
+  });
+
+  const allStickySections = ['pay-chart', 'chart1-table', 'agency-rankings', 'userpick', 'fortnight', 'compare']
+    .map(id => document.getElementById(id)).filter(Boolean);
+  const chart1Section = document.getElementById('pay-chart');
+  const table1Section = document.getElementById('chart1-table');
 
   function updateStickyVisibility(){
     const viewportTop = window.scrollY || window.pageYOffset || 0;
     const stickyStart = Math.floor(mainInput.getBoundingClientRect().top + viewportTop);
-    const stickyEnd = sections.length
-      ? Math.max(...sections.map(section => Math.floor(section.getBoundingClientRect().bottom + viewportTop)))
+    const stickyEnd = allStickySections.length
+      ? Math.max(...allStickySections.map(section => Math.floor(section.getBoundingClientRect().bottom + viewportTop)))
       : stickyStart;
     const active = viewportTop >= stickyStart && viewportTop < stickyEnd;
+
+    let chart1Active = false;
+    if (chart1Section && table1Section) {
+      const chart1Start = Math.floor(chart1Section.getBoundingClientRect().top + viewportTop);
+      const table1End = Math.floor(table1Section.getBoundingClientRect().bottom + viewportTop);
+      chart1Active = viewportTop >= chart1Start && viewportTop < table1End;
+    }
 
     stickyBar.hidden = !active;
     stickyBar.setAttribute('aria-hidden', active ? 'false' : 'true');
     document.body.classList.toggle('has-sticky-effective-date', active);
+    stickyBar.classList.toggle('chart1-context-active', chart1Active);
+    if (stickyContext) {
+      stickyContext.hidden = !chart1Active;
+      stickyContext.setAttribute('aria-hidden', chart1Active ? 'false' : 'true');
+    }
+    if (chart1Active) syncPinnedControls();
   }
 
   window.addEventListener('scroll', updateStickyVisibility, { passive: true });
   window.addEventListener('resize', updateStickyVisibility, { passive: true });
   updateStickyVisibility();
 }
-
   // --- Init ---
   document.addEventListener("DOMContentLoaded", () => {
     populatePortfolioFilter();
@@ -3038,7 +3103,7 @@ function recalcFromCompareChart() {
         return;
       }
       let html = '<div class="table-wrap agency-rank-table-wrap"><table class="salariesTable agency-rank-table"><thead><tr>';
-      html += '<th>Level</th><th style="text-align:right">Min salary guidepoint</th><th style="text-align:right">Min salary rank</th><th style="text-align:right">Max salary guidepoint</th><th style="text-align:right">Max salary rank</th>';
+      html += '<th>Level</th><th>Min salary guidepoint</th><th>Min salary rank</th><th>Max salary guidepoint</th><th>Max salary rank</th>';
       html += '</tr></thead><tbody>';
       for (const row of rows){
         html += '<tr>';
