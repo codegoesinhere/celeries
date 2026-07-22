@@ -28,7 +28,7 @@ a:hover {background: #df90001f;}
 .site-header, .site-footer { padding: 1rem; background: var(--panel); border-bottom: 1px solid var(--border); }
 .site-footer { border-top: 1px solid var(--border); border-bottom: none; color: var(--muted); }
 h1 { margin: 0 0 .25rem; font-size: clamp(1.25rem, 1.5vw + 1rem, 2rem); }
-#tonote, #table, #currency, #statistics, #pay-chart, #userpick, #fortnight, #notaligned, #notlisted, #compare, #pare {margin-top: 4rem;}
+#tonote, #table, #currency, #statistics, #pay-chart, #userpick, #chart1-table, #fortnight, #notaligned, #notlisted, #compare, #pare {margin-top: 4rem;}
 .lead { margin: 0; color: var(--muted); }
 .notes {font-size: 0.9rem;}
 .controls { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); align-items: end; margin: 1rem 0; }
@@ -733,4 +733,218 @@ table.salariesTable td {
 .high-level-statistics em {
   color: var(--muted);
   margin-left: .25rem;
+}
+
+
+/* Chart 2 linked data table */
+#chart1TableMount .table-wrap,
+#fortnightTableMount .table-wrap,
+#compareTableMount .table-wrap { overflow-x: auto; }
+#chart2SalaryTable th:last-child, #chart2SalaryTable td:last-child,
+#fortnightSalaryTable th:last-child, #fortnightSalaryTable td:last-child,
+#compareSalaryTable th:last-child, #compareSalaryTable td:last-child { width: auto; }
+
+
+/* Initial salary data loader */
+.page-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: grid;
+  place-items: center;
+  background: var(--bg, #fff);
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 180ms ease, visibility 180ms ease;
+}
+.page-loader.is-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+.page-loader__content {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  padding: 1rem 1.25rem;
+  border: 1px solid var(--border, #d7d7d7);
+  border-radius: .5rem;
+  background: var(--panel, #fff);
+  color: var(--text, #222);
+  box-shadow: 0 .4rem 1.5rem rgba(0, 0, 0, .12);
+  font-weight: 600;
+}
+.page-loader__spinner {
+  width: 1.4rem;
+  height: 1.4rem;
+  border: 3px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: page-loader-spin .7s linear infinite;
+}
+@keyframes page-loader-spin {
+  to { transform: rotate(360deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .page-loader { transition: none; }
+  .page-loader__spinner { animation-duration: 1.5s; }
+}
+
+
+/* Table 1 contextual entity heading */
+#chart1SalaryTable .chart1-entity-heading {
+  min-width: 18rem;
+  vertical-align: bottom;
+}
+#chart1SalaryTable .chart1-table-context,
+#chart1SalaryTable .chart1-table-entity {
+  display: block;
+}
+#chart1SalaryTable .chart1-table-context {
+  font-size: .86em;
+  font-weight: 400;
+  line-height: 1.35;
+}
+#chart1SalaryTable .chart1-table-entity {
+  margin-top: .45rem;
+  font-weight: 700;
+}
+
+/* Table 1 selection summary */
+.chart1-table-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .65rem 1.5rem;
+  margin: 0 0 1rem;
+  padding: .8rem 1rem;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: .7rem;
+}
+.chart1-table-summary > div {
+  display: flex;
+  gap: .4rem;
+  min-width: 0;
+}
+.chart1-table-summary dt {
+  font-weight: 700;
+}
+.chart1-table-summary dt::after { content: ":"; }
+.chart1-table-summary dd { margin: 0; }
+
+/* Chart 1 controls in the pinned effective-date bar */
+.sticky-chart1-context {
+  display: grid;
+  grid-template-columns: minmax(9rem, .7fr) minmax(15rem, 1.4fr) minmax(14rem, 1fr);
+  align-items: end;
+  gap: .55rem .8rem;
+  min-width: 0;
+}
+.sticky-chart1-context[hidden] {
+  display: grid;
+  visibility: hidden;
+  pointer-events: none;
+}
+.sticky-chart1-control { min-width: 0; }
+.sticky-chart1-control[hidden] { display: none; }
+.sticky-chart1-control label {
+  display: block;
+  margin-bottom: .2rem;
+  font-size: .78rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+.sticky-chart1-control select {
+  width: 100%;
+  min-width: 0;
+  padding: .42rem .55rem;
+  border: 1px solid var(--border);
+  border-radius: .45rem;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: .88rem;
+}
+.sticky-chart1-control select:focus {
+  border-color: var(--accent);
+  outline: 2px solid transparent;
+}
+body.has-sticky-chart1-context .sticky-effective-date-inner {
+  grid-template-columns: minmax(0, 1fr) minmax(190px, 15rem);
+}
+
+@media (max-width: 760px) {
+  .sticky-effective-date-inner,
+  body.has-sticky-chart1-context .sticky-effective-date-inner {
+    grid-template-columns: 1fr;
+    align-items: stretch;
+  }
+  .sticky-chart1-context { grid-template-columns: 1fr; gap: .45rem; }
+  .sticky-effective-date-inline { justify-content: flex-start; }
+  body.has-sticky-effective-date { padding-top: 8.5rem; }
+  .chart1-table-summary { display: grid; gap: .4rem; }
+}
+
+/* Pinned Chart 1 controls refinements */
+.sticky-chart1-control[hidden] { display: block; }
+.sticky-chart1-control select,
+.sticky-effective-date-inline input {
+  background: #0b0c10;
+  color: var(--text);
+}
+.sticky-chart1-control select:disabled {
+  opacity: .55;
+  cursor: not-allowed;
+}
+.sticky-effective-date-inline {
+  display: block;
+  min-width: 0;
+}
+.sticky-effective-date-inline label {
+  display: block;
+  margin: 0 0 .2rem;
+  font-size: .78rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+.sticky-effective-date-inline input {
+  width: 100%;
+  min-width: 0;
+  padding: .42rem .55rem;
+  border-radius: .45rem;
+  font: inherit;
+  font-size: .88rem;
+}
+#chart1SalaryTable .count-col {
+  width: 3.25rem;
+  text-align: right;
+  white-space: nowrap;
+}
+
+#chart1SalaryTable .rank-col {
+  width: 4.5rem;
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* Preserve the Effective date position without altering shared control styles. */
+.sticky-effective-date-inner,
+body.has-sticky-chart1-context .sticky-effective-date-inner {
+  grid-template-columns: minmax(0, 1fr) minmax(190px, 15rem);
+}
+.sticky-effective-date-field {
+  justify-self: end;
+  width: 100%;
+  max-width: 15rem;
+}
+
+@media (max-width: 760px) {
+  .sticky-effective-date-inner,
+  body.has-sticky-chart1-context .sticky-effective-date-inner {
+    grid-template-columns: 1fr;
+  }
+  .sticky-effective-date-field {
+    justify-self: stretch;
+    max-width: none;
+  }
 }

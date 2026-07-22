@@ -22,12 +22,32 @@
   <script src="https://code.highcharts.com/modules/accessibility.js"></script>
 </head>
 <body>
+  <div id="pageLoader" class="page-loader" role="status" aria-live="polite" aria-label="Loading salary data">
+    <div class="page-loader__content">
+      <span class="page-loader__spinner" aria-hidden="true"></span>
+      <span>Loading salary data…</span>
+    </div>
+  </div>
   <header class="site-header">
     <h1>Australian Federal Government – Salaries 2024-2027</h1>
     <p class="lead">Browse agencies by portfolio and entity for salary views for the current enterprise agreement windows.</p>
   </header>
   <div id="stickyEffectiveDateBar" class="sticky-effective-date-bar" hidden aria-hidden="true">
     <div class="sticky-effective-date-inner container">
+      <div id="stickyChart1Context" class="sticky-chart1-context" hidden aria-hidden="true">
+        <div class="sticky-chart1-control">
+          <label for="stickyChartClassSel">Classification</label>
+          <select id="stickyChartClassSel" aria-label="Pinned Chart 1 classification"></select>
+        </div>
+        <div class="sticky-chart1-control">
+          <label for="stickyChartScopeSel">Scope</label>
+          <select id="stickyChartScopeSel" aria-label="Pinned Chart 1 scope"></select>
+        </div>
+        <div id="stickyChartPortfolioControl" class="sticky-chart1-control">
+          <label for="stickyChartPortfolioSel">Portfolio</label>
+          <select id="stickyChartPortfolioSel" aria-label="Pinned Chart 1 portfolio"></select>
+        </div>
+      </div>
       <div class="sticky-effective-date-inline">
         <label for="stickyChartDateSel">Effective date</label>
         <input id="stickyChartDateSel" type="date" />
@@ -44,8 +64,9 @@
       <li><a href="#table">Table: Entities base salaries table</a></li>
       <li><a href="#pay-chart">Chart 1: Base salaries by Portfolio</a></li>
       <li><a href="#userpick">Chart 2: Compare base salaries between entities</a></li>
-      <li><a href="#fortnight">Table 1: Calculate fortnightly salary</a></li>
-      <li><a href="#compare">Table 2: Quick compare salaries</a></li>
+      <li><a href="#chart1-table">Table 1: Compare base salaries between entities</a></li>
+      <li><a href="#fortnight">Table 2: Calculate fortnightly salary</a></li>
+      <li><a href="#compare">Table 3: Quick compare salaries</a></li>
       <li><a href="#notaligned">Entities not aligned on salaries</a></li>
       <li><a href="#notlisted">Entities not in the table</a></li>
     </ol>
@@ -71,7 +92,7 @@
   </section>
   <section id="currency">
     <h2>Currency of information</h2>
-    <p>Version: <span class="current-date">1.6.1</span></p>
+    <p>Version: <span class="current-date">1.7.0</span></p>
     <p>Last updated: <span class="current-date">22 July 2026</span></p>
     <p>Information in line with PGPA Flipchart: <span class="current-date">01 July 2026</span></p>
   </section>  
@@ -265,6 +286,11 @@
       <div id="chartContainer" class="chart-container" role="img" aria-label="Dumbbell chart of pay ranges"></div>
       <p class="muted">Shows minimum/maximum guidepoints as a dumbbell, with intermediate steps as dots. Ordered by PGPA flipchart rules.</p>
     </section>
+    <section id="chart1-table">
+      <h2>Table 1: Compare base salaries between entities</h2>
+      <p class="muted">Shows the salary guidepoints currently displayed in Chart 1.</p>
+      <div id="chart1TableMount"></div>
+    </section>
     <hr>
     <section class="panel" id="userpick">
       <h2>Chart 2: Compare base salaries between entities</h2>
@@ -281,7 +307,7 @@
     </section>
     <hr>
     <section id="fortnight">
-      <h2>Table 1: Calculate fortnightly salary</h2>
+      <h2>Table 2: Calculate fortnightly salary</h2>
       <p>Salary is calculated on a fortnightly basis as it is paid fortnightly.</p>
       <math display="block">
         <mrow>
@@ -302,7 +328,7 @@
       <p>Superannuation for APS is calculated at 15.4%. Superannuation is calculated <strong>on top</strong> of the listed salaries.</p>
     </section>
     <section id="compare">
-  <h2>Table 2: Quick compare salaries</h2>
+  <h2>Table 3: Quick compare salaries</h2>
   <p class="muted">Tick rows in the table above to compare them here.</p>
   <div id="compareTableMount"></div>
 </section>

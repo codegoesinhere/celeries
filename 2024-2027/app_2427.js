@@ -7,6 +7,18 @@ if (typeof STEP_POINT_COLOR === 'undefined') {
 }
 
 
+// Highcharts is loaded from an external CDN. When the page is opened via file://
+// and that CDN is unavailable or blocked, keep the data tables usable instead of
+// aborting the whole application during initialisation.
+function highchartsReady(){
+  return !!(window.Highcharts && typeof window.Highcharts.chart === 'function');
+}
+
+function showChartUnavailable(container){
+  if (!container) return;
+  container.innerHTML = '<div class="muted chart-load-warning" style="padding:1rem">Chart unavailable because the Highcharts library could not be loaded. The tables and calculations remain available.</div>';
+}
+
 // === Label helpers ===
 function prettyClassificationLabel(classification){
   // "APS6" -> "APS 6", "EL1" -> "EL 1", "EL2.1" -> "EL 2.1"
@@ -47,6 +59,23 @@ function updateEffectiveDateDisplays(){
     lab.textContent = `Effective Date: ${s}`;
   }
 
+  // Above Chart 1 data table (Table 1)
+  const chart1TableMount = document.getElementById('chart1TableMount');
+  if (chart1TableMount){
+    let tableDateLabel = document.getElementById('effectiveDateLabel_chart1Table');
+    if (!tableDateLabel){
+      tableDateLabel = document.createElement('div');
+      tableDateLabel.id = 'effectiveDateLabel_chart1Table';
+      tableDateLabel.style.textAlign = 'right';
+      tableDateLabel.style.marginTop = '0.25rem';
+      tableDateLabel.style.marginBottom = '0.25rem';
+      tableDateLabel.style.fontSize = '0.9rem';
+      tableDateLabel.style.color = '#bdbdbd';
+      chart1TableMount.parentNode.insertBefore(tableDateLabel, chart1TableMount);
+    }
+    tableDateLabel.textContent = `Effective Date: ${s}`;
+  }
+
   // Above Fortnightly table
   const mount = document.getElementById('fortnightTableMount');
   if (mount){
@@ -63,7 +92,7 @@ function updateEffectiveDateDisplays(){
     }
     lab2.textContent = `Effective Date: ${s}`;
   }
-  // Above Quick Compare table (Table 2)
+  // Above Quick Compare table (Table 3)
   const cmpMount = document.getElementById('compareTableMount');
   if (cmpMount){
     let lab3 = document.getElementById('effectiveDateLabel_compare');
@@ -524,6 +553,184 @@ return { categories, dumbbellData, scatterData };
 
 }
 
+const CHART1_SCOPE_LABELS = {
+  depts: 'Departments (all portfolios)',
+  dept_min_desc: 'Departments - Min salary guidepoint',
+  dept_max_desc: 'Departments - Max salary guidepoint',
+  portfolio: 'By portfolio - PGPA flipchart',
+  portfolio_az: 'By portfolio - A-Z',
+  portfolio_min_desc: 'By portfolio - Min salary guidepoint',
+  portfolio_max_desc: 'By portfolio - Max salary guidepoint',
+  pgpa: 'All entities - PGPA flipchart',
+  az: 'All entities - A-Z',
+  min_desc: 'All entities - Min salary guidepoint',
+  max_desc: 'All entities - Max salary guidepoint'
+};
+
+function chart1ScopeLabel(scope){
+  return CHART1_SCOPE_LABELS[scope] || scope || '';
+}
+
+function chart1ScopeUsesPortfolio(scope){
+  return ['portfolio', 'portfolio_az', 'portfolio_min_desc', 'portfolio_max_desc'].includes(scope);
+}
+
+function cloneSelectOptions(source, target){
+  if (!source || !target) return;
+  const current = source.value;
+  target.innerHTML = '';
+  Array.from(source.options).forEach(option => target.appendChild(option.cloneNode(true)));
+  target.value = current;
+  target.disabled = source.disabled;
+}
+
+function updateStickyChart1Controls(){
+  const mainClass = document.getElementById('chartClassSel');
+  const mainScope = document.getElementById('chartScopeSel');
+  const mainPortfolio = document.getElementById('chartPortfolioSel');
+  const stickyClass = document.getElementById('stickyChartClassSel');
+  const stickyScope = document.getElementById('stickyChartScopeSel');
+  const stickyPortfolio = document.getElementById('stickyChartPortfolioSel');
+  const stickyPortfolioControl = document.getElementById('stickyChartPortfolioControl');
+
+  cloneSelectOptions(mainClass, stickyClass);
+  cloneSelectOptions(mainScope, stickyScope);
+  cloneSelectOptions(mainPortfolio, stickyPortfolio);
+
+  const usesPortfolio = chart1ScopeUsesPortfolio(mainScope?.value || 'depts');
+  if (stickyPortfolioControl) stickyPortfolioControl.hidden = false;
+  if (stickyPortfolio) {
+    stickyPortfolio.disabled = !usesPortfolio || !!mainPortfolio?.disabled;
+    stickyPortfolio.setAttribute('aria-disabled', stickyPortfolio.disabled ? 'true' : 'false');
+  }
+}
+
+function renderChart1SalaryTable(data, classification, scope){
+  const mount = document.getElementById('chart1TableMount');
+  const section = document.getElementById('chart1-table');
+  if (!mount) return;
+
+  const minScopes = new Set(['dept_min_desc', 'portfolio_min_desc', 'min_desc']);
+  const maxScopes = new Set(['dept_max_desc', 'portfolio_max_desc', 'max_desc']);
+  const summaryScopes = new Set(['depts', 'portfolio', 'portfolio_az', 'az', 'pgpa']);
+  const endpoint = minScopes.has(scope) ? 'min' : (maxScopes.has(scope) ? 'max' : '');
+
+  const categories = (data && data.categories) || [];
+  const dumbbellData = (data && data.dumbbellData) || [];
+  const scatterData = (data && data.scatterData) || [];
+  const esc = (value) => String(value ?? '').replace(/[&<>"']/g, char => ({
+    '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'
+  }[char]));
+  const fmtSalary = (value) => {
+    const number = Number(value);
+    if (!isFinite(number)) return '';
+    return '$' + number.toLocaleString('en-AU', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+  };
+
+  const scopeLabel = chart1ScopeLabel(scope);
+  const classificationLabel = prettyClassificationLabel(classification);
+  const portfolio = document.getElementById('chartPortfolioSel')?.value || '';
+  const showPortfolio = chart1ScopeUsesPortfolio(scope);
+
+  const buildSummaryHtml = (entryCount) => `
+    <dl class="chart1-table-summary" aria-label="Current Chart 1 selections">
+      <div><dt>Scope</dt><dd>${esc(scopeLabel)}</dd></div>
+      <div><dt>Classification</dt><dd>${esc(classificationLabel)}</dd></div>
+      ${showPortfolio ? `<div><dt>Portfolio</dt><dd>${esc(portfolio)}</dd></div>` : ''}
+      <div><dt># of Entries</dt><dd>${Number(entryCount || 0).toLocaleString('en-AU')}</dd></div>
+    </dl>
+  `;
+
+  if (section) section.hidden = false;
+
+  // Broad Chart 1 scopes: one summary row per entity, in the exact chart order.
+  if (summaryScopes.has(scope)){
+    const rows = categories.map((agency, agencyIndex) => {
+      const range = dumbbellData[agencyIndex] || {};
+      const paypointCount = scatterData.filter(point => Number(point.x) === agencyIndex).length;
+      return {
+        agency,
+        min: Number(range.low),
+        max: Number(range.high),
+        paypointCount
+      };
+    }).filter(row => row.agency && isFinite(row.min) && isFinite(row.max));
+
+    if (!rows.length){
+      mount.innerHTML = '<div class="muted" style="padding:0.5rem 0; opacity:0.85">No salary guidepoints are available for the current Chart 1 settings.</div>';
+      return;
+    }
+
+    let html = buildSummaryHtml(rows.length) + '<div class="table-wrap"><table class="salariesTable" id="chart1SalaryTable">';
+    html += '<thead><tr><th class="count-col">#</th><th>Entity</th><th style="text-align:right">Min guidepoint</th><th style="text-align:right">Max guidepoint</th><th style="text-align:right"># of paypoints</th></tr></thead><tbody>';
+    rows.forEach((row, index) => {
+      html += '<tr>';
+      html += '<td class="count-col">' + (index + 1).toLocaleString('en-AU') + '</td>';
+      html += '<td>' + esc(row.agency) + '</td>';
+      html += '<td style="text-align:right">' + fmtSalary(row.min) + '</td>';
+      html += '<td style="text-align:right">' + fmtSalary(row.max) + '</td>';
+      html += '<td style="text-align:right">' + row.paypointCount.toLocaleString('en-AU') + '</td>';
+      html += '</tr>';
+    });
+    html += '</tbody></table></div>';
+    mount.innerHTML = html;
+    return;
+  }
+
+  // Ordered minimum/maximum scopes: one selected endpoint per entity.
+  if (endpoint){
+    const rows = categories.map((agency, agencyIndex) => {
+      const range = dumbbellData[agencyIndex] || {};
+      const annual = Number(endpoint === 'min' ? range.low : range.high);
+      const matchingPoint = scatterData.find(point =>
+        Number(point.x) === agencyIndex && Number(point.y) === annual
+      );
+      return {
+        agency,
+        guidepoint: matchingPoint?.stepLabel || matchingPoint?.name ||
+          `${endpoint === 'min' ? 'Minimum' : 'Maximum'} ${prettyClassificationLabel(classification)} guidepoint`,
+        annual
+      };
+    }).filter(row => row.agency && isFinite(row.annual));
+
+    if (!rows.length){
+      mount.innerHTML = '<div class="muted" style="padding:0.5rem 0; opacity:0.85">No salary guidepoints are available for the current Chart 1 settings.</div>';
+      return;
+    }
+
+    // Dense ranking by salary: 1, 2, =3, =3, 4.
+    // Equal salaries share a rank, and the next distinct salary takes the next number.
+    const salaryCounts = new Map();
+    rows.forEach(row => salaryCounts.set(row.annual, (salaryCounts.get(row.annual) || 0) + 1));
+    const rankedValues = Array.from(salaryCounts.keys()).sort((a, b) => b - a);
+    const salaryRanks = new Map();
+    rankedValues.forEach((value, index) => {
+      salaryRanks.set(value, index + 1);
+    });
+
+    const salaryHeading = endpoint === 'min' ? 'Min salary guidepoint' : 'Max salary guidepoint';
+    let html = buildSummaryHtml(rows.length) + '<div class="table-wrap"><table class="salariesTable" id="chart1SalaryTable">';
+    html += '<thead><tr><th class="count-col">#</th><th class="rank-col">Rank</th><th>Entity</th><th>Guidepoint</th><th style="text-align:right">' + salaryHeading + '</th></tr></thead><tbody>';
+    rows.forEach((row, index) => {
+      const rank = salaryRanks.get(row.annual);
+      const rankLabel = (salaryCounts.get(row.annual) > 1 ? '=' : '') + rank.toLocaleString('en-AU');
+      html += '<tr>';
+      html += '<td class="count-col">' + (index + 1).toLocaleString('en-AU') + '</td>';
+      html += '<td class="rank-col">' + rankLabel + '</td>';
+      html += '<td>' + esc(row.agency) + '</td>';
+      html += '<td>' + esc(row.guidepoint) + '</td>';
+      html += '<td style="text-align:right">' + fmtSalary(row.annual) + '</td>';
+      html += '</tr>';
+    });
+    html += '</tbody></table></div>';
+    mount.innerHTML = html;
+    return;
+  }
+
+  mount.innerHTML = '';
+  if (section) section.hidden = true;
+}
+
 function renderPortfolioPayChart(opts = {}){
   const classSel = document.getElementById("chartClassSel");
   const scopeSel = document.getElementById("chartScopeSel");
@@ -562,6 +769,8 @@ function renderPortfolioPayChart(opts = {}){
     data = buildDepartmentsPaySeries(classification);
   }
 const { categories, dumbbellData, scatterData } = data;
+  renderChart1SalaryTable(data, classification, scope);
+  updateEffectiveDateDisplays();
   const container = document.getElementById("chartContainer");
   if (!container) return;
 
@@ -571,6 +780,11 @@ const { categories, dumbbellData, scatterData } = data;
   }
 
   renderEntityLegend('chartEntityLegend');
+
+  if (!highchartsReady()) {
+    showChartUnavailable(container);
+    return;
+  }
 
   window.Highcharts.chart(container, {
     chart: {
@@ -1749,32 +1963,72 @@ function initStickyEffectiveDateBar(){
   const mainInput = document.getElementById('chartDateSel');
   const stickyBar = document.getElementById('stickyEffectiveDateBar');
   const stickyInput = document.getElementById('stickyChartDateSel');
+  const stickyContext = document.getElementById('stickyChart1Context');
+  const chart1Section = document.getElementById('pay-chart');
+  const table1Section = document.getElementById('chart1-table');
   if (!mainInput || !stickyBar || !stickyInput) return;
 
+  const controlPairs = [
+    ['chartClassSel', 'stickyChartClassSel'],
+    ['chartScopeSel', 'stickyChartScopeSel'],
+    ['chartPortfolioSel', 'stickyChartPortfolioSel']
+  ];
+
   stickyInput.value = mainInput.value || todayISODate();
+  updateStickyChart1Controls();
 
   let syncing = false;
-  function syncFrom(source, target){
+  function syncValue(source, target){
     if (!source || !target) return;
     if (target.value !== source.value) target.value = source.value;
-  }
-  function triggerMainDateChange(){
-    mainInput.dispatchEvent(new Event('change', { bubbles: true }));
   }
 
   mainInput.addEventListener('change', () => {
     if (syncing) return;
     syncing = true;
-    syncFrom(mainInput, stickyInput);
+    syncValue(mainInput, stickyInput);
     syncing = false;
   });
   stickyInput.addEventListener('change', () => {
     if (syncing) return;
     syncing = true;
-    syncFrom(stickyInput, mainInput);
+    syncValue(stickyInput, mainInput);
     syncing = false;
-    triggerMainDateChange();
+    mainInput.dispatchEvent(new Event('change', { bubbles: true }));
   });
+
+  controlPairs.forEach(([mainId, stickyId]) => {
+    const main = document.getElementById(mainId);
+    const sticky = document.getElementById(stickyId);
+    if (!main || !sticky) return;
+
+    main.addEventListener('change', () => {
+      if (syncing) return;
+      queueMicrotask(() => {
+        updateStickyChart1Controls();
+        updateStickyVisibility();
+      });
+    });
+
+    sticky.addEventListener('change', () => {
+      if (syncing) return;
+      syncing = true;
+      main.value = sticky.value;
+      syncing = false;
+      main.dispatchEvent(new Event('change', { bubbles: true }));
+      queueMicrotask(() => {
+        updateStickyChart1Controls();
+        updateStickyVisibility();
+      });
+    });
+  });
+
+  const mainPortfolio = document.getElementById('chartPortfolioSel');
+  if (mainPortfolio && typeof MutationObserver !== 'undefined') {
+    new MutationObserver(() => {
+      if (!syncing) updateStickyChart1Controls();
+    }).observe(mainPortfolio, { childList: true, subtree: true, attributes: true });
+  }
 
   const sectionIds = ['pay-chart', 'userpick', 'fortnight', 'compare'];
   const sections = sectionIds.map(id => document.getElementById(id)).filter(Boolean);
@@ -1786,10 +2040,22 @@ function initStickyEffectiveDateBar(){
       ? Math.max(...sections.map(section => Math.floor(section.getBoundingClientRect().bottom + viewportTop)))
       : stickyStart;
     const active = viewportTop >= stickyStart && viewportTop < stickyEnd;
+    const chart1Start = chart1Section
+      ? Math.floor(chart1Section.getBoundingClientRect().top + viewportTop)
+      : stickyStart;
+    const chart1End = table1Section
+      ? Math.floor(table1Section.getBoundingClientRect().bottom + viewportTop)
+      : chart1Start;
+    const showChart1Context = active && viewportTop >= chart1Start && viewportTop < chart1End;
 
     stickyBar.hidden = !active;
     stickyBar.setAttribute('aria-hidden', active ? 'false' : 'true');
     document.body.classList.toggle('has-sticky-effective-date', active);
+    document.body.classList.toggle('has-sticky-chart1-context', showChart1Context);
+    if (stickyContext) {
+      stickyContext.hidden = !showChart1Context;
+      stickyContext.setAttribute('aria-hidden', showChart1Context ? 'false' : 'true');
+    }
   }
 
   window.addEventListener('scroll', updateStickyVisibility, { passive: true });
@@ -2168,6 +2434,7 @@ function ensureCompareQuickMount(){
         const fortnightGross = (annual * 12) / 313;
         const hourlyRate = fortnightGross / 75;
         const superAnnual = annual * 0.154;
+        const totalPackage = annual + superAnnual;
 
         rows.push({
           agency: a.agency || agencyId,
@@ -2175,13 +2442,15 @@ function ensureCompareQuickMount(){
           annual,
           hourlyRate,
           fortnightGross,
-          superAnnual
+          superAnnual,
+          totalPackage
         });
       }
     }
 
     return rows;
   }
+
 
   function renderFortnightlySalaryTable(){
     const mount = ensureFortnightlyTableMount();
@@ -2239,6 +2508,7 @@ function ensureCompareQuickMount(){
     html += '<th style="text-align:right">Hourly rate</th>';
     html += '<th style="text-align:right">Fortnightly<br>Gross (before tax pay)</th>';
     html += '<th style="text-align:right">Superannuation<br>(15.4%)</th>';
+    html += '<th style="text-align:right">Total package (salary + super)</th>';
     html += '</tr></thead>';
     html += '<tbody>';
 
@@ -2255,6 +2525,7 @@ function ensureCompareQuickMount(){
       html += '<td style="text-align:right">' + fmtHourly(r.hourlyRate) + '</td>';
       html += '<td style="text-align:right">' + fmtGross(r.fortnightGross) + '</td>';
       html += '<td style="text-align:right">' + fmtSalary(r.superAnnual) + '</td>';
+      html += '<td style="text-align:right">' + fmtSalary(r.totalPackage) + '</td>';
       html += '</tr>';
     }
 
@@ -2278,6 +2549,7 @@ if (!picked.length){
   compareHtml += '<th style="text-align:right">Hourly rate</th>';
   compareHtml += '<th style="text-align:right">Fortnightly Gross<br>(before tax pay)</th>';
   compareHtml += '<th style="text-align:right">Superannuation<br>(15.4%)</th>';
+  compareHtml += '<th style="text-align:right">Total package (salary + super)</th>';
   compareHtml += '</tr></thead><tbody>';
 
   for (const r of picked){
@@ -2288,6 +2560,7 @@ if (!picked.length){
     compareHtml += '<td style="text-align:right">' + fmtHourly(r.hourlyRate) + '</td>';
     compareHtml += '<td style="text-align:right">' + fmtGross(r.fortnightGross) + '</td>';
     compareHtml += '<td style="text-align:right">' + fmtSalary(r.superAnnual) + '</td>';
+    compareHtml += '<td style="text-align:right">' + fmtSalary(r.totalPackage) + '</td>';
     compareHtml += '</tr>';
   }
   compareHtml += '</tbody></table>';
@@ -2349,7 +2622,11 @@ if (compareMount) compareMount.innerHTML = compareHtml;
         updateEffectiveDateDisplays();
     // Use the exact same Highcharts options as main chart by calling a shared renderer if available
     // Otherwise, minimal config (we already copied main options in earlier build)
-    
+    if (!highchartsReady()) {
+      showChartUnavailable(container);
+      return;
+    }
+
 window.Highcharts.chart(container, {
       chart: { height: Math.max(420, 28 * categories.length + 160), inverted: true, backgroundColor: 'transparent' },
       title: { text: null },
@@ -2632,6 +2909,10 @@ function recalcFromCompareChart() {
   const unionCats = __unionCategoriesFromRegistry();
   const hourlyEl = $('hourlyChartContainer');
   if (!hourlyEl) return;
+  if (!highchartsReady()) {
+    showChartUnavailable(hourlyEl);
+    return;
+  }
 
   const hourlySeries = [];
   for (const [name, pack] of window.__hourlyRegistry.entries()) {
@@ -2802,6 +3083,10 @@ function recalcFromCompareChart() {
 
   const hourlyEl = $('hourlyChartContainer');
   if (!hourlyEl) return;
+  if (!highchartsReady()) {
+    showChartUnavailable(hourlyEl);
+    return;
+  }
 
   const seriesForChart = [];
   for (const [nm, pack] of window.__hourlyRegistry.entries()) {
@@ -2838,3 +3123,30 @@ function recalcFromCompareChart() {
     hc.redraw();
   }
 }
+
+// Remove the loading overlay after deferred data and application scripts have
+// completed their initial DOM work. Two animation frames allow the first
+// rendered tables/charts to paint before the overlay fades out.
+function hidePageLoader(){
+  const loader = document.getElementById('pageLoader');
+  if (!loader || loader.classList.contains('is-hidden')) return;
+  loader.classList.add('is-hidden');
+  loader.setAttribute('aria-hidden', 'true');
+  window.setTimeout(() => loader.remove(), 250);
+}
+
+function schedulePageLoaderHide(){
+  window.requestAnimationFrame(() => {
+    window.requestAnimationFrame(hidePageLoader);
+  });
+}
+
+if (document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', schedulePageLoaderHide, { once: true });
+} else {
+  schedulePageLoaderHide();
+}
+// Safety fallback: never leave the page permanently covered after an unrelated
+// third-party script failure.
+window.addEventListener('load', hidePageLoader, { once: true });
+window.setTimeout(hidePageLoader, 10000);
