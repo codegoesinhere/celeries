@@ -209,6 +209,11 @@ function styleLikeTopSelect(el, fallbackId){
     countExtraClassYes: document.getElementById('countExtraClassYes'),
     countExtraClassNo: document.getElementById('countExtraClassNo'),
 backToTop: document.getElementById('backToTop'),
+    floatingPageActions: document.getElementById('floatingPageActions'),
+    pageMenuButton: document.getElementById('pageMenuButton'),
+    pageMenuPanel: document.getElementById('pageMenuPanel'),
+    pageMenuNav: document.getElementById('pageMenuNav'),
+    pageMenuClose: document.getElementById('pageMenuClose'),
   };
 
   // --- Helpers ---
@@ -1903,11 +1908,37 @@ function ensureExpanderRotationCSS(){
     });
   }
 
+  function closePageMenu(){
+    if (!els.pageMenuPanel || !els.pageMenuButton) return;
+    els.pageMenuPanel.hidden = true;
+    els.pageMenuButton.setAttribute('aria-expanded', 'false');
+  }
+
+  function initPageMenu(){
+    if (!els.pageMenuNav) return;
+    const tocList = document.querySelector('.toc > ol');
+    if (!tocList) return;
+
+    const menuList = tocList.cloneNode(true);
+    menuList.removeAttribute('id');
+    els.pageMenuNav.replaceChildren(menuList);
+
+    els.pageMenuNav.addEventListener('click', event => {
+      if (event.target.closest('a')) closePageMenu();
+    });
+  }
+
   function onScroll(){
     const scrolled = window.scrollY || document.documentElement.scrollTop || 0;
-    if (!els.backToTop) return;
-    if (scrolled > 600){ els.backToTop.classList.add("show"); els.backToTop.hidden=false; }
-    else { els.backToTop.classList.remove("show"); els.backToTop.hidden=true; }
+    if (!els.floatingPageActions) return;
+    if (scrolled > 600){
+      els.floatingPageActions.hidden = false;
+      requestAnimationFrame(() => els.floatingPageActions.classList.add('show'));
+    } else {
+      els.floatingPageActions.classList.remove('show');
+      closePageMenu();
+      els.floatingPageActions.hidden = true;
+    }
   }
 
 
@@ -2044,8 +2075,21 @@ function initStickyEffectiveDateBar(){
     els.exportCsv?.addEventListener("click", exportCsv);
     els.toggleAll?.addEventListener("click", toggleAll);
     els.backToTop?.addEventListener("click", () => window.scrollTo({top:0, behavior:"smooth"}));
+    els.pageMenuButton?.addEventListener('click', () => {
+      const willOpen = els.pageMenuPanel?.hidden ?? true;
+      if (els.pageMenuPanel) els.pageMenuPanel.hidden = !willOpen;
+      els.pageMenuButton?.setAttribute('aria-expanded', String(willOpen));
+    });
+    els.pageMenuClose?.addEventListener('click', closePageMenu);
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape') closePageMenu();
+    });
+    document.addEventListener('click', event => {
+      if (!els.floatingPageActions?.contains(event.target)) closePageMenu();
+    });
     window.addEventListener("scroll", onScroll, {passive:true});
 
+    initPageMenu();
     render();
     initStaticEntityTooltips();
     onScroll();
@@ -2501,9 +2545,9 @@ function ensureCompareQuickMount(){
     html += '<th>Classification</th>';
     html += '<th style="text-align:right">Salary</th>';
     html += '<th style="text-align:right">Hourly rate</th>';
-    html += '<th style="text-align:right">Fortnightly<br>Gross (before tax pay)</th>';
-    html += '<th style="text-align:right">Superannuation<br>(15.4%)</th>';
-    html += '<th style="text-align:right">Total package<br>(salary + super)</th>';
+    html += '<th style="text-align:right">Fortnightly Gross <span class="smlTable">(before tax pay)</span></th>';
+    html += '<th style="text-align:right">Superannuation<br><span class="smlTable">(15.4%)</span></th>';
+    html += '<th style="text-align:right">Total package<br><span class="smlTable">(salary + super)</span></th>';
     html += '</tr></thead>';
     html += '<tbody>';
 
@@ -2542,9 +2586,9 @@ if (!picked.length){
   compareHtml += '<th>Classification</th>';
   compareHtml += '<th style="text-align:right">Salary</th>';
   compareHtml += '<th style="text-align:right">Hourly rate</th>';
-  compareHtml += '<th style="text-align:right">Fortnightly Gross<br>(before tax pay)</th>';
-  compareHtml += '<th style="text-align:right">Superannuation<br>(15.4%)</th>';
-  compareHtml += '<th style="text-align:right">Total package<br>(salary + super)</th>';
+  compareHtml += '<th style="text-align:right">Fortnightly Gross<br><span class="smlTable">(before tax pay)</span></th>';
+  compareHtml += '<th style="text-align:right">Superannuation<br><span class="smlTable">(15.4%)</span></th>';
+  compareHtml += '<th style="text-align:right">Total package<br><span class="smlTable">(salary + super)</span></th>';
   compareHtml += '</tr></thead><tbody>';
 
   for (const r of picked){
