@@ -3,6 +3,7 @@
 'use strict';
 const $=id=>document.getElementById(id);
 const money=(n,dp=2)=>Number.isFinite(n)?'$'+n.toLocaleString('en-AU',{minimumFractionDigits:dp,maximumFractionDigits:dp}):'—';
+const percent=n=>Number.isFinite(Number(n))?Number(n).toFixed(2)+'%':'—';
 const escape=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let state=null, serial=0, syncing=false;
 const fixedOffers=[{id:"initial",name:"Offer 1",date:"2026-10-13",rates:[3.2,3,2.8],fixed:true}];
@@ -100,11 +101,12 @@ function renderOfferControls(){
    const field=document.createElement('div');field.className='neg-offer-rate';
    const label=document.createElement('label');label.textContent=`Year ${i+1}:`;
    if(offer.fixed){
-    const value=document.createElement('span');value.textContent=`${rate}%`;field.append(label,value);
+    const value=document.createElement('span');value.textContent=percent(rate);field.append(label,value);
    }else{
-    const input=document.createElement('input');input.type='number';input.step='0.1';input.min='-99.99';input.value=rate;
+    const input=document.createElement('input');input.type='number';input.step='0.01';input.min='-99.99';input.value=Number(rate).toFixed(2);
     input.setAttribute('aria-label',`${offer.name}, Year ${i+1} percentage`);
     input.addEventListener('input',()=>{offer.rates[i]=input.value===''?NaN:Number(input.value);renderNegotiations();});
+    input.addEventListener('blur',()=>{if(Number.isFinite(offer.rates[i]))input.value=offer.rates[i].toFixed(2);});
     const suffix=document.createElement('span');suffix.textContent='%';
     field.append(label,input,suffix);
    }
@@ -113,9 +115,9 @@ function renderOfferControls(){
   card.append(fields);mount.append(card);
  });
 }
-function renderNegotiations(){const offers=allOffers(),tbody=$('negTable')?.tBodies?.[0],salaryBody=$('negSalaryTable')?.tBodies?.[0];if(!tbody||!salaryBody)return;tbody.replaceChildren();salaryBody.replaceChildren();const initial=1.032*1.03*1.028-1;
+function renderNegotiations(){const offers=allOffers(),tbody=$('negTable')?.tBodies?.[0],salaryBody=$('negSalaryTable')?.tBodies?.[0],dollarBody=$('negDollarTable')?.tBodies?.[0];if(!tbody||!salaryBody||!dollarBody)return;tbody.replaceChildren();salaryBody.replaceChildren();dollarBody.replaceChildren();const initial=1.032*1.03*1.028-1;
  const valid=offer=>offer.rates.every(r=>Number.isFinite(r)&&r>-100);
- offers.forEach(offer=>{const ok=valid(offer);const compound=ok?offer.rates.reduce((n,r)=>n*(1+r/100),1)-1:NaN;const cells=[offer.name,displayOfferDate(offer.date)||'—',...offer.rates.map(r=>Number.isFinite(r)?r.toFixed(2)+'%':'—'),ok?(compound*100).toFixed(2)+'%':'—',ok?((compound-initial)*100>=0?'+':'')+((compound-initial)*100).toFixed(2)+' pp':'—'];const row=tbody.insertRow();if(offer.fixed)row.className='neg-offer-fixed-row';cells.forEach(c=>{const td=row.insertCell();td.textContent=c;});if(state&&ok){const values=[state.salary];offer.rates.forEach(r=>values.push(values.at(-1)*(1+r/100)));const sr=salaryBody.insertRow();if(offer.fixed)sr.className='neg-offer-fixed-row';[offer.name,displayOfferDate(offer.date)||'—',...values.map(v=>money(v)),money(values.at(-1)-values[0])].forEach(c=>{const td=sr.insertCell();td.textContent=c;});}});
+ offers.forEach(offer=>{const ok=valid(offer);const compound=ok?offer.rates.reduce((n,r)=>n*(1+r/100),1)-1:NaN;const cells=[offer.name,displayOfferDate(offer.date)||'—',...offer.rates.map(percent),ok?(compound*100).toFixed(2)+'%':'—',ok?((compound-initial)*100>=0?'+':'')+((compound-initial)*100).toFixed(2)+' pp':'—'];const row=tbody.insertRow();if(offer.fixed)row.className='neg-offer-fixed-row';cells.forEach(c=>{const td=row.insertCell();td.textContent=c;});if(state&&ok){const values=[state.salary];offer.rates.forEach(r=>values.push(values.at(-1)*(1+r/100)));const increases=values.slice(1).map((v,i)=>v-values[i]);const dr=dollarBody.insertRow();if(offer.fixed)dr.className='neg-offer-fixed-row';[offer.name,displayOfferDate(offer.date)||'—',...increases.map(v=>money(v)),money(increases.reduce((a,b)=>a+b,0))].forEach(c=>{const td=dr.insertCell();td.textContent=c;});const sr=salaryBody.insertRow();if(offer.fixed)sr.className='neg-offer-fixed-row';[offer.name,displayOfferDate(offer.date)||'—',...values.map(v=>money(v)),money(values.at(-1)-values[0])].forEach(c=>{const td=sr.insertCell();td.textContent=c;});}});
  $('negSalaryHint').textContent=state?`Based on ${classificationWithPoint(state)} — ${money(state.salary)} annual base salary. Paypoint progression is excluded.`:'Select a salary in the My salary section to see the dollar impact of each offer.';
  $('negSummary').textContent=`${offers.length} offer${offers.length===1?'':'s'} compared. Offer 1 compounded increase: ${(initial*100).toFixed(2)}%. Differences are percentage points relative to Offer 1.`;
  const chartMount=$('negChart');
