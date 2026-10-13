@@ -836,6 +836,8 @@ function agencyKey(a){
   return `${p}|${ag}`;
 }
 
+window.salaryDashboardAPI = { agencyKey, findPaySet };
+
 function renderPayRatesTable(agencyId, classification){
   // For the large listing we want columns ordered by oldest effectiveFrom first.
   const wantId  = resolveAgencyAlias(agencyId);

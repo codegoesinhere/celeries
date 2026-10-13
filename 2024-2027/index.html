@@ -62,12 +62,14 @@
       <li><a href="#currency">Currency of information</a></li>
       <li><a href="#statistics">High level statistics</a></li>
       <li><a href="#table">Table: Entities base salaries table</a></li>
+      <li><a href="#my-salary">My salary</a></li>
       <li><a href="#pay-chart">Chart 1: Base salaries by Portfolio</a></li>
       <li><a href="#chart1-table">Table 1: Compare base salaries between entities</a></li>
       <li><a href="#agency-rankings">Table 2: Agency salary guidepoint rankings</a></li>
       <li><a href="#userpick">Chart 2: Compare base salaries between entities</a></li>
       <li><a href="#fortnight">Table 3: Calculate fortnightly salary</a></li>
-      <li><a href="#compare">Table 4: Quick compare salaries</a></li>
+      <li><a href="#aps-negotiations">APS pay negotiations</a></li>
+       <li><a href="#compare">Table 4: Quick compare salaries</a></li>
       <li><a href="#notaligned">Entities not aligned on salaries</a></li>
       <li><a href="#notlisted">Entities not in the table</a></li>
     </ol>
@@ -93,8 +95,8 @@
   </section>
   <section id="currency">
     <h2>Currency of information</h2>
-    <p>Version: <span class="current-date">1.7.7</span></p>
-    <p>Last updated: <span class="current-date">22 July 2026</span></p>
+    <p>Version: <span class="current-date">1.8.0</span></p>
+    <p>Last updated: <span class="current-date">14 October 2026</span></p>
     <p>Information in line with PGPA Flipchart: <span class="current-date">01 July 2026</span></p>
   </section>  
 
@@ -225,6 +227,20 @@
     </section>
     <!-- === PAY RATE CHART (Portfolio view) === -->
      <hr>
+  <section id="my-salary" class="personal-panel">
+    <h2>My salary</h2>
+    <p>Select a published paypoint or enter your actual annual base salary. Your selection is used for comparisons and projections.</p>
+    <div class="controls">
+      <div class="control"><label for="personalAgency">Entity</label><select id="personalAgency"></select></div>
+      <div class="control"><label for="personalClass">Classification</label><select id="personalClass"></select></div>
+      <div class="control"><label for="personalPoint">Paypoint</label><select id="personalPoint"></select></div>
+      <div class="control"><label for="personalManual">Actual salary override ($)</label><input id="personalManual" type="number" min="1" step="0.01" placeholder="Optional"></div>
+    </div>
+    <label><input id="personalVisible" type="checkbox" checked> Show my salary on Charts 1 and 2</label>
+    <p id="personalSummary" class="personal-summary" aria-live="polite"></p>
+    <button id="personalClear" class="btn-quiet" type="button">Clear selection</button>
+  </section>
+  <hr>
     <section id="pay-chart" aria-label="Portfolio pay rates - Base salaries">
       <h2>Chart 1: Base salaries by Portfolio</h2>
       <p>This chart shows the base salaries from enterprise agreements at the relevant APS or EL levels. Where entities have levels that have different names, but equate to specific APS/EL levels, they are provided and labelled accordingly.</p>
@@ -338,6 +354,23 @@
       </math>
       <p>Superannuation for APS is calculated at 15.4%. Superannuation is calculated <strong>on top</strong> of the listed salaries.</p>
     </section>
+  <section id="aps-negotiations" class="personal-panel">
+    <h2>APS pay negotiations — proposed offer</h2>
+    <p>Illustrative annual base salary projections using compounded increases. These are not confirmed salary rates or paypoint progression.</p>
+    <div class="controls">
+      <div class="control"><label for="negRate1">Year 1 increase (%)</label><input id="negRate1" type="number" step="0.1" value="3.2"></div>
+      <div class="control"><label for="negRate2">Year 2 increase (%)</label><input id="negRate2" type="number" step="0.1" value="3"></div>
+      <div class="control"><label for="negRate3">Year 3 increase (%)</label><input id="negRate3" type="number" step="0.1" value="2.8"></div>
+    </div>
+    <button id="negReset" type="button" class="btn-quiet">Reset proposed percentages</button>
+    <p id="negSummary" aria-live="polite"></p>
+    <div id="negChart"></div>
+    <div class="table-wrap personal-table-scroll"><table id="negTable"><thead><tr><th>Position</th><th>Current</th><th>Year 1</th><th>Year 2</th><th>Year 3</th><th>Total increase</th></tr></thead><tbody></tbody></table></div>
+    <h3>Additional comparison positions</h3>
+    <div id="negComparisons"></div>
+    <button id="negAdd" class="btn-quiet" type="button">Add comparison position</button>
+  </section>
+  <hr>
     <section id="compare">
   <h2>Table 4: Quick compare salaries</h2>
   <p class="muted">Tick rows in the table above to compare them here.</p>
@@ -475,6 +508,7 @@
     <small>Thanks for taking a look :)</small>
   </footer>
   <script defer src="data_2427.js"></script>
-  <script defer src="app_2427.js"></script> <!--PATCHED-->
+  <script defer src="app_2427.js"></script>
+  <script defer src="personal_salary.js"></script>
 </body>
 </html>

@@ -1420,3 +1420,26 @@ table.salariesTable td {
   }
 }
 
+
+/* Personal salary and negotiations */
+#my-salary,#aps-negotiations{margin-top:4rem;scroll-margin-top:5rem}
+.personal-panel{padding:1rem;border:1px solid var(--border);border-radius:.8rem;background:var(--panel)}
+.personal-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:1rem;margin:1rem 0}
+.personal-grid .control{min-width:0}.personal-grid select,.personal-grid input{width:100%;padding:.65rem;background:#0b0c10;color:var(--text);border:1px solid var(--border);border-radius:.6rem}
+.personal-actions{display:flex;align-items:center;flex-wrap:wrap;gap:1rem;margin:.75rem 0}.personal-actions input{accent-color:#ffd166}
+.personal-summary{padding:.75rem 1rem;background:#0b0c10;border-left:3px solid #ffd166;border-radius:.4rem;margin:1rem 0}
+.personal-row td{background:rgba(255,209,102,.13)!important;border-top:2px solid #ffd166}.personal-row td:first-child{font-weight:700}
+.neg-compare-row{display:flex;gap:.5rem;align-items:end;flex-wrap:wrap;margin:.75rem 0}.neg-compare-row .control{flex:1;min-width:170px}.neg-compare-row input{width:100%;padding:.6rem;background:#0b0c10;color:var(--text);border:1px solid var(--border);border-radius:.5rem}
+.neg-chart{min-height:320px}.neg-table-wrap{overflow-x:auto}.neg-table-wrap table{min-width:700px}.neg-table-wrap th:last-child,.neg-table-wrap td:last-child{width:auto!important}
+@media(max-width:700px){.personal-panel{padding:.75rem}.personal-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:.65rem}.personal-grid .control{min-width:0}.personal-grid select,.personal-grid input{font-size:16px}.neg-chart{min-height:270px}}
+
+/* Personal salary and negotiations */
+.personal-panel{margin:3rem 0;padding:1rem;border:1px solid var(--border);border-radius:.8rem;background:var(--panel)}
+.personal-summary{color:var(--warn);font-weight:600}
+.personal-row td{background:rgba(255,209,102,.13)!important;border-top:2px solid var(--warn)}
+.personal-table-scroll{overflow-x:auto}
+.personal-table-scroll th,.personal-table-scroll td{white-space:nowrap}
+.neg-compare-row{display:flex;flex-wrap:wrap;gap:.75rem;align-items:end;margin:.75rem 0}
+.neg-compare-row .control{flex:1 1 200px}
+.neg-compare-row button{margin-bottom:.15rem}
+#my-salary,#aps-negotiations{scroll-margin-top:5rem}
