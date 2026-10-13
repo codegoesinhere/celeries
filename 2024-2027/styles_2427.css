@@ -1465,12 +1465,12 @@ table.salariesTable td {
 
 /* APS negotiations: right-align all numerical headers and values.
    Offer and date remain left-aligned. */
-#negDollarTable th:nth-child(n+3),
-#negDollarTable td:nth-child(n+3),
-#negTable th:nth-child(n+3),
-#negTable td:nth-child(n+3),
-#negSalaryTable th:nth-child(n+3),
-#negSalaryTable td:nth-child(n+3) {
+#negDollarTable th:nth-child(n+2),
+#negDollarTable td:nth-child(n+2),
+#negTable th:nth-child(n+2),
+#negTable td:nth-child(n+2),
+#negSalaryTable th:nth-child(n+2),
+#negSalaryTable td:nth-child(n+2) {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
