@@ -361,20 +361,16 @@
   <div id="compareTableMount"></div>
 </section>
   <section id="aps-negotiations" class="personal-panel">
-    <h2>APS pay negotiations — proposed offer</h2>
-    <p>Illustrative annual base salary projections using compounded increases. These are not confirmed salary rates or paypoint progression.</p>
-    <div class="controls">
-      <div class="control"><label for="negRate1">Year 1 increase (%)</label><input id="negRate1" type="number" step="0.1" value="3.2"></div>
-      <div class="control"><label for="negRate2">Year 2 increase (%)</label><input id="negRate2" type="number" step="0.1" value="3"></div>
-      <div class="control"><label for="negRate3">Year 3 increase (%)</label><input id="negRate3" type="number" step="0.1" value="2.8"></div>
-    </div>
-    <button id="negReset" type="button" class="btn-quiet">Reset proposed percentages</button>
+    <h2>APS pay negotiations — compare offers</h2>
+    <p>Compare proposed annual percentage increases across three years. Offer 1 is the initial tabled offer. Custom scenarios can be edited or removed. Figures are illustrative and compound annually.</p>
+    <div id="negOffers" class="neg-offers" aria-label="Negotiation offers"></div>
+    <div class="neg-offer-actions"><button id="negAdd" type="button" class="btn-quiet">Add custom offer</button><button id="negReset" type="button" class="btn-quiet">Reset custom offers</button></div>
     <p id="negSummary" aria-live="polite"></p>
-    <div id="negChart"></div>
-    <div class="table-wrap personal-table-scroll"><table id="negTable"><thead><tr><th>Position</th><th>Current</th><th>Year 1</th><th>Year 2</th><th>Year 3</th><th>Total increase</th></tr></thead><tbody></tbody></table></div>
-    <h3>Additional comparison positions</h3>
-    <div id="negComparisons"></div>
-    <button id="negAdd" class="btn-quiet" type="button">Add comparison position</button>
+    <h3>Annual increases by offer</h3><div id="negChart"></div>
+    <h3>Percentage comparison</h3>
+    <div class="table-wrap personal-table-scroll"><table id="negTable"><thead><tr><th>Offer</th><th>Year 1</th><th>Year 2</th><th>Year 3</th><th>Compounded total</th><th>Difference from Offer 1</th></tr></thead><tbody></tbody></table></div>
+    <h3>Effect on my salary</h3><p id="negSalaryHint" class="muted">Select a salary in the My salary section to see the dollar impact of each offer.</p>
+    <div class="table-wrap personal-table-scroll"><table id="negSalaryTable"><thead><tr><th>Offer</th><th>Current</th><th>Year 1</th><th>Year 2</th><th>Year 3</th><th>Total dollar increase</th></tr></thead><tbody></tbody></table></div>
   </section>
   <hr>
     <section id="notaligned">

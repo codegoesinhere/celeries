@@ -1448,3 +1448,6 @@ table.salariesTable td {
 #my-salary .personal-actions input {accent-color:#33d6e8;}
 .personal-summary {border-left-color:#33d6e8;}
 .personal-row td {background:rgba(51,214,232,.12)!important;border-top-color:#33d6e8;}
+
+/* Negotiated percentage-offer comparisons */
+.neg-offers{display:grid;gap:1rem;margin:1rem 0}.neg-offer-card{padding:1rem;border:1px solid var(--border);border-radius:.75rem;background:var(--panel)}.neg-offer-heading{display:flex;align-items:center;gap:.75rem;flex-wrap:wrap;margin-bottom:.75rem}.neg-offer-heading input{min-width:180px;flex:1;padding:.55rem;background:#0b0c10;color:var(--text);border:1px solid var(--border);border-radius:.5rem}.neg-fixed-label{font-size:.8rem;color:var(--muted)}.neg-offer-rates{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.75rem}.neg-offer-rates input{width:100%;padding:.6rem;background:#0b0c10;color:var(--text);border:1px solid var(--border);border-radius:.5rem}.neg-offer-rates input:disabled{opacity:.75}.neg-offer-actions{display:flex;gap:.75rem;flex-wrap:wrap}.neg-offer-fixed-row td{background:rgba(51,214,232,.07);font-weight:600}#negSalaryTable th:last-child,#negSalaryTable td:last-child,#negTable th:last-child,#negTable td:last-child{width:auto}@media(max-width:600px){.neg-offer-rates{grid-template-columns:1fr 1fr}.neg-offer-heading{align-items:flex-start}}
