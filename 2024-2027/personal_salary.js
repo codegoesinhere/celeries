@@ -5,7 +5,7 @@ const $=id=>document.getElementById(id);
 const money=(n,dp=2)=>Number.isFinite(n)?'$'+n.toLocaleString('en-AU',{minimumFractionDigits:dp,maximumFractionDigits:dp}):'—';
 const escape=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let state=null, serial=0, syncing=false;
-const fixedOffers=[{id:"initial",name:"Offer 1 — Initial offer",rates:[3.2,3,2.8],fixed:true}];
+const fixedOffers=[{id:"initial",name:"Offer 1",date:"2026-10-13",rates:[3.2,3,2.8],fixed:true}];
 let customOffers=[];
 function api(){return window.salaryDashboardAPI||{};}
 function key(a){if(typeof api().agencyKey==='function')return api().agencyKey(a);const slug=s=>String(s||'').toLowerCase().replace(/’s\b/g,'s').replace(/'s\b/g,'s').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'');return slug(a.portfolio)+'|'+slug(a.agency);}
@@ -57,24 +57,89 @@ function updateCharts(){
 
 function rowFor(table){if(!state||!table)return;const tbody=table.tBodies?.[0];if(!tbody||tbody.querySelector('.personal-row'))return;const tr=tbody.insertRow(0);tr.className='personal-row';const cells=table.tHead?.rows?.[0]?.cells?.length||0;const name=escape(state.agency),cls=escape(classificationWithPoint(state)),annual=state.salary;
 if(table.id==='fortnightSalaryTable'&&cells>=8){tr.innerHTML=`<td></td><td>My salary — ${name}</td><td>${cls}</td><td style="text-align:right">${money(annual)}</td><td style="text-align:right">${money(annual*12/313/75,4)}</td><td style="text-align:right">${money(annual*12/313)}</td><td style="text-align:right">${money(annual*.154)}</td><td style="text-align:right">${money(annual*1.154)}</td>`;return;}
-if(table.id==='compareSalaryTable'){const heads=[...table.tHead.rows[0].cells].map(c=>c.textContent.toLowerCase());tr.innerHTML=heads.map(h=>`<td>${h.includes('agency')?'My salary — '+name:h.includes('class')?cls:h.includes('hour')?money(annual*12/313/75,4):h.includes('fortnight')?money(annual*12/313):h.includes('super')&&!h.includes('package')?money(annual*.154):h.includes('package')?money(annual*1.154):h.includes('salary')?money(annual):'—'}</td>`).join('');}}
+if(table.id==='compareSalaryTable'){const heads=[...table.tHead.rows[0].cells].map(c=>c.textContent.toLowerCase());tr.innerHTML=heads.map(h=>`<td${['hour','fortnight','super','package','salary'].some(k=>h.includes(k))?' style="text-align:right"':''}>${h.includes('agency')?'My salary — '+name:h.includes('class')?cls:h.includes('hour')?money(annual*12/313/75,4):h.includes('fortnight')?money(annual*12/313):h.includes('super')&&!h.includes('package')?money(annual*.154):h.includes('package')?money(annual*1.154):h.includes('salary')?money(annual):'—'}</td>`).join('');}}
 function syncTables(){if(syncing)return;syncing=true;try{for(const id of ['fortnightSalaryTable','compareSalaryTable']){const t=$(id);if(t){const current=t.querySelector('.personal-row');const signature=state?`${state.salary}|${state.agency}|${state.classification}|${state.paypoint}`:'';if(current?.dataset.signature!==signature){current?.remove();if(state){rowFor(t);const added=t.querySelector('.personal-row');if(added)added.dataset.signature=signature;}}}}for(const id of ['fortnightTableMount','compareTableMount']){const mount=$(id);if(!mount)continue;const old=mount.querySelector('.personal-empty');if(old&&(!state||mount.querySelector('table')))old.remove();if(state&&!mount.querySelector('table')&&!mount.querySelector('.personal-empty')){const d=document.createElement('div');d.className='personal-empty personal-summary';d.textContent=`My salary: ${money(state.salary)} (${classificationWithPoint(state)}). Select Chart 2 entities to see additional comparisons.`;mount.prepend(d);}}}finally{syncing=false;}}
 function allOffers(){return [...fixedOffers,...customOffers];}
-function addComparison(){if(customOffers.length>=12)return;const id=++serial;customOffers.push({id:`custom-${id}`,name:`Custom offer ${id}`,rates:[3.2,3,2.8],fixed:false});renderOfferControls();renderNegotiations();}
-function renderOfferControls(){const mount=$('negOffers');if(!mount)return;mount.replaceChildren();allOffers().forEach(offer=>{
- const card=document.createElement('div');card.className='neg-offer-card';
- const header=document.createElement('div');header.className='neg-offer-heading';
- if(offer.fixed){const strong=document.createElement('strong');strong.textContent=offer.name;header.append(strong);const tag=document.createElement('span');tag.className='neg-fixed-label';tag.textContent='Fixed offer';header.append(tag);}
- else {const label=document.createElement('label');label.textContent='Scenario name';const name=document.createElement('input');name.type='text';name.value=offer.name;name.setAttribute('aria-label','Custom offer name');name.addEventListener('input',()=>{offer.name=name.value.trim()||'Custom offer';renderNegotiations();});header.append(label,name);const remove=document.createElement('button');remove.type='button';remove.className='btn-quiet';remove.textContent='Remove';remove.addEventListener('click',()=>{customOffers=customOffers.filter(x=>x!==offer);renderOfferControls();renderNegotiations();});header.append(remove);}
- card.append(header);const grid=document.createElement('div');grid.className='neg-offer-rates';offer.rates.forEach((rate,i)=>{const field=document.createElement('div');field.className='control';const label=document.createElement('label');label.textContent=`Year ${i+1} (%)`;const input=document.createElement('input');input.type='number';input.step='0.1';input.min='-99.99';input.value=rate;input.disabled=offer.fixed;input.setAttribute('aria-label',`${offer.name}, Year ${i+1} percentage`);if(!offer.fixed)input.addEventListener('input',()=>{offer.rates[i]=input.value===''?NaN:Number(input.value);renderNegotiations();});field.append(label,input);grid.append(field);});card.append(grid);mount.append(card);
- });}
+function addComparison(){if(customOffers.length>=12)return;const id=++serial;customOffers.push({id:`custom-${id}`,name:`Custom offer ${id}`,date:"",rates:[3.2,3,2.8],fixed:false});renderOfferControls();renderNegotiations();}
+function displayOfferDate(value){
+ if(!value)return '';
+ const [y,m,d]=value.split('-').map(Number);
+ if(!y||!m||!d)return '';
+ return new Date(y,m-1,d).toLocaleDateString('en-AU',{day:'numeric',month:'short',year:'numeric'});
+}
+function renderOfferControls(){
+ const mount=$('negOffers');if(!mount)return;mount.replaceChildren();
+ allOffers().forEach(offer=>{
+  const card=document.createElement('div');card.className='neg-offer-card';
+  const heading=document.createElement('div');heading.className='neg-offer-heading';
+  if(offer.fixed){
+   const title=document.createElement('strong');title.textContent=offer.name;heading.append(title);
+   const tag=document.createElement('span');tag.className='neg-fixed-label';tag.textContent='Fixed offer';heading.append(tag);
+  }else{
+   const name=document.createElement('input');name.type='text';name.value=offer.name;name.setAttribute('aria-label','Custom offer name');
+   name.addEventListener('input',()=>{offer.name=name.value.trim()||'Custom offer';renderNegotiations();});
+   heading.append(name);
+   const remove=document.createElement('button');remove.type='button';remove.className='btn-quiet';remove.textContent='Remove';
+   remove.addEventListener('click',()=>{customOffers=customOffers.filter(x=>x!==offer);renderOfferControls();renderNegotiations();});
+   heading.append(remove);
+  }
+  card.append(heading);
+  const fields=document.createElement('div');fields.className='neg-offer-inline';
+  const dateWrap=document.createElement('div');dateWrap.className='neg-offer-date';
+  if(offer.fixed){
+   const date=document.createElement('span');date.textContent=displayOfferDate(offer.date)||'Date not specified';dateWrap.append(date);
+  }else{
+   const label=document.createElement('label');label.textContent='Date';
+   const date=document.createElement('input');date.type='date';date.value=offer.date||'';
+   date.setAttribute('aria-label',`${offer.name} date`);
+   date.addEventListener('change',()=>{offer.date=date.value;renderNegotiations();});
+   dateWrap.append(label,date);
+  }
+  fields.append(dateWrap);
+  offer.rates.forEach((rate,i)=>{
+   const field=document.createElement('div');field.className='neg-offer-rate';
+   const label=document.createElement('label');label.textContent=`Year ${i+1}:`;
+   if(offer.fixed){
+    const value=document.createElement('span');value.textContent=`${rate}%`;field.append(label,value);
+   }else{
+    const input=document.createElement('input');input.type='number';input.step='0.1';input.min='-99.99';input.value=rate;
+    input.setAttribute('aria-label',`${offer.name}, Year ${i+1} percentage`);
+    input.addEventListener('input',()=>{offer.rates[i]=input.value===''?NaN:Number(input.value);renderNegotiations();});
+    const suffix=document.createElement('span');suffix.textContent='%';
+    field.append(label,input,suffix);
+   }
+   fields.append(field);
+  });
+  card.append(fields);mount.append(card);
+ });
+}
 function renderNegotiations(){const offers=allOffers(),tbody=$('negTable')?.tBodies?.[0],salaryBody=$('negSalaryTable')?.tBodies?.[0];if(!tbody||!salaryBody)return;tbody.replaceChildren();salaryBody.replaceChildren();const initial=1.032*1.03*1.028-1;
  const valid=offer=>offer.rates.every(r=>Number.isFinite(r)&&r>-100);
- offers.forEach(offer=>{const ok=valid(offer);const compound=ok?offer.rates.reduce((n,r)=>n*(1+r/100),1)-1:NaN;const cells=[offer.name,...offer.rates.map(r=>Number.isFinite(r)?r.toFixed(2)+'%':'—'),ok?(compound*100).toFixed(2)+'%':'—',ok?((compound-initial)*100>=0?'+':'')+((compound-initial)*100).toFixed(2)+' pp':'—'];const row=tbody.insertRow();if(offer.fixed)row.className='neg-offer-fixed-row';cells.forEach(c=>{const td=row.insertCell();td.textContent=c;});if(state&&ok){const values=[state.salary];offer.rates.forEach(r=>values.push(values.at(-1)*(1+r/100)));const sr=salaryBody.insertRow();if(offer.fixed)sr.className='neg-offer-fixed-row';[offer.name,...values.map(v=>money(v)),money(values.at(-1)-values[0])].forEach(c=>{const td=sr.insertCell();td.textContent=c;});}});
+ offers.forEach(offer=>{const ok=valid(offer);const compound=ok?offer.rates.reduce((n,r)=>n*(1+r/100),1)-1:NaN;const cells=[offer.name,displayOfferDate(offer.date)||'—',...offer.rates.map(r=>Number.isFinite(r)?r.toFixed(2)+'%':'—'),ok?(compound*100).toFixed(2)+'%':'—',ok?((compound-initial)*100>=0?'+':'')+((compound-initial)*100).toFixed(2)+' pp':'—'];const row=tbody.insertRow();if(offer.fixed)row.className='neg-offer-fixed-row';cells.forEach(c=>{const td=row.insertCell();td.textContent=c;});if(state&&ok){const values=[state.salary];offer.rates.forEach(r=>values.push(values.at(-1)*(1+r/100)));const sr=salaryBody.insertRow();if(offer.fixed)sr.className='neg-offer-fixed-row';[offer.name,displayOfferDate(offer.date)||'—',...values.map(v=>money(v)),money(values.at(-1)-values[0])].forEach(c=>{const td=sr.insertCell();td.textContent=c;});}});
  $('negSalaryHint').textContent=state?`Based on ${classificationWithPoint(state)} — ${money(state.salary)} annual base salary. Paypoint progression is excluded.`:'Select a salary in the My salary section to see the dollar impact of each offer.';
  $('negSummary').textContent=`${offers.length} offer${offers.length===1?'':'s'} compared. Offer 1 compounded increase: ${(initial*100).toFixed(2)}%. Differences are percentage points relative to Offer 1.`;
- if(window.Highcharts){window.Highcharts.chart('negChart',{chart:{type:'column',backgroundColor:'transparent',height:360},title:{text:null},xAxis:{categories:['Year 1','Year 2','Year 3'],labels:{style:{color:'#e8ecf1'}}},yAxis:{title:{text:'Annual increase (%)',style:{color:'#e8ecf1'}},labels:{style:{color:'#e8ecf1'},format:'{value}%'}},legend:{itemStyle:{color:'#e8ecf1'}},tooltip:{shared:true,valueSuffix:'%',valueDecimals:2},series:offers.filter(valid).map(o=>({name:o.name,data:o.rates})),credits:{enabled:false}});}
+ const chartMount=$('negChart');
+ if(!state){
+  if(chartMount)chartMount.innerHTML='<p class="muted">Select My salary above to compare annual dollar increases for each offer.</p>';
+  return;
+ }
+ if(window.Highcharts){
+  const series=offers.filter(valid).map(o=>{
+   let current=state.salary;
+   return {name:o.name,data:o.rates.map(rate=>{const increase=current*rate/100;current+=increase;return Math.round(increase*100)/100;})};
+  });
+  window.Highcharts.chart('negChart',{
+   chart:{type:'column',backgroundColor:'transparent',height:360},
+   title:{text:null},
+   xAxis:{categories:['Year 1','Year 2','Year 3'],labels:{style:{color:'#e8ecf1'}}},
+   yAxis:{title:{text:'Annual base salary increase ($)',style:{color:'#e8ecf1'}},labels:{style:{color:'#e8ecf1'},formatter:function(){return '$'+this.value.toLocaleString('en-AU');}}},
+   legend:{itemStyle:{color:'#e8ecf1'}},
+   tooltip:{shared:true,pointFormatter:function(){return this.series.name+': <b>'+money(this.y)+'</b><br/>';}},
+   series,credits:{enabled:false}
+  });
+ }else if(chartMount){chartMount.innerHTML='<p class="muted">The salary increase chart requires Highcharts to load.</p>';}
 }
+
 function init(){if(!$('personalAgency'))return;option($('personalAgency'),'','Select entity');(window.agreements||[]).slice().sort((a,b)=>a.agency.localeCompare(b.agency)).forEach(a=>option($('personalAgency'),key(a),a.agency));$('personalAgency').addEventListener('change',refreshClasses);$('personalClass').addEventListener('change',refreshPoints);['personalPoint','personalManual','personalVisible'].forEach(id=>$(id).addEventListener(id==='personalManual'?'input':'change',update));$('personalClear').addEventListener('click',()=>{$('personalAgency').value='';$('personalManual').value='';refreshClasses();});$('negAdd').addEventListener('click',addComparison);$('negReset').addEventListener('click',()=>{customOffers=[];renderOfferControls();renderNegotiations();});$('chartDateSel')?.addEventListener('change',()=>{refreshPoints();setTimeout(updateCharts,100);});if(window.Highcharts){window.Highcharts.addEvent(window.Highcharts.Chart,'load',function(){if(['chartContainer','compareChartContainer'].includes(this.renderTo?.id))setTimeout(updateCharts,0);});window.Highcharts.addEvent(window.Highcharts.Chart,'redraw',function(){if(this.personalSalaryTag)positionPersonalLabel(this);});}const observer=new MutationObserver(()=>{if(!syncing)syncTables();});['fortnightTableMount','compareTableMount'].forEach(id=>{if($(id))observer.observe($(id),{childList:true,subtree:false});});refreshClasses();renderOfferControls();renderNegotiations();}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();

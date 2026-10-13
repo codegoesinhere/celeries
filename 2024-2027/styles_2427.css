@@ -1451,3 +1451,14 @@ table.salariesTable td {
 
 /* Negotiated percentage-offer comparisons */
 .neg-offers{display:grid;gap:1rem;margin:1rem 0}.neg-offer-card{padding:1rem;border:1px solid var(--border);border-radius:.75rem;background:var(--panel)}.neg-offer-heading{display:flex;align-items:center;gap:.75rem;flex-wrap:wrap;margin-bottom:.75rem}.neg-offer-heading input{min-width:180px;flex:1;padding:.55rem;background:#0b0c10;color:var(--text);border:1px solid var(--border);border-radius:.5rem}.neg-fixed-label{font-size:.8rem;color:var(--muted)}.neg-offer-rates{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.75rem}.neg-offer-rates input{width:100%;padding:.6rem;background:#0b0c10;color:var(--text);border:1px solid var(--border);border-radius:.5rem}.neg-offer-rates input:disabled{opacity:.75}.neg-offer-actions{display:flex;gap:.75rem;flex-wrap:wrap}.neg-offer-fixed-row td{background:rgba(51,214,232,.07);font-weight:600}#negSalaryTable th:last-child,#negSalaryTable td:last-child,#negTable th:last-child,#negTable td:last-child{width:auto}@media(max-width:600px){.neg-offer-rates{grid-template-columns:1fr 1fr}.neg-offer-heading{align-items:flex-start}}
+
+/* Compact negotiation offer controls. */
+.neg-offer-heading{margin-bottom:.5rem}
+.neg-offer-heading>input{max-width:280px}
+.neg-offer-inline{display:flex;align-items:center;gap:.75rem 1.15rem;flex-wrap:wrap}
+.neg-offer-date{display:inline-flex;align-items:center;gap:.4rem;min-width:115px;color:var(--muted);font-size:.92rem}
+.neg-offer-rate{display:inline-flex;align-items:center;gap:.35rem;white-space:nowrap}
+.neg-offer-rate label{font-weight:600;margin:0}
+.neg-offer-rate input{width:5.5rem;max-width:5.5rem;padding:.4rem .45rem;background:#0b0c10;color:var(--text);border:1px solid var(--border);border-radius:.4rem}
+.neg-offer-date input{width:155px;max-width:100%;padding:.4rem;background:#0b0c10;color:var(--text);border:1px solid var(--border);border-radius:.4rem}
+@media(max-width:600px){.neg-offer-inline{gap:.65rem 1rem}.neg-offer-date{flex-basis:100%}.neg-offer-rate input{width:4.8rem}}
