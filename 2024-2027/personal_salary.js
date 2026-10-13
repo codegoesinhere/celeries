@@ -27,7 +27,7 @@ function positionPersonalLabel(chart){
  const bbox=tag.getBBox();
  // Place the label inside the plot, above the first category, not on the points.
  const x=Math.max(chart.plotLeft+4,Math.min(pixel-bbox.width/2,chart.plotLeft+chart.plotWidth-bbox.width-4));
- const y=Math.max(2,chart.plotTop-bbox.height-8);
+ const y=Math.max(8,chart.plotTop-bbox.height-12);
  tag.attr({x,y}).show();
 }
 function updateCharts(){
@@ -35,6 +35,12 @@ function updateCharts(){
  for(const chart of window.Highcharts.charts||[]){
   if(!chart||!['chartContainer','compareChartContainer'].includes(chart.renderTo?.id))continue;
   const axis=chart.yAxis?.[0];if(!axis)continue;
+  // Reserve a dedicated header band above the first plotted category.
+  // The reference label is drawn in this band, beneath the chart's top edge.
+  if(!chart.personalSalaryHeaderSpace){
+   chart.personalSalaryHeaderSpace=true;
+   chart.update({chart:{spacingTop:72}},false);
+  }
   axis.removePlotLine('personal-salary');
   if(chart.personalSalaryTag){chart.personalSalaryTag.destroy();chart.personalSalaryTag=null;}
   if(!state||!$('personalVisible').checked)continue;

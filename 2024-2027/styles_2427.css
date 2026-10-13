@@ -1443,3 +1443,8 @@ table.salariesTable td {
 .neg-compare-row .control{flex:1 1 200px}
 .neg-compare-row button{margin-bottom:.15rem}
 #my-salary,#aps-negotiations{scroll-margin-top:5rem}
+
+/* Match all personal-salary accents to the cyan chart reference. */
+#my-salary .personal-actions input {accent-color:#33d6e8;}
+.personal-summary {border-left-color:#33d6e8;}
+.personal-row td {background:rgba(51,214,232,.12)!important;border-top-color:#33d6e8;}
