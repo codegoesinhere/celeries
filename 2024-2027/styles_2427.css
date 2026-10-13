@@ -1462,3 +1462,15 @@ table.salariesTable td {
 .neg-offer-rate input{width:5.5rem;max-width:5.5rem;padding:.4rem .45rem;background:#0b0c10;color:var(--text);border:1px solid var(--border);border-radius:.4rem}
 .neg-offer-date input{width:155px;max-width:100%;padding:.4rem;background:#0b0c10;color:var(--text);border:1px solid var(--border);border-radius:.4rem}
 @media(max-width:600px){.neg-offer-inline{gap:.65rem 1rem}.neg-offer-date{flex-basis:100%}.neg-offer-rate input{width:4.8rem}}
+
+/* APS negotiations: right-align all numerical headers and values.
+   Offer and date remain left-aligned. */
+#negDollarTable th:nth-child(n+3),
+#negDollarTable td:nth-child(n+3),
+#negTable th:nth-child(n+3),
+#negTable td:nth-child(n+3),
+#negSalaryTable th:nth-child(n+3),
+#negSalaryTable td:nth-child(n+3) {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
