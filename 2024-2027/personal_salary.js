@@ -6,7 +6,7 @@ const money=(n,dp=2)=>Number.isFinite(n)?'$'+n.toLocaleString('en-AU',{minimumFr
 const percent=n=>Number.isFinite(Number(n))?Number(n).toFixed(2)+'%':'—';
 const escape=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let state=null, serial=0, syncing=false;
-const fixedOffers=[{id:"initial",name:"APSC Offer 1",date:"2026-10-13",rates:[3.2,3,2.8],fixed:true}];
+const fixedOffers=[{id:"initial",name:"APSC Offer 1",date:"2026-10-13",rates:[3.2,3,2.8],fixed:true,color:"#003E6B"},{id:"cpsu-1",name:"CPSU Offer 1",date:"2026-08-20",rates:[5,5,5],fixed:true,color:"#da1715"}];
 let customOffers=[];
 function api(){return window.salaryDashboardAPI||{};}
 function key(a){if(typeof api().agencyKey==='function')return api().agencyKey(a);const slug=s=>String(s||'').toLowerCase().replace(/’s\b/g,'s').replace(/'s\b/g,'s').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'');return slug(a.portfolio)+'|'+slug(a.agency);}
@@ -71,10 +71,10 @@ function displayOfferDate(value){
 function renderOfferControls(){
  const mount=$('negOffers');if(!mount)return;mount.replaceChildren();
  allOffers().forEach(offer=>{
-  const card=document.createElement('div');card.className='neg-offer-card';
+  const card=document.createElement('div');card.className='neg-offer-card';if(offer.fixed&&offer.color){card.style.borderLeft=`4px solid ${offer.color}`;}
   const heading=document.createElement('div');heading.className='neg-offer-heading';
   if(offer.fixed){
-   const title=document.createElement('strong');title.textContent=offer.name;heading.append(title);
+   const title=document.createElement('strong');title.textContent=offer.name;if(offer.color)title.style.color=offer.color;heading.append(title);
    const tag=document.createElement('span');tag.className='neg-fixed-label';tag.textContent='Fixed offer';heading.append(tag);
   }else{
    const name=document.createElement('input');name.type='text';name.value=offer.name;name.setAttribute('aria-label','Custom offer name');
@@ -117,7 +117,7 @@ function renderOfferControls(){
 }
 function renderNegotiations(){const offers=allOffers(),tbody=$('negTable')?.tBodies?.[0],salaryBody=$('negSalaryTable')?.tBodies?.[0],dollarBody=$('negDollarTable')?.tBodies?.[0];if(!tbody||!salaryBody||!dollarBody)return;tbody.replaceChildren();salaryBody.replaceChildren();dollarBody.replaceChildren();const initial=1.032*1.03*1.028-1;
  const valid=offer=>offer.rates.every(r=>Number.isFinite(r)&&r>-100);
- offers.forEach(offer=>{const ok=valid(offer);const compound=ok?offer.rates.reduce((n,r)=>n*(1+r/100),1)-1:NaN;const cells=[offer.name,...offer.rates.map(percent),ok?(compound*100).toFixed(2)+'%':'—',ok?((compound-initial)*100>=0?'+':'')+((compound-initial)*100).toFixed(2)+' pp':'—'];const row=tbody.insertRow();if(offer.fixed)row.className='neg-offer-fixed-row';cells.forEach(c=>{const td=row.insertCell();td.textContent=c;});if(state&&ok){const values=[state.salary];offer.rates.forEach(r=>values.push(values.at(-1)*(1+r/100)));const increases=values.slice(1).map((v,i)=>v-values[i]);const dr=dollarBody.insertRow();if(offer.fixed)dr.className='neg-offer-fixed-row';[offer.name,...increases.map(v=>money(v)),money(increases.reduce((a,b)=>a+b,0))].forEach(c=>{const td=dr.insertCell();td.textContent=c;});const sr=salaryBody.insertRow();if(offer.fixed)sr.className='neg-offer-fixed-row';[offer.name,...values.map(v=>money(v)),money(values.at(-1)-values[0])].forEach(c=>{const td=sr.insertCell();td.textContent=c;});}});
+ offers.forEach(offer=>{const ok=valid(offer);const compound=ok?offer.rates.reduce((n,r)=>n*(1+r/100),1)-1:NaN;const cells=[offer.name,...offer.rates.map(percent),ok?(compound*100).toFixed(2)+'%':'—',ok?((compound-initial)*100>=0?'+':'')+((compound-initial)*100).toFixed(2)+' pp':'—'];const row=tbody.insertRow();if(offer.fixed){row.className='neg-offer-fixed-row';row.style.setProperty('--offer-color',offer.color||'#33d6e8');}cells.forEach(c=>{const td=row.insertCell();td.textContent=c;});if(state&&ok){const values=[state.salary];offer.rates.forEach(r=>values.push(values.at(-1)*(1+r/100)));const increases=values.slice(1).map((v,i)=>v-values[i]);const dr=dollarBody.insertRow();if(offer.fixed){dr.className='neg-offer-fixed-row';dr.style.setProperty('--offer-color',offer.color||'#33d6e8');}[offer.name,...increases.map(v=>money(v)),money(increases.reduce((a,b)=>a+b,0))].forEach(c=>{const td=dr.insertCell();td.textContent=c;});const sr=salaryBody.insertRow();if(offer.fixed){sr.className='neg-offer-fixed-row';sr.style.setProperty('--offer-color',offer.color||'#33d6e8');}[offer.name,...values.map(v=>money(v)),money(values.at(-1)-values[0])].forEach(c=>{const td=sr.insertCell();td.textContent=c;});}});
  for(const id of ['negDollarHint','negSalaryHint','negPercentHint']){
   const hint=$(id);if(!hint)continue;
   hint.replaceChildren();
@@ -137,7 +137,7 @@ function renderNegotiations(){const offers=allOffers(),tbody=$('negTable')?.tBod
  if(window.Highcharts){
   const series=offers.filter(valid).map(o=>{
    let current=state.salary;
-   return {name:o.name,data:o.rates.map(rate=>{const increase=current*rate/100;current+=increase;return Math.round(increase*100)/100;})};
+   return {name:o.name,...(o.color?{color:o.color}:{}),data:o.rates.map(rate=>{const increase=current*rate/100;current+=increase;return Math.round(increase*100)/100;})};
   });
   window.Highcharts.chart('negChart',{
    chart:{type:'column',backgroundColor:'transparent',height:360},

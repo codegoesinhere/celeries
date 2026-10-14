@@ -1480,3 +1480,8 @@ table.salariesTable td {
 #negDollarTable :is(th,td):nth-child(n+2),
 #negSalaryTable :is(th,td):nth-child(n+2),
 #negTable :is(th,td):nth-child(n+2){text-align:right;font-variant-numeric:tabular-nums}
+
+/* Fixed negotiation offer identities: APSC navy and CPSU red. */
+.neg-offer-fixed-row td{background:transparent;}
+.neg-offer-fixed-row td:first-child{border-left:4px solid var(--offer-color,#33d6e8);font-weight:700;}
+.neg-offer-fixed-row td:first-child::first-line{color:var(--offer-color,#33d6e8);}
