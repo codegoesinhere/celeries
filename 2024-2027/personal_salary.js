@@ -47,7 +47,7 @@ function updateCharts(){
   axis.removePlotLine('personal-salary');
   if(chart.personalSalaryTag){chart.personalSalaryTag.destroy();chart.personalSalaryTag=null;}
   if(!state||!$('personalVisible').checked)continue;
-  axis.addPlotLine({id:'personal-salary',value:state.salary,color:PERSONAL_CHART_COLOR,width:3,dashStyle:'Dash',zIndex:8});
+  axis.addPlotLine({id:'personal-salary',value:state.salary,color:PERSONAL_CHART_COLOR,width:3,dashStyle:'Dash',zIndex:0});
   chart.personalSalaryTag=chart.renderer.label(`My salary ${money(state.salary,0)}`,0,0,'rect')
    .attr({fill:'#07323b',stroke:PERSONAL_CHART_COLOR,'stroke-width':1,padding:5,r:4,zIndex:10})
    .css({color:'#eaffff',fontWeight:'bold',fontSize:'12px'})
