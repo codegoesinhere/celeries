@@ -6,7 +6,7 @@ const money=(n,dp=2)=>Number.isFinite(n)?'$'+n.toLocaleString('en-AU',{minimumFr
 const percent=n=>Number.isFinite(Number(n))?Number(n).toFixed(2)+'%':'—';
 const escape=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let state=null, serial=0, syncing=false;
-const fixedOffers=[{id:"initial",name:"APSC Offer 1",date:"2026-10-13",rates:[3.2,3,2.8],fixed:true,color:"#003E6B"},{id:"cpsu-1",name:"CPSU Offer 1",date:"2026-08-20",rates:[5,5,5],fixed:true,color:"#da1715"}];
+const fixedOffers=[{id:"cpsu-1",name:"CPSU Claim 1",date:"2026-08-20",rates:[5,5,5],fixed:true,color:"#da1715"},{id:"initial",name:"APSC Offer 1",date:"2026-10-13",rates:[3.2,3,2.8],fixed:true,color:"#003E6B"}];
 let customOffers=[];
 function api(){return window.salaryDashboardAPI||{};}
 function key(a){if(typeof api().agencyKey==='function')return api().agencyKey(a);const slug=s=>String(s||'').toLowerCase().replace(/’s\b/g,'s').replace(/'s\b/g,'s').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'');return slug(a.portfolio)+'|'+slug(a.agency);}
