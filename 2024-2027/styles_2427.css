@@ -1474,3 +1474,9 @@ table.salariesTable td {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
+
+/* APS negotiation table contexts and numeric alignment */
+.neg-salary-highlight{color:#33d6e8;font-weight:700}
+#negDollarTable :is(th,td):nth-child(n+2),
+#negSalaryTable :is(th,td):nth-child(n+2),
+#negTable :is(th,td):nth-child(n+2){text-align:right;font-variant-numeric:tabular-nums}

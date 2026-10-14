@@ -118,7 +118,16 @@ function renderOfferControls(){
 function renderNegotiations(){const offers=allOffers(),tbody=$('negTable')?.tBodies?.[0],salaryBody=$('negSalaryTable')?.tBodies?.[0],dollarBody=$('negDollarTable')?.tBodies?.[0];if(!tbody||!salaryBody||!dollarBody)return;tbody.replaceChildren();salaryBody.replaceChildren();dollarBody.replaceChildren();const initial=1.032*1.03*1.028-1;
  const valid=offer=>offer.rates.every(r=>Number.isFinite(r)&&r>-100);
  offers.forEach(offer=>{const ok=valid(offer);const compound=ok?offer.rates.reduce((n,r)=>n*(1+r/100),1)-1:NaN;const cells=[offer.name,...offer.rates.map(percent),ok?(compound*100).toFixed(2)+'%':'—',ok?((compound-initial)*100>=0?'+':'')+((compound-initial)*100).toFixed(2)+' pp':'—'];const row=tbody.insertRow();if(offer.fixed)row.className='neg-offer-fixed-row';cells.forEach(c=>{const td=row.insertCell();td.textContent=c;});if(state&&ok){const values=[state.salary];offer.rates.forEach(r=>values.push(values.at(-1)*(1+r/100)));const increases=values.slice(1).map((v,i)=>v-values[i]);const dr=dollarBody.insertRow();if(offer.fixed)dr.className='neg-offer-fixed-row';[offer.name,...increases.map(v=>money(v)),money(increases.reduce((a,b)=>a+b,0))].forEach(c=>{const td=dr.insertCell();td.textContent=c;});const sr=salaryBody.insertRow();if(offer.fixed)sr.className='neg-offer-fixed-row';[offer.name,...values.map(v=>money(v)),money(values.at(-1)-values[0])].forEach(c=>{const td=sr.insertCell();td.textContent=c;});}});
- $('negSalaryHint').textContent=state?`Based on ${classificationWithPoint(state)} — ${money(state.salary)} annual base salary. Paypoint progression is excluded.`:'Select a salary in the My salary section to see the dollar impact of each offer.';
+ for(const id of ['negDollarHint','negSalaryHint','negPercentHint']){
+  const hint=$(id);if(!hint)continue;
+  hint.replaceChildren();
+  if(state){
+   hint.append(document.createTextNode('Based on '));
+   const cls=document.createElement('strong');cls.className='neg-salary-highlight';cls.textContent=classificationWithPoint(state);
+   const salary=document.createElement('strong');salary.className='neg-salary-highlight';salary.textContent=money(state.salary);
+   hint.append(cls,document.createTextNode(' — '),salary,document.createTextNode(' annual base salary. Paypoint progression is excluded.'));
+  }else hint.textContent='Select a salary in the My salary section to see the dollar impact of each offer.';
+ }
  $('negSummary').textContent=`${offers.length} offer${offers.length===1?'':'s'} compared. APSC Offer 1 compounded increase: ${(initial*100).toFixed(2)}%. Differences are percentage points relative to APSC Offer 1.`;
  const chartMount=$('negChart');
  if(!state){
