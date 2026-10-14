@@ -99,12 +99,12 @@ function renderOfferControls(){
   fields.append(dateWrap);
   offer.rates.forEach((rate,i)=>{
    const field=document.createElement('div');field.className='neg-offer-rate';
-   const label=document.createElement('label');label.textContent=`Year ${i+1}:`;
+   const label=document.createElement('label');label.textContent=`Year ${i+1} (${2027+i}):`;
    if(offer.fixed){
     const value=document.createElement('span');value.textContent=percent(rate);field.append(label,value);
    }else{
     const input=document.createElement('input');input.type='number';input.step='0.01';input.min='-99.99';input.value=Number(rate).toFixed(2);
-    input.setAttribute('aria-label',`${offer.name}, Year ${i+1} percentage`);
+    input.setAttribute('aria-label',`${offer.name}, Year ${i+1} (${2027+i}) percentage`);
     input.addEventListener('input',()=>{offer.rates[i]=input.value===''?NaN:Number(input.value);renderNegotiations();});
     input.addEventListener('blur',()=>{if(Number.isFinite(offer.rates[i]))input.value=offer.rates[i].toFixed(2);});
     const suffix=document.createElement('span');suffix.textContent='%';
@@ -133,7 +133,7 @@ function renderNegotiations(){const offers=allOffers(),tbody=$('negTable')?.tBod
   window.Highcharts.chart('negChart',{
    chart:{type:'column',backgroundColor:'transparent',height:360},
    title:{text:null},
-   xAxis:{categories:['Year 1','Year 2','Year 3'],labels:{style:{color:'#e8ecf1'}}},
+   xAxis:{categories:['Year 1 (2027)','Year 2 (2028)','Year 3 (2029)'],labels:{style:{color:'#e8ecf1'}}},
    yAxis:{title:{text:'Annual base salary increase ($)',style:{color:'#e8ecf1'}},labels:{style:{color:'#e8ecf1'},formatter:function(){return '$'+this.value.toLocaleString('en-AU');}}},
    legend:{itemStyle:{color:'#e8ecf1'}},
    tooltip:{shared:true,pointFormatter:function(){return this.series.name+': <b>'+money(this.y)+'</b><br/>';}},
