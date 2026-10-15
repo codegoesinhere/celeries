@@ -6,7 +6,7 @@ const money=(n,dp=2)=>Number.isFinite(n)?'$'+n.toLocaleString('en-AU',{minimumFr
 const percent=n=>Number.isFinite(Number(n))?Number(n).toFixed(2)+'%':'—';
 const escape=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let state=null, serial=0, syncing=false;
-const fixedOffers=[{id:"cpsu-1",name:"CPSU Claim 1",date:"2026-08-20",rates:[5,5,5],fixed:true,color:"#da1715"},{id:"initial",name:"APSC Offer 1",date:"2026-10-13",rates:[3.2,3,2.8],fixed:true,color:"#003E6B"}];
+const fixedOffers=[{id:"cpsu-1",name:"CPSU Claim 1",date:"2026-08-20",rates:[5,5,5],fixed:true,color:"#ff7775", brandColor:"#da1715"},{id:"initial",name:"APSC Offer 1",date:"2026-10-13",rates:[3.2,3,2.8],fixed:true,color:"#67B7F7", brandColor:"#003E6B"}];
 let customOffers=[];
 function api(){return window.salaryDashboardAPI||{};}
 function key(a){if(typeof api().agencyKey==='function')return api().agencyKey(a);const slug=s=>String(s||'').toLowerCase().replace(/’s\b/g,'s').replace(/'s\b/g,'s').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'');return slug(a.portfolio)+'|'+slug(a.agency);}
@@ -71,7 +71,12 @@ function displayOfferDate(value){
 function renderOfferControls(){
  const mount=$('negOffers');if(!mount)return;mount.replaceChildren();
  allOffers().forEach(offer=>{
-  const card=document.createElement('div');card.className='neg-offer-card';if(offer.fixed&&offer.color){card.style.borderLeft=`4px solid ${offer.color}`;}
+    const card = document.createElement('div');
+    card.className = 'neg-offer-card';
+
+    if (offer.fixed && offer.color) {
+    card.style.borderLeft = `4px solid ${offer.color}`;
+    }
   const heading=document.createElement('div');heading.className='neg-offer-heading';
   if(offer.fixed){
    const title=document.createElement('strong');title.textContent=offer.name;if(offer.color)title.style.color=offer.color;heading.append(title);
